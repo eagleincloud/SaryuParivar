@@ -1,0 +1,1603 @@
+<!doctype html>
+{% load static %}
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="image/saryu-parivaar-logo.png">
+  <title>Saryu Parivar - Home</title>
+  <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css"/>
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/3.0.7/metisMenu.min.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <style>
+      .messages {
+          margin: 10px 0;
+      }
+
+      .message {
+          padding: 10px;
+          border-radius: 5px;
+          margin-bottom: 10px;
+          position: relative; 
+      }
+
+      .message.success {
+          background-color: #d4edda;
+          color: #155724;
+          border: 1px solid #c3e6cb;
+      }
+
+      .message.error {
+          background-color: #f8d7da;
+          color: #721c24;
+          border: 1px solid #f5c6cb;
+      }
+
+      .message .close-btn {
+          position: absolute;  /* Position it relative to the .message container */
+          top: 10px;           /* Distance from the top */
+          right: 10px;         /* Distance from the right */
+          background: none;    /* No background */
+          border: none;        /* Remove border */
+          color: inherit;      /* Inherit text color */
+          font-size: 16px;     /* Set the size of the '×' symbol */
+          cursor: pointer;     /* Change cursor to pointer on hover */
+      }
+
+      .message .close-btn:hover {
+          color: #aaa;  /* Change color when the button is hovered */
+      }
+  </style>
+</head>
+<body>
+  <!-- logo and banner -->
+  <section class="logo-banner" style="background: linear-gradient(135deg, #ffffff 0%, #fff8f0 100%); box-shadow: 0 2px 15px rgba(0,0,0,0.08); position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);">
+    <div class="container m-auto">
+      <div class="grid grid-cols-2 items-center py-4">
+        <a href="/" style="display: inline-block; transition: transform 0.3s ease;">
+          <img src="{% static 'images/saryu-parivaar-logo.png' %}" class="logo w-36" style="filter: drop-shadow(0 4px 12px rgba(249, 119, 24, 0.25)); max-width: 200px; height: auto;" alt="Saryu Parivar Logo" onerror="this.onerror=null; this.src='{% static 'images/Saryu_Pariwar_Logo.jpeg' %}';">
+        </a>
+        <div class="btns text-end sm:flex sm:justify-end block">
+          <button class="btn-modern poppins sm:me-2 mb-[8px] sm:mb-0 login" type="button" data-bs-toggle="modal" data-bs-target="#loginForm" style="font-size: 15px; padding: 12px 28px; box-shadow: 0 4px 12px rgba(249, 119, 24, 0.3);">
+            <i class="bx bx-log-in" style="margin-right: 6px;"></i>Login
+          </button>
+          <button class="border-solid border-[2px] border-[#f97718] py-2.5 px-5 rounded-3xl bg-transparent text-[#f97718] poppins hover:bg-[#f97718] hover:text-white transition ease-in-out register" type="button" data-bs-toggle="modal" data-bs-target="#registerForm" style="font-size: 15px; padding: 12px 28px; font-weight: 600; box-shadow: 0 2px 8px rgba(249, 119, 24, 0.2);">
+            <i class="bx bx-user-plus" style="margin-right: 6px;"></i>Register
+          </button>
+        </div>        
+      </div>
+      <p id="csrf-token-for-forms" hidden>{% csrf_token %}</p>  
+    </div>
+  </section>
+  <!-- end logo and banner -->
+  
+  <!-- slider -->
+  <section id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel" style="position: relative;">
+    <div class="carousel-inner" style="border-radius: 0;">
+      {% for samaj_gallery_image in samaj_gallery_images %}
+          <div class="carousel-item h-[700px] {% if forloop.counter == 1 %} active{% endif %}" style="position: relative;">
+            <img src="{{samaj_gallery_image.image.url}}" class="d-block w-100 object-cover h-full carousel-image" alt="{{samaj_gallery_image.title}}" style="filter: brightness(0.95);" onerror="this.onerror=null; this.src='{% static 'images/banner-img.jpg' %}';" loading="lazy">
+            {% if samaj_gallery_image.title %}
+            <div class="carousel-caption d-none d-md-block fade-in-up" style="bottom: 50px; background: rgba(249, 119, 24, 0.9); padding: 20px 30px; border-radius: 12px; backdrop-filter: blur(10px); animation-delay: 0.5s;">
+              <h3 class="montserrat text-white fw-bold">{{samaj_gallery_image.title}}</h3>
+            </div>
+            {% endif %}
+          </div>
+      {% empty %}
+          <div class="carousel-item h-[700px] active" style="position: relative;">
+            <img src="{% static 'images/banner-img.jpg' %}" class="d-block w-100 object-cover h-full" alt="Saryu Parivar" style="filter: brightness(0.95);">
+            <div class="carousel-caption d-none d-md-block" style="bottom: 50px; background: rgba(249, 119, 24, 0.9); padding: 20px 30px; border-radius: 12px; backdrop-filter: blur(10px);">
+              <h3 class="montserrat text-white fw-bold">Welcome to Saryu Parivar</h3>
+              <p class="text-white poppins">Connecting our community together</p>
+            </div>
+          </div>
+      {% endfor %}
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev" style="left: 20px;">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next" style="right: 20px;">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </section>
+  <!-- end of slider -->
+  
+  <!-- event -->
+  <section class="events py-[100px]">
+    <div class="container m-auto">
+      <div class="grid">
+        <div class="mx-3">
+          <h2 class="text-4xl font-medium montserrat mb-5 text-center mb-10 fade-in-up">Upcoming Events</h2>
+          <p class="text-center text-gray-600 poppins mb-10 fade-in-up" style="animation-delay: 0.2s;">Join us for our community gatherings and celebrations</p>
+        </div>
+      </div>
+      <div class="grid lg:grid-cols-2 md:grid-cols-1">
+        {% for samaj_event in samaj_events %}
+          <div class="mx-3 mb-3 sm:flex block event-card fade-in-up" style="animation-delay: {{ forloop.counter0|add:0.3 }}s;">
+            <div class="time bg-[#f97718] text-center text-white content-center poppins sm:w-2/6 w-full p-3 sm:py-0 event-date">
+              <h2 class="text-3xl date">{{samaj_event.date_of_event}}</h2>
+              <!-- <h2 class="text-3xl month">January</h2> -->
+            </div>
+            <div class="content bg-[#ffecce] px-10 sm:py-5 py-3 poppins sm:w-4/6 w-full content-center event-content">
+              <h2 class="text-2xl mb-0">{{samaj_event.title}}</h2>
+            </div>
+          </div>
+        {% empty %}
+          <div class="mx-3 mb-3 text-center fade-in-up">
+            <p class="text-gray-500 poppins">No upcoming events at the moment. Check back soon!</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <!-- end of event -->
+
+  <!-- gallery -->
+  <section class="gallery py-[100px] bg-[#f97718]">
+    <div class="container m-auto">
+      <div class="grid">
+        <div class="mx-3">
+          <h2 class="text-4xl font-medium montserrat mb-5 text-center text-[#fff] mb-10 fade-in-up">Promotions</h2>
+          <p class="text-center text-white/90 poppins mb-10 fade-in-up" style="animation-delay: 0.2s;">Stay updated with our latest announcements and offers</p>
+        </div>
+      </div>
+      
+      <div class="mx-3">
+        <div class="owl-carousel owl-theme gallery-slider">
+          {% for promotion in promotions %}
+            <div class="item promotion-item">
+              <div class="promotion-card">
+                <img src="{{promotion.banner.url}}" class="img-fluid promotion-image" onerror="this.onerror=null; this.style.display='none';">
+                <div class="promotion-overlay">
+                  <h4 class="text-white montserrat">{{promotion.advertiser_name}}</h4>
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <div class="item text-center text-white">
+              <p class="poppins">No promotions at the moment.</p>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end of gallery -->
+
+  <!-- testimonials -->
+  <section class="testimonials py-[100px]">
+    <div class="container m-auto">
+      <div class="grid">
+        <div class="mx-3">
+          <h2 class="text-4xl font-medium montserrat mb-5 text-center mb-10 fade-in-up">Testimonials</h2>
+          <p class="text-center text-gray-600 poppins mb-10 fade-in-up" style="animation-delay: 0.2s;">What our community members say about us</p>
+        </div>
+      </div>
+      <div class="mx-3">
+        <div class="owl-carousel owl-theme testimonial-slider relative">
+          {% for testimonial in testimonials %}
+            <div class="item bg-[#ffecce] p-10 testimonial-card">
+              <svg width="50" heigth="50" viewBox="0 0 24 24" fill="#f97718" class="quote-icon">
+                <path d="M4.58341 17.3211C3.55316 16.2274 3 15 3 13.0103C3 9.51086 5.45651 6.37366 9.03059 4.82318L9.92328 6.20079C6.58804 8.00539 5.93618 10.346 5.67564 11.822C6.21263 11.5443 6.91558 11.4466 7.60471 11.5105C9.40908 11.6778 10.8312 13.159 10.8312 15C10.8312 16.933 9.26416 18.5 7.33116 18.5C6.2581 18.5 5.23196 18.0095 4.58341 17.3211ZM14.5834 17.3211C13.5532 16.2274 13 15 13 13.0103C13 9.51086 15.4565 6.37366 19.0306 4.82318L19.9233 6.20079C16.588 8.00539 15.9362 10.346 15.6756 11.822C16.2126 11.5443 16.9156 11.4466 17.6047 11.5105C19.4091 11.6778 20.8312 13.159 20.8312 15C20.8312 16.933 19.2642 18.5 17.3312 18.5C16.2581 18.5 15.232 18.0095 14.5834 17.3211Z"></path>
+              </svg>          
+              <p class="poppins testimonial-text">{{testimonial.testimony}}</p>
+              <div class="lg:flex lg:items-center mt-3 montserrat testimonial-author">
+                <div class="img me-3 testimonial-avatar">
+                  <img src="{{testimonial.image.url}}" class="rounded-full object-cover h-full" onerror="this.onerror=null; this.src='{% static 'images/TulsidasJi_Image.png' %}';">
+                </div>
+                <h6 class="text-xl font-medium">{{testimonial.made_by}}</h6>
+              </div>
+            </div>
+          {% empty %}
+            <div class="item bg-[#ffecce] p-10 text-center">
+              <p class="poppins text-gray-500">No testimonials available yet.</p>
+            </div>
+          {% endfor %}   
+          </div>
+      </div>
+    </div>
+  </section>
+  <!-- end of testimonials -->
+  
+  <!-- footer -->
+  <section class="footer bg-black py-3 text-white poppins" style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-top: 2px solid rgba(249, 119, 24, 0.2);">
+    <div class="container m-auto">
+      <div class="grid">
+        <div class="mx-3">
+          <p class="text-center mb-2" style="font-size: 14px; color: #cccccc;">Copyright &copy; 2024 Saryu Parivar. All Rights Reserved.</p>
+          <p class="text-center mb-0" style="font-size: 13px; color: #999999;">
+            Made by <a href="https://www.eagleincloud.io" target="_blank" rel="noopener noreferrer" style="color: #f97718; text-decoration: none; font-weight: 600; transition: all 0.3s ease;" onmouseover="this.style.color='#ff8c42'; this.style.textDecoration='underline';" onmouseout="this.style.color='#f97718'; this.style.textDecoration='none';">Eagle In Cloud</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end of footer -->
+
+  <!-- login popup -->
+  <div class="modal fade" id="loginForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="loginFormLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+        <div class="modal-header" style="border-bottom: 2px solid #ffecce; background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%); border-radius: 20px 20px 0 0;">
+          <h2 class="text-3xl font-semibold montserrat text-white">Login</h2>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">          
+          <div id="otp_send_status" class="alert alert-info" style="display: none; border-radius: 10px; background: #ffecce; border: 1px solid #f97718; color: #f97718;"></div>
+          
+          <!-- Request Counter Display -->
+          <div id="otp_counter_display" class="alert alert-secondary" style="display: none; border-radius: 10px; background: #e9ecef; border: 1px solid #dee2e6; padding: 10px; margin-bottom: 10px;">
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="poppins" style="font-size: 13px; color: #495057;">
+                <strong>OTP Requests:</strong> <span id="request_count_display">0</span>/<span id="max_requests_display">5</span>
+              </span>
+              <span class="poppins" style="font-size: 12px; color: #6c757d;">
+                <span id="remaining_requests_display">5</span> remaining
+              </span>
+              </div>
+            <div class="progress mt-2" style="height: 6px; border-radius: 3px;">
+              <div id="request_progress_bar" class="progress-bar" role="progressbar" style="width: 0%; background: #f97718; transition: width 0.3s ease;"></div>
+            </div>
+          </div>
+          
+          <div id="otp_error_status" class="alert alert-danger" style="display: none; border-radius: 10px;">
+            <div id="firebase_billing_help" style="display: none; margin-top: 10px; padding: 15px; background: #fff3cd; border-radius: 5px; border: 2px solid #ffc107;">
+              <strong style="color: #856404; font-size: 14px;">⚠️ Billing Required - Action Needed:</strong>
+              <p style="margin: 8px 0; font-size: 13px; color: #856404;">Phone Authentication requires billing to be enabled. This is a <strong>required step</strong> - there's no workaround.</p>
+              
+              <div style="background: white; padding: 10px; border-radius: 5px; margin: 10px 0; border: 1px solid #ffc107;">
+                <strong style="color: #856404;">Quick Steps:</strong>
+                <ol style="margin: 5px 0; padding-left: 20px; font-size: 12px; color: #856404;">
+                  <li>Go to <a href="https://console.firebase.google.com/project/saryuparivar-acc39/settings/usage" target="_blank" style="color: #0066cc; text-decoration: underline;">Firebase Console → Billing</a></li>
+                  <li>Select project: <strong>saryuparivar-acc39</strong></li>
+                  <li>Click <strong>⚙️ Project Settings</strong> → <strong>Usage and billing</strong></li>
+                  <li>Click <strong>Upgrade to Blaze plan</strong></li>
+                  <li>Add payment method (credit/debit card)</li>
+                  <li>Wait 1-2 minutes for activation</li>
+                  <li>Then enable Phone Auth: <strong>Authentication → Sign-in method → Phone → Enable</strong></li>
+                </ol>
+              </div>
+              
+              <div style="background: #d1ecf1; padding: 10px; border-radius: 5px; margin: 10px 0; border: 1px solid #bee5eb;">
+                <strong style="color: #0c5460;">💰 Cost Info:</strong>
+                <ul style="margin: 5px 0; padding-left: 20px; font-size: 12px; color: #0c5460;">
+                  <li><strong>Pay-as-you-go:</strong> Only pay for what you use</li>
+                  <li><strong>Free tier:</strong> Generous quotas (usually $0 for small apps)</li>
+                  <li><strong>No monthly fees:</strong> Only pay for SMS beyond free tier</li>
+                  <li><strong>Typical cost:</strong> $0.01-0.05 per SMS (if you exceed free tier)</li>
+                </ul>
+              </div>
+              
+              <p style="margin: 8px 0; font-size: 11px; color: #856404;">
+                📖 See <code>ENABLE_BILLING_QUICK_GUIDE.md</code> for detailed instructions
+              </p>
+        </div>
+            <div id="retry_timer_help" style="display: none; margin-top: 10px; padding: 15px; background: #f8d7da; border-radius: 5px; border: 2px solid #f5c6cb;">
+              <strong style="color: #721c24; font-size: 14px;">⏱️ Rate Limit Reached:</strong>
+              <p style="margin: 8px 0; font-size: 13px; color: #721c24;">
+                You've made too many OTP requests. Please wait before trying again.
+              </p>
+              <div style="background: white; padding: 10px; border-radius: 5px; margin: 10px 0; text-align: center;">
+                <p style="margin: 5px 0; font-size: 16px; color: #721c24;">
+                  <strong>Retry in: <span id="retry_timer">60</span> seconds</strong>
+                </p>
+                <div style="width: 100%; height: 6px; background: #e9ecef; border-radius: 3px; margin-top: 10px; overflow: hidden;">
+                  <div id="retry_progress" style="height: 100%; background: #f97718; width: 0%; transition: width 1s linear;"></div>
+              </div>
+            </div>
+              <p style="margin: 5px 0; font-size: 11px; color: #721c24;">
+                💡 <strong>Tip:</strong> Firebase limits OTP requests to prevent abuse. Wait a few minutes between attempts.
+              </p>
+            </div>
+            <div id="firebase_setup_help" style="display: none; margin-top: 10px; padding: 10px; background: #fff3cd; border-radius: 5px; border: 1px solid #ffc107;">
+              <strong>Setup Required:</strong>
+              <p style="margin: 5px 0; font-size: 13px;">Phone Authentication needs to be enabled in Firebase Console.</p>
+              <ol style="margin: 5px 0; padding-left: 20px; font-size: 12px;">
+                <li>Go to <a href="https://console.firebase.google.com/" target="_blank">Firebase Console</a></li>
+                <li>Select project: <strong>saryuparivar-acc39</strong></li>
+                <li>Go to <strong>Authentication > Sign-in method</strong></li>
+                <li>Enable <strong>Phone</strong> provider</li>
+              </ol>
+              <p style="margin: 5px 0; font-size: 12px;">See <code>FIREBASE_SETUP_INSTRUCTIONS.md</code> for detailed steps.</p>
+              </div>
+            </div>
+          
+          <!-- Username/Phone Number Input -->
+          <div class="mb-4">
+            <label for="username-or-phone" class="poppins mb-2 d-block" style="color: #333; font-weight: 500;">Username, Phone Number, or Email</label>
+            <input type="text" id="username-or-phone" class="form-control poppins" placeholder="Enter username, phone number, or email" required style="font-size: 16px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px;" />
+          </div>
+
+          <!-- Password Input -->
+          <div class="mb-4">
+            <label for="login-password" class="poppins mb-2 d-block" style="color: #333; font-weight: 500;">Password</label>
+            <input type="password" id="login-password" class="form-control poppins" placeholder="Enter your password" required style="font-size: 16px; padding: 12px; border: 2px solid #e0e0e0; border-radius: 10px;" />
+          </div>
+
+          <!-- Forgot Password Link -->
+          <div class="mb-4 text-end">
+            <a href="/password_reset/" class="poppins" style="color: #f97718; text-decoration: none; font-size: 14px;">Forgot Password?</a>
+          </div>
+
+          <button type="button" class="btn w-100 py-3 poppins fw-semibold text-white" id="login-button" onclick="loginWithPassword()" style="background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%); border: none; border-radius: 12px; font-size: 16px; transition: all 0.3s;">
+            Login
+          </button>
+          <div id="login_status" class="alert mt-3" style="display: none; border-radius: 10px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end of login popup -->
+
+  <!-- register popup -->
+  <div class="modal fade" id="registerForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="registerFormLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="text-4xl font-medium montserrat">Register Here</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Display messages in registration modal -->
+          <div id="registration_messages" class="mb-3" style="display: none;">
+            <div id="registration_message_content" class="alert" style="border-radius: 10px; padding: 12px 16px;"></div>
+          </div>
+          
+          <form method="POST" action="/" enctype="multipart/form-data" id="registrationForm">
+            {% csrf_token %}
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                <label for="first_name" class="poppins">नाम (स्पष्ट अक्षरों में)</label>
+                <input type="text" name="first_name" id="first-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="First Name" required />
+              </div>
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                <label for="last_name" class="poppins">उपनाम (स्पष्ट अक्षरों में)</label>
+                <input type="text" name="last_name" id="last-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Last Name" required />
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                <label for="last_name" class="poppins">पिता का नाम</label>
+                <input type="text" name="father_name" id="father-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Father's Name" required />
+              </div>
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                <label for="form_type" class="poppins"></label>
+                <input type="text" name="form_type" id="form-type" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" value="Registration" hidden/>
+              </div>
+              <!-- <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="blood-group" class="poppins">ब्लड ग्रुप</label>
+                <input type="text" name="blood-group" id="blood-group" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Blood Group" required />
+              </div> -->
+              <!-- <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="gotra" class="poppins">गौत्र</label>
+                <input type="text" name="gotra" id="gotra" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Gotra" required />
+              </div> -->
+            </div>
+            <div class="block sm:flex">                
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="native_village" class="poppins">मूल निवासी गाँव</label>
+                <input type="text" name="native_village" id="native-village" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Native Village" required />
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="district" class="poppins">जिला</label>
+                <input type="text" name="district" id="dist" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Dist." required />
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="tehsil" class="poppins">तहसील</label>
+                <input type="text" name="tehsil" id="tehsil" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Tehsil" required />
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full w-1/2">
+                <label for="current_address" class="poppins">वर्तमान पता</label>
+                <input type="text" name="current_address" id="current-address" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Current Address" required />
+              </div>
+              <div class="mx-3 mb-3 w-full w-1/2">
+                <label for="phone_number" class="poppins">फोन</label>
+                <input type="text" name="phone_number" id="phone-number" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Phone Number" minlength="10" maxlength="10" required />
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full w-1/2">
+                <label for="business_address" class="poppins">व्यवसाय का पता</label>
+                <input type="tel" name="business_address" id="business-address" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Business Address"/>
+              </div>
+              <div class="mx-3 mb-3 w-full w-1/2">
+                <label for="business_phone_number" class="poppins">व्यवसाय फोन</label>
+                <input type="text" name="business_phone_number" id="business-phone-number" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Business Phone Number" minlength="10" maxlength="10"/>
+              </div>
+            </div>
+            <div class="block">
+              <div class="mx-3 mb-3 w-full">
+                <label for="profile_pic" class="poppins">Upload Picture Here (Max 5MB, will be compressed)</label>
+                <input type="file" name="profile_pic" id="upload-pic" accept="image/*" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" required />
+                <small class="text-muted poppins" style="font-size: 12px;">Image will be automatically compressed and resized to optimize file size.</small>
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full">
+                <label for="email" class="poppins">Email</label>
+                <input type="email" name="email" id="email" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Enter your email address" required />
+                <small class="text-muted poppins">Required for password reset</small>
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                <label for="password" class="poppins">Password</label>
+                <input type="password" name="password" id="password" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Enter password (min 8 characters)" minlength="8" required />
+                <small class="text-muted poppins">Minimum 8 characters</small>
+              </div>
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                <label for="password_confirm" class="poppins">Confirm Password</label>
+                <input type="password" name="password_confirm" id="password_confirm" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Confirm password" minlength="8" required />
+              </div>
+            </div>
+            <!-- <h3 class="text-center text-2xl my-3 poppins">पारिवारिक जानकारीयां (Family Members Info)</h3>
+            <div id="hiddenDiv" class="hidden">
+              <div class="block sm:flex">
+                <div class="mx-3 mb-3 w-full sm:w-1/2">
+                  <label for="family-member" class="poppins">परिवार के सदस्यों का नाम</label>
+                  <input type="text" name="family-member" id="family-member" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Name of Family Members" required />
+                </div>
+                <div class="mx-3 mb-3 w-full sm:w-1/2">
+                  <label for="relation" class="poppins">संबंध</label>
+                  <input type="text" name="relative" id="relative" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Relative" required />
+                </div>
+              </div>
+              <div class="block sm:flex">
+                <div class="mx-3 mb-3 w-full w-1/2">
+                  <label for="age" class="poppins">आयु</label>
+                  <input type="text" name="age" id="age" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Age" required />
+                </div>
+                <div class="mx-3 mb-3 w-full w-1/2">
+                  <label for="education" class="poppins">शिक्षा</label>
+                  <input type="text" name="education" id="education" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Education" required />
+                </div>
+              </div>
+              <div class="block sm:flex">
+                <div class="mx-3 mb-3 w-full w-1/2">
+                  <label for="marriage-status" class="poppins">विवाहित / अविवाहित</label>
+                  <input type="text" name="marriage-status" id="marriage-status" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Married / Unmarried" required />
+                </div>
+                <div class="mx-3 mb-3 w-full w-1/2">
+                  <label for="buisiness" class="poppins">व्यवसाय / कार्यालय का पता</label>
+                  <input type="text" name="buisiness" id="buisiness" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Business / Office Address" required />
+                </div>
+              </div>
+            </div>
+            <button id="toggleButton" class="bg-black text-[#fff] mb-3 hover:bg-white hover:text-[#000] py-2.5 px-5 border-solid border-[1px] border-black rounded-3xl focus:outline-none focus:shadow-outline poppins">Add Family Member</button> -->
+            <button type="submit" class="block bg-black text-[#fff] mb-3 hover:bg-white hover:text-black py-2.5 px-10 border-solid border-[1px] border-black rounded-3xl focus:outline-none focus:shadow-outline poppins m-auto" id="register-submit-btn">
+              <span id="register-submit-text">Submit</span>
+              <span id="register-submit-loading" style="display: none;">Processing...</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end of register popup -->
+
+  <!-- Payment Modal -->
+  <div class="modal fade" id="paymentModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+        <div class="modal-header" style="border-bottom: 2px solid #ffecce; background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%); border-radius: 20px 20px 0 0;">
+          <h2 class="text-3xl font-semibold montserrat text-white">Complete Payment</h2>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="text-center mb-4">
+            <p class="poppins mb-3" style="color: #333; font-size: 16px;">
+              Please complete the payment to access the portal. Scan the QR code below to make payment.
+            </p>
+            <div class="alert alert-info poppins" style="background: #ffecce; border: 1px solid #f97718; color: #f97718; border-radius: 10px;">
+              <strong>Registration Fee:</strong> ₹{% if payment_amount %}{{ payment_amount|floatformat:2 }}{% else %}500.00{% endif %}
+            </div>
+            {% if pending_payment_transaction_id %}
+            <div class="alert alert-warning poppins" style="background: #fff3cd; border: 1px solid #ffc107; color: #856404; border-radius: 10px; font-size: 12px; margin-top: 10px;">
+              <strong>Transaction ID:</strong> {{ pending_payment_transaction_id }}
+            </div>
+            {% endif %}
+          </div>
+          
+          <div class="text-center mb-4">
+            <div class="d-inline-block p-3" style="background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+              <img src="{% static 'images/qr_code.jpeg' %}" alt="Payment QR Code" class="img-fluid" style="max-width: 300px; border-radius: 10px;">
+            </div>
+            <p class="poppins mt-3 mb-0" style="color: #666; font-size: 14px;">
+              <strong>UPI ID:</strong> adityagtiwari92-1@okicici
+            </p>
+            <p class="poppins" style="color: #666; font-size: 12px;">
+              Scan to pay with any UPI app
+            </p>
+          </div>
+
+          <div id="payment_status_message" class="alert" style="display: none; border-radius: 10px;"></div>
+
+          <form id="payment_verification_form" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" id="payment_transaction_id" name="transaction_id" value="">
+            
+            <div class="mb-3">
+              <label for="payment_proof" class="poppins mb-2 d-block" style="color: #333; font-weight: 500;">
+                Upload Payment Screenshot (Optional)
+              </label>
+              <input type="file" id="payment_proof" name="payment_proof" accept="image/*" class="form-control poppins" style="border-radius: 10px; border: 2px solid #e0e0e0;">
+              <small class="text-muted poppins mt-1 d-block">Upload a screenshot of your payment for faster verification</small>
+            </div>
+
+            <div class="d-grid gap-2">
+              <button type="button" class="btn poppins fw-semibold text-white py-3" id="submit_payment_btn" onclick="submitPaymentProof()" style="background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%); border: none; border-radius: 12px; font-size: 16px;">
+                Submit Payment Proof
+              </button>
+              <button type="button" class="btn btn-outline-secondary poppins py-2" onclick="markPaymentAsDone()" style="border-radius: 12px;">
+                I've Made the Payment
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end of payment modal -->
+
+  <!-- <p id="csrf-token-for-forms" hidden>{% csrf_token %}</p> -->
+  <div class="modal fade" id="errorpopup" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="errorpopupLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- create_user.html -->
+          {% if messages %}
+          <div class="messages">
+              {% for message in messages %}
+                  <div class="message {{ message.tags }}">
+                      <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                      fff
+                  </div>
+              {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/3.0.7/metisMenu.min.js"></script>
+  <script src="https://unpkg.com/boxicons@2.1.2/dist/boxicons.js"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+  
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+    import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBcOdG0hC3BCrhZkxrhxIzWdvc9wdWwHuA",
+      authDomain: "saryuparivar-acc39.firebaseapp.com",
+      projectId: "saryuparivar-acc39",
+      storageBucket: "saryuparivar-acc39.firebasestorage.app",
+      messagingSenderId: "429090609702",
+      appId: "1:429090609702:web:986e1f980a4f100445e4e7"
+    };
+
+    let app, auth, recaptchaVerifier, confirmationResult, retryTimerInterval = null;
+    
+    try {
+      app = initializeApp(firebaseConfig);
+      auth = getAuth(app);
+      // Make auth available globally
+      window.firebaseAuth = auth;
+      console.log('Firebase initialized successfully');
+    } catch (error) {
+      console.error('Error initializing Firebase:', error);
+      // Show error to user
+      document.addEventListener('DOMContentLoaded', function() {
+        const errorDiv = document.getElementById('otp_error_status');
+        if (errorDiv) {
+          errorDiv.textContent = 'Firebase initialization failed. Please refresh the page.';
+          errorDiv.style.display = 'block';
+        }
+      });
+    }
+    
+    // Make variables available globally
+    window.firebaseRecaptchaVerifier = () => recaptchaVerifier;
+    window.firebaseSetRecaptchaVerifier = (verifier) => { recaptchaVerifier = verifier; };
+    window.firebaseConfirmationResult = () => confirmationResult;
+    window.firebaseSetConfirmationResult = (result) => { confirmationResult = result; };
+    window.firebaseRetryTimerInterval = () => retryTimerInterval;
+    window.firebaseSetRetryTimerInterval = (interval) => { retryTimerInterval = interval; };
+
+    // Initialize reCAPTCHA
+    window.initRecaptcha = function() {
+      try {
+        const currentAuth = window.firebaseAuth || auth;
+        if (!currentAuth) {
+          console.error('Firebase auth not initialized');
+          return false;
+        }
+        
+        // Clear any existing verifier
+        const existingVerifier = window.firebaseRecaptchaVerifier();
+        if (existingVerifier) {
+          try {
+            existingVerifier.clear();
+          } catch (e) {
+            console.log('Error clearing existing verifier:', e);
+          }
+        }
+        
+        const newVerifier = new RecaptchaVerifier(currentAuth, 'recaptcha-container', {
+          'size': 'invisible',
+          'callback': (response) => {
+            console.log('reCAPTCHA verified');
+          },
+          'expired-callback': () => {
+            console.log('reCAPTCHA expired');
+            // Re-initialize on expiry
+            window.firebaseSetRecaptchaVerifier(null);
+          }
+        });
+        window.firebaseSetRecaptchaVerifier(newVerifier);
+        return true;
+      } catch (error) {
+        console.error('Error initializing reCAPTCHA:', error);
+        return false;
+      }
+    };
+
+    // Request OTP using Firebase
+    window.requestFirebaseOTP = async function() {
+      const phoneNumber = document.getElementById('phone-number').value.trim();
+      const statusDiv = document.getElementById('otp_send_status');
+      const errorDiv = document.getElementById('otp_error_status');
+      const requestBtn = document.getElementById('request-otp-button');
+      
+      if (!phoneNumber || phoneNumber.length !== 10) {
+        errorDiv.textContent = 'Please enter a valid 10-digit phone number';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      // First check if user exists
+      const baseUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
+      const csrfTokenElement = document.getElementById('csrf-token-for-forms');
+      if (!csrfTokenElement) {
+        errorDiv.textContent = 'CSRF token not found. Please refresh the page.';
+        errorDiv.style.display = 'block';
+        requestBtn.disabled = false;
+        requestBtn.textContent = 'Send OTP';
+        return;
+      }
+      const csrfToken = csrfTokenElement.getElementsByTagName('input')[0].value;
+      
+      try {
+        // Check if user exists
+        const checkResponse = await fetch(`${baseUrl}/send_otp/`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+          },
+          body: JSON.stringify({ phone_number: phoneNumber })
+        });
+
+        const checkData = await checkResponse.json();
+        
+        // Handle rate limiting from backend
+        if (!checkData.success) {
+          errorDiv.textContent = checkData.message || 'User not found. Please register first.';
+          errorDiv.style.display = 'block';
+          
+          // Hide counter if error
+          const counterDiv = document.getElementById('otp_counter_display');
+          if (counterDiv) {
+            counterDiv.style.display = 'none';
+          }
+          
+          // Handle blocking/rate limiting
+          if (checkData.blocked && checkData.seconds_remaining) {
+            const retryDiv = document.getElementById('retry_timer_help');
+            if (retryDiv) {
+              retryDiv.style.display = 'block';
+              startRetryTimer(checkData.seconds_remaining);
+            }
+            
+            // Update counter if available
+            if (checkData.request_count !== undefined) {
+              updateCounterDisplay(checkData.request_count, 0, checkData.max_requests || 5);
+            }
+          }
+          
+          return;
+        }
+        
+        // Update counter display on success
+        if (checkData.request_count !== undefined) {
+          updateCounterDisplay(checkData.request_count, checkData.remaining_requests || 0, checkData.max_requests || 5);
+        }
+
+        // Check if backend SMS method is used
+        if (checkData.otp_method === 'sms') {
+          // Backend SMS OTP - no Firebase needed
+          requestBtn.disabled = false;
+          requestBtn.textContent = 'Send OTP';
+          
+          // Show OTP input
+          document.getElementById('otp-container').style.display = 'block';
+          document.getElementById('request-otp-button').style.display = 'none';
+          document.getElementById('verify-otp-button').style.display = 'block';
+          statusDiv.textContent = checkData.message || 'OTP sent successfully! Please check your phone.';
+          statusDiv.style.display = 'block';
+          errorDiv.style.display = 'none';
+          
+          return; // Exit early - backend SMS handled
+        }
+
+        // Firebase method (fallback if needed)
+        // Verify auth is properly initialized
+        const currentAuth = window.firebaseAuth || auth;
+        if (!currentAuth) {
+          errorDiv.textContent = 'Firebase Authentication not initialized. Please refresh the page.';
+          errorDiv.style.display = 'block';
+          return;
+        }
+
+        // Initialize reCAPTCHA if not already done
+        let currentVerifier = window.firebaseRecaptchaVerifier();
+        if (!currentVerifier) {
+          const recaptchaInit = initRecaptcha();
+          if (!recaptchaInit) {
+            errorDiv.textContent = 'Failed to initialize reCAPTCHA. Please refresh the page and try again.';
+            errorDiv.style.display = 'block';
+            return;
+          }
+          currentVerifier = window.firebaseRecaptchaVerifier();
+        }
+
+        // Hide any previous retry timer
+        const retryDiv = document.getElementById('retry_timer_help');
+        if (retryDiv) {
+          retryDiv.style.display = 'none';
+        }
+        const existingInterval = window.firebaseRetryTimerInterval();
+        if (existingInterval) {
+          clearInterval(existingInterval);
+          window.firebaseSetRetryTimerInterval(null);
+        }
+        
+        requestBtn.disabled = true;
+        requestBtn.textContent = 'Sending...';
+        errorDiv.style.display = 'none';
+
+        // Send OTP via Firebase
+        const phoneNumberWithCountry = `+91${phoneNumber}`;
+        try {
+          const result = await signInWithPhoneNumber(currentAuth, phoneNumberWithCountry, currentVerifier);
+          window.firebaseSetConfirmationResult(result);
+          
+          // Show OTP input
+          document.getElementById('otp-container').style.display = 'block';
+          document.getElementById('request-otp-button').style.display = 'none';
+          document.getElementById('verify-otp-button').style.display = 'block';
+          statusDiv.textContent = 'OTP sent successfully! Please check your phone.';
+          statusDiv.style.display = 'block';
+          
+          // Update counter after successful send
+          if (checkData.request_count !== undefined) {
+            updateCounterDisplay(checkData.request_count, checkData.remaining_requests || 0, checkData.max_requests || 5);
+          }
+        } catch (firebaseError) {
+          console.error('Firebase error:', firebaseError);
+          console.error('Error code:', firebaseError.code);
+          console.error('Error message:', firebaseError.message);
+          
+          // Clear verifier on error to allow retry
+          const verifier = window.firebaseRecaptchaVerifier();
+          if (verifier) {
+            try {
+              verifier.clear();
+            } catch (clearError) {
+              console.error('Error clearing recaptcha:', clearError);
+            }
+            window.firebaseSetRecaptchaVerifier(null);
+          }
+          throw firebaseError;
+        }
+        
+      } catch (error) {
+        console.error('Error sending OTP:', error);
+        
+        // Handle specific Firebase errors
+        let errorMessage = 'Failed to send OTP. Please try again.';
+        
+        if (error.code === 'auth/billing-not-enabled') {
+          errorMessage = 'Billing is not enabled for this Firebase project. Phone Authentication requires a Blaze (pay-as-you-go) plan.';
+          // Show billing help
+          const helpDiv = document.getElementById('firebase_billing_help');
+          if (helpDiv) {
+            helpDiv.style.display = 'block';
+          }
+        } else if (error.code === 'auth/configuration-not-found') {
+          errorMessage = 'Phone Authentication is not enabled in Firebase. Please enable it in Firebase Console.';
+          // Show setup help
+          const helpDiv = document.getElementById('firebase_setup_help');
+          if (helpDiv) {
+            helpDiv.style.display = 'block';
+          }
+        } else if (error.code === 'auth/invalid-phone-number') {
+          errorMessage = 'Invalid phone number format. Please enter a valid 10-digit phone number.';
+        } else if (error.code === 'auth/too-many-requests' || (checkData && checkData.blocked)) {
+          // Handle rate limiting from backend or Firebase
+          const secondsRemaining = (checkData && checkData.seconds_remaining) ? checkData.seconds_remaining : 60;
+          errorMessage = `Too many OTP requests. Please wait ${secondsRemaining} seconds before trying again.`;
+          
+          // Show retry timer
+          const retryDiv = document.getElementById('retry_timer_help');
+          if (retryDiv) {
+            retryDiv.style.display = 'block';
+            startRetryTimer(secondsRemaining);
+          }
+          
+          // Update counter if available
+          if (checkData && checkData.request_count !== undefined) {
+            updateCounterDisplay(checkData.request_count, 0, checkData.max_requests || 5);
+          }
+        } else if (error.code === 'auth/captcha-check-failed') {
+          errorMessage = 'reCAPTCHA verification failed. Please refresh the page and try again.';
+        } else if (error.code === 'auth/quota-exceeded') {
+          errorMessage = 'SMS quota exceeded. Please contact the administrator.';
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        
+        errorDiv.textContent = errorMessage;
+        errorDiv.style.display = 'block';
+        requestBtn.disabled = false;
+        requestBtn.textContent = 'Send OTP';
+        
+        // If configuration error, show instructions
+        if (error.code === 'auth/billing-not-enabled') {
+          console.error('⚠️ Firebase Billing Required:');
+          console.error('1. Go to Firebase Console: https://console.firebase.google.com/');
+          console.error('2. Select your project: saryuparivar-acc39');
+          console.error('3. Go to Project Settings > Usage and billing');
+          console.error('4. Upgrade to Blaze (pay-as-you-go) plan');
+          console.error('5. Add payment method');
+          console.error('6. Then enable Phone Authentication');
+        } else if (error.code === 'auth/configuration-not-found') {
+          console.error('Firebase Phone Authentication Setup Required:');
+          console.error('1. Go to Firebase Console: https://console.firebase.google.com/');
+          console.error('2. Select your project: saryuparivar-acc39');
+          console.error('3. Go to Authentication > Sign-in method');
+          console.error('4. Enable "Phone" sign-in provider');
+          console.error('5. Configure reCAPTCHA verifier');
+        }
+      }
+    };
+
+    // Verify OTP using Firebase
+    window.verifyFirebaseOTP = async function() {
+      const otp = document.getElementById('otp_box').value.trim();
+      const phoneNumber = document.getElementById('phone-number').value.trim();
+      const errorDiv = document.getElementById('otp_error_status');
+      const verifyBtn = document.getElementById('verify-otp-button');
+
+      if (!otp || otp.length !== 6) {
+        errorDiv.textContent = 'Please enter a valid 6-digit OTP';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      try {
+        verifyBtn.disabled = true;
+        verifyBtn.textContent = 'Verifying...';
+        errorDiv.style.display = 'none';
+
+        const baseUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
+        const csrfTokenElement = document.getElementById('csrf-token-for-forms');
+        if (!csrfTokenElement) {
+          errorDiv.textContent = 'CSRF token not found. Please refresh the page.';
+          errorDiv.style.display = 'block';
+          verifyBtn.disabled = false;
+          verifyBtn.textContent = 'Verify OTP';
+          return;
+        }
+        const csrfToken = csrfTokenElement.getElementsByTagName('input')[0].value;
+
+        // Check if Firebase confirmation result exists (Firebase method)
+        const currentConfirmationResult = window.firebaseConfirmationResult();
+        if (currentConfirmationResult) {
+          // Firebase verification
+          try {
+            const result = await currentConfirmationResult.confirm(otp);
+            const idToken = await result.user.getIdToken();
+
+            const response = await fetch(`${baseUrl}/verify_otp/`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken
+              },
+              body: JSON.stringify({
+                id_token: idToken,
+                phone_number: phoneNumber
+              })
+            });
+
+            const data = await response.json();
+            handleVerificationResponse(data, errorDiv, verifyBtn);
+          } catch (firebaseError) {
+            console.error('Firebase verification error:', firebaseError);
+            let errorMessage = 'Invalid OTP. Please try again.';
+            if (firebaseError.code === 'auth/invalid-verification-code') {
+              errorMessage = 'Invalid OTP code. Please check and try again.';
+            } else if (firebaseError.code === 'auth/code-expired') {
+              errorMessage = 'OTP code has expired. Please request a new OTP.';
+            } else if (firebaseError.code === 'auth/session-expired') {
+              errorMessage = 'OTP session expired. Please request a new OTP.';
+            } else if (firebaseError.message) {
+              errorMessage = firebaseError.message;
+            }
+            errorDiv.textContent = errorMessage;
+            errorDiv.style.display = 'block';
+            verifyBtn.disabled = false;
+            verifyBtn.textContent = 'Verify OTP';
+            window.firebaseSetConfirmationResult(null);
+          }
+        } else {
+          // Backend SMS verification (traditional method)
+          const formData = new FormData();
+          formData.append('otp_phone_number', phoneNumber);
+          formData.append('otp', otp);
+
+          const response = await fetch(`${baseUrl}/verify_otp/`, {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': csrfToken
+            },
+            body: formData
+          });
+
+          try {
+            const data = await response.json();
+            handleVerificationResponse(data, errorDiv, verifyBtn);
+          } catch (e) {
+            // If not JSON, might be redirect
+            if (response.ok || response.redirected) {
+              window.location.href = '/dashboard/';
+            } else {
+              errorDiv.textContent = 'Verification failed. Please try again.';
+              errorDiv.style.display = 'block';
+              verifyBtn.disabled = false;
+              verifyBtn.textContent = 'Verify OTP';
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Error verifying OTP:', error);
+        console.error('Error code:', error.code);
+        console.error('Error message:', error.message);
+        
+        let errorMessage = 'Invalid OTP. Please try again.';
+        if (error.code === 'auth/invalid-verification-code') {
+          errorMessage = 'Invalid OTP code. Please check and try again.';
+        } else if (error.code === 'auth/code-expired') {
+          errorMessage = 'OTP code has expired. Please request a new OTP.';
+        } else if (error.code === 'auth/session-expired') {
+          errorMessage = 'OTP session expired. Please request a new OTP.';
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        
+        errorDiv.textContent = errorMessage;
+        errorDiv.style.display = 'block';
+        verifyBtn.disabled = false;
+        verifyBtn.textContent = 'Verify OTP';
+        
+        // Clear confirmation result on error to allow new OTP request
+        window.firebaseSetConfirmationResult(null);
+      }
+    };
+
+    // Helper function to handle verification response
+    function handleVerificationResponse(data, errorDiv, verifyBtn) {
+      if (data.success) {
+        // Show success message
+        const statusDiv = document.getElementById('otp_send_status');
+        if (statusDiv) {
+          statusDiv.className = 'alert alert-success';
+          statusDiv.textContent = data.message || 'Login successful!';
+          statusDiv.style.display = 'block';
+        }
+        
+        // If payment is pending, show info
+        if (data.payment_pending) {
+          if (statusDiv) {
+            statusDiv.className = 'alert alert-warning';
+            statusDiv.textContent = 'Login successful! Your payment verification is pending. You will see a notification banner on the dashboard.';
+            statusDiv.style.display = 'block';
+          }
+        }
+        
+        // Redirect to dashboard after short delay
+        setTimeout(() => {
+          window.location.href = data.redirect || '/dashboard/';
+        }, 1500);
+      } else {
+        errorDiv.textContent = data.message || 'Verification failed. Please try again.';
+        errorDiv.style.display = 'block';
+        
+        // If payment is required, show payment modal
+        if (data.payment_required) {
+          setTimeout(() => {
+            const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+            paymentModal.show();
+          }, 2000);
+        }
+        
+        verifyBtn.disabled = false;
+        verifyBtn.textContent = 'Verify OTP';
+      }
+    }
+
+    // Login with password
+    window.loginWithPassword = async function() {
+      const usernameOrPhone = document.getElementById('username-or-phone').value.trim();
+      const password = document.getElementById('login-password').value;
+      const statusDiv = document.getElementById('login_status');
+      const loginBtn = document.getElementById('login-button');
+      
+      if (!usernameOrPhone || !password) {
+        statusDiv.className = 'alert alert-danger';
+        statusDiv.textContent = 'Please enter both username/phone/email and password';
+        statusDiv.style.display = 'block';
+        return;
+      }
+      
+      try {
+        loginBtn.disabled = true;
+        loginBtn.textContent = 'Logging in...';
+        statusDiv.style.display = 'none';
+        
+        const baseUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
+        const csrfTokenElement = document.getElementById('csrf-token-for-forms');
+        if (!csrfTokenElement) {
+          statusDiv.className = 'alert alert-danger';
+          statusDiv.textContent = 'CSRF token not found. Please refresh the page.';
+          statusDiv.style.display = 'block';
+          loginBtn.disabled = false;
+          loginBtn.textContent = 'Login';
+          return;
+        }
+        const csrfToken = csrfTokenElement.getElementsByTagName('input')[0].value;
+        
+        const formData = new FormData();
+        formData.append('username_or_phone', usernameOrPhone);
+        formData.append('password', password);
+        
+        const response = await fetch(`${baseUrl}/login/`, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': csrfToken
+          },
+          body: formData
+        });
+        
+        // Check response status
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('Login error response:', errorText);
+          statusDiv.className = 'alert alert-danger';
+          statusDiv.textContent = 'Login failed. Please check your credentials and try again.';
+          statusDiv.style.display = 'block';
+          loginBtn.disabled = false;
+          loginBtn.textContent = 'Login';
+          return;
+        }
+        
+        // Check if response is JSON
+        let data;
+        try {
+          data = await response.json();
+        } catch (e) {
+          console.error('Failed to parse JSON response:', e);
+          statusDiv.className = 'alert alert-danger';
+          statusDiv.textContent = 'Server error. Please try again.';
+          statusDiv.style.display = 'block';
+          loginBtn.disabled = false;
+          loginBtn.textContent = 'Login';
+          return;
+        }
+        
+        if (data.success) {
+          statusDiv.className = 'alert alert-success';
+          statusDiv.textContent = data.message || 'Login successful!';
+          statusDiv.style.display = 'block';
+          
+          // Close login modal first
+          const loginModalElement = document.getElementById('loginForm');
+          if (loginModalElement) {
+            const loginModal = bootstrap.Modal.getInstance(loginModalElement);
+            if (loginModal) {
+              loginModal.hide();
+            }
+          }
+          
+          // Redirect to dashboard immediately (no delay)
+          const redirectUrl = data.redirect || '/dashboard/';
+          console.log('✅ Login successful! Redirecting to:', redirectUrl);
+          
+          // Use absolute URL to ensure redirect works
+          const absoluteUrl = redirectUrl.startsWith('http') 
+            ? redirectUrl 
+            : `${window.location.origin}${redirectUrl}`;
+          
+          console.log('Absolute redirect URL:', absoluteUrl);
+          
+          // Use window.location.replace to ensure redirect happens
+          window.location.replace(absoluteUrl);
+        } else {
+          statusDiv.className = 'alert alert-danger';
+          statusDiv.textContent = data.message || 'Login failed. Please try again.';
+          statusDiv.style.display = 'block';
+          loginBtn.disabled = false;
+          loginBtn.textContent = 'Login';
+        }
+      } catch (error) {
+        console.error('Error logging in:', error);
+        statusDiv.className = 'alert alert-danger';
+        statusDiv.textContent = 'An error occurred. Please try again.';
+        statusDiv.style.display = 'block';
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'Login';
+      }
+    };
+
+    // Initialize reCAPTCHA when modal is shown
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginModal = document.getElementById('loginForm');
+      if (loginModal) {
+        loginModal.addEventListener('shown.bs.modal', function() {
+          setTimeout(() => {
+            const verifier = window.firebaseRecaptchaVerifier();
+            if (!verifier) {
+              initRecaptcha();
+            }
+          }, 100);
+        });
+      }
+    });
+
+    // Counter display function
+    window.updateCounterDisplay = function(requestCount, remainingRequests, maxRequests) {
+      const counterDiv = document.getElementById('otp_counter_display');
+      const countDisplay = document.getElementById('request_count_display');
+      const remainingDisplay = document.getElementById('remaining_requests_display');
+      const maxDisplay = document.getElementById('max_requests_display');
+      const progressBar = document.getElementById('request_progress_bar');
+      
+      if (!counterDiv) return;
+      
+      // Show counter
+      counterDiv.style.display = 'block';
+      
+      // Update counts
+      if (countDisplay) countDisplay.textContent = requestCount;
+      if (remainingDisplay) remainingDisplay.textContent = remainingRequests;
+      if (maxDisplay) maxDisplay.textContent = maxRequests;
+      
+      // Update progress bar
+      if (progressBar) {
+        const percentage = (requestCount / maxRequests) * 100;
+        progressBar.style.width = percentage + '%';
+        
+        // Change color based on usage
+        if (percentage >= 80) {
+          progressBar.style.background = '#dc3545'; // Red
+        } else if (percentage >= 60) {
+          progressBar.style.background = '#ffc107'; // Yellow
+        } else {
+          progressBar.style.background = '#f97718'; // Orange
+        }
+      }
+      
+      // Hide if no requests made
+      if (requestCount === 0) {
+        counterDiv.style.display = 'none';
+      }
+    };
+
+    // Retry timer function for rate limiting
+    window.startRetryTimer = function(seconds) {
+      let timeLeft = seconds;
+      const timerElement = document.getElementById('retry_timer');
+      const progressElement = document.getElementById('retry_progress');
+      const requestBtn = document.getElementById('request-otp-button');
+      
+      if (!timerElement || !progressElement) return;
+      
+      // Disable button
+      if (requestBtn) {
+        requestBtn.disabled = true;
+      }
+      
+      // Clear any existing timer
+      if (retryTimerInterval) {
+        clearInterval(retryTimerInterval);
+      }
+      
+      // Update timer display
+      const updateTimer = () => {
+        timerElement.textContent = timeLeft;
+        const progress = ((seconds - timeLeft) / seconds) * 100;
+        progressElement.style.width = progress + '%';
+        
+        if (timeLeft <= 0) {
+          clearInterval(retryTimerInterval);
+          retryTimerInterval = null;
+          
+          // Hide retry help
+          const retryDiv = document.getElementById('retry_timer_help');
+          if (retryDiv) {
+            retryDiv.style.display = 'none';
+          }
+          
+          // Enable button
+          if (requestBtn) {
+            requestBtn.disabled = false;
+            requestBtn.textContent = 'Send OTP';
+          }
+          
+          // Reset progress
+          progressElement.style.width = '0%';
+        } else {
+          timeLeft--;
+        }
+      };
+      
+      // Update immediately
+      updateTimer();
+      
+      // Update every second
+      retryTimerInterval = setInterval(updateTimer, 1000);
+    };
+
+    // Payment functions
+    window.submitPaymentProof = async function() {
+      const form = document.getElementById('payment_verification_form');
+      const formData = new FormData(form);
+      const statusDiv = document.getElementById('payment_status_message');
+      const submitBtn = document.getElementById('submit_payment_btn');
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+      statusDiv.style.display = 'none';
+
+      try {
+        const baseUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
+        const response = await fetch(`${baseUrl}/verify_payment/`, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+          }
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+          statusDiv.className = 'alert alert-success';
+          statusDiv.textContent = data.message;
+          statusDiv.style.display = 'block';
+          
+          if (data.status === 'completed') {
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
+          }
+        } else {
+          statusDiv.className = 'alert alert-danger';
+          statusDiv.textContent = data.message || 'Failed to submit payment proof';
+          statusDiv.style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Error submitting payment:', error);
+        statusDiv.className = 'alert alert-danger';
+        statusDiv.textContent = 'An error occurred. Please try again.';
+        statusDiv.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit Payment Proof';
+      }
+    };
+
+    window.markPaymentAsDone = async function() {
+      const transactionId = document.getElementById('payment_transaction_id').value;
+      const statusDiv = document.getElementById('payment_status_message');
+      
+      if (!transactionId) {
+        statusDiv.className = 'alert alert-warning';
+        statusDiv.textContent = 'Transaction ID not found. Please refresh and try again.';
+        statusDiv.style.display = 'block';
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('transaction_id', transactionId);
+      
+      const form = document.getElementById('payment_verification_form');
+      const csrfToken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+
+      try {
+        const baseUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
+        const response = await fetch(`${baseUrl}/verify_payment/`, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'X-CSRFToken': csrfToken
+          }
+        });
+
+        const data = await response.json();
+        
+        if (data.success) {
+          statusDiv.className = 'alert alert-success';
+          statusDiv.textContent = data.message;
+          statusDiv.style.display = 'block';
+          
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        } else {
+          statusDiv.className = 'alert alert-danger';
+          statusDiv.textContent = data.message || 'Failed to verify payment';
+          statusDiv.style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Error marking payment:', error);
+        statusDiv.className = 'alert alert-danger';
+        statusDiv.textContent = 'An error occurred. Please try again.';
+        statusDiv.style.display = 'block';
+      }
+    };
+
+    // Function to show payment modal
+    window.showPaymentModal = function() {
+      console.log('showPaymentModal called');
+      
+      // Close registration modal if open
+      const registerModalElement = document.getElementById('registerForm');
+      if (registerModalElement) {
+        const registerModal = bootstrap.Modal.getInstance(registerModalElement);
+        if (registerModal) {
+          console.log('Closing registration modal');
+          registerModal.hide();
+        }
+      }
+      
+      // Set transaction ID
+      const transactionIdInput = document.getElementById('payment_transaction_id');
+      {% if pending_payment_transaction_id %}
+        if (transactionIdInput) {
+          transactionIdInput.value = '{{ pending_payment_transaction_id }}';
+          console.log('Transaction ID set:', '{{ pending_payment_transaction_id }}');
+        }
+      {% endif %}
+      
+      // Show payment modal after a short delay
+      setTimeout(function() {
+        const paymentModalElement = document.getElementById('paymentModal');
+        if (paymentModalElement) {
+          console.log('Showing payment modal');
+          const paymentModal = new bootstrap.Modal(paymentModalElement);
+          paymentModal.show();
+          
+          // Clear URL parameter after showing modal to prevent showing again on refresh
+          if (window.location.search.includes('registration_success=1')) {
+            // Remove the parameter from URL without reload
+            const newUrl = window.location.pathname;
+            window.history.replaceState({}, document.title, newUrl);
+            console.log('URL parameter cleared');
+          }
+        } else {
+          console.error('Payment modal element not found!');
+        }
+      }, 500);
+    }
+    
+    // Show payment modal ONLY after successful registration
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('=== Payment Modal Check ===');
+      console.log('URL:', window.location.href);
+      console.log('pending_payment_transaction_id: {% if pending_payment_transaction_id %}{{ pending_payment_transaction_id }}{% else %}None{% endif %}');
+      console.log('registration_success: {% if registration_success %}true{% else %}false{% endif %}');
+      
+      // ONLY show modal if registration_success URL parameter is present
+      // This prevents modal from showing on every page load
+      const urlParams = new URLSearchParams(window.location.search);
+      const registrationSuccess = urlParams.get('registration_success') === '1';
+      
+      console.log('URL parameter registration_success:', registrationSuccess);
+      
+      if (registrationSuccess) {
+        console.log('✅ Registration success detected in URL');
+        console.log('🚀 WILL SHOW PAYMENT MODAL');
+        
+        // Get transaction ID from URL parameter (most reliable)
+        const txnIdFromUrl = urlParams.get('txn_id');
+        
+        // Set transaction ID in form
+        const transactionIdInput = document.getElementById('payment_transaction_id');
+        if (transactionIdInput) {
+          if (txnIdFromUrl) {
+            transactionIdInput.value = txnIdFromUrl;
+            console.log('✅ Transaction ID set from URL:', txnIdFromUrl);
+          } else if ('{{ pending_payment_transaction_id }}' && '{{ pending_payment_transaction_id }}' !== 'None') {
+            transactionIdInput.value = '{{ pending_payment_transaction_id }}';
+            console.log('✅ Transaction ID set from template:', '{{ pending_payment_transaction_id }}');
+          } else {
+            console.log('⚠️  No transaction ID available, but modal will still show');
+          }
+        }
+        
+        // ALWAYS show payment modal if registration_success=1 is in URL
+        // This is the primary trigger - don't depend on session or context
+        console.log('🚀 Showing payment modal in 500ms...');
+        setTimeout(function() {
+          console.log('🚀 Executing showPaymentModal()');
+          showPaymentModal();
+        }, 500);
+      } else {
+        console.log('❌ No registration_success parameter - not showing payment modal');
+      }
+    });
+    
+    // Handle registration form submission and messages
+    document.addEventListener('DOMContentLoaded', function() {
+      const registrationForm = document.getElementById('registrationForm');
+      const registrationMessages = document.getElementById('registration_messages');
+      const registrationMessageContent = document.getElementById('registration_message_content');
+      const submitBtn = document.getElementById('register-submit-btn');
+      const submitText = document.getElementById('register-submit-text');
+      const submitLoading = document.getElementById('register-submit-loading');
+      const registerModalElement = document.getElementById('registerForm');
+      
+      // Show messages if they exist (from Django messages framework)
+      // Only show and open modal if there's a registration_error parameter in URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const hasRegistrationError = urlParams.get('registration_error') === '1';
+      
+      {% if messages %}
+        {% for message in messages %}
+          {% if message.tags == 'error' or message.tags == 'success' %}
+            if (registrationMessages && registrationMessageContent) {
+              registrationMessageContent.className = 'alert alert-{{ message.tags }}';
+              registrationMessageContent.innerHTML = '{{ message|escapejs }}';
+              registrationMessages.style.display = 'block';
+              
+              // Only re-open registration modal if there's an error AND registration_error parameter in URL
+              {% if message.tags == 'error' %}
+                if (hasRegistrationError && registerModalElement) {
+                  const registerModal = new bootstrap.Modal(registerModalElement);
+                  registerModal.show();
+                }
+              {% endif %}
+              
+              // Auto-hide after 5 seconds for success, 10 seconds for error
+              setTimeout(function() {
+                if (registrationMessages) {
+                  registrationMessages.style.display = 'none';
+                }
+              }, {% if message.tags == 'success' %}5000{% else %}10000{% endif %});
+            }
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+      
+      // Handle form submission
+      if (registrationForm) {
+        registrationForm.addEventListener('submit', function(e) {
+          console.log('📝 Registration form submitted');
+          
+          // Show loading state
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            if (submitText) submitText.style.display = 'none';
+            if (submitLoading) submitLoading.style.display = 'inline';
+          }
+          
+          // Hide previous messages
+          if (registrationMessages) {
+            registrationMessages.style.display = 'none';
+          }
+          
+          // Let form submit normally - don't prevent default
+          // The server will redirect to /payment/ after successful registration
+          console.log('✅ Form submission proceeding - server will handle redirect');
+        });
+      }
+      
+      // Check URL for error parameter - only open modal if parameter exists
+      // This prevents modal from opening on every page load
+      if (hasRegistrationError) {
+        console.log('⚠️ Registration error detected in URL - opening modal to show errors');
+        // Re-open registration modal to show error
+        if (registerModalElement) {
+          const registerModal = new bootstrap.Modal(registerModalElement);
+          registerModal.show();
+          
+          // Scroll to error messages if they exist
+          setTimeout(function() {
+            if (registrationMessages && registrationMessages.style.display !== 'none') {
+              registrationMessages.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          }, 300);
+        }
+      }
+    });
+  </script>
+  <!-- <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-messaging.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBcOdG0hC3BCrhZkxrhxIzWdvc9wdWwHuA",
+      authDomain: "saryuparivar-acc39.firebaseapp.com",
+      projectId: "saryuparivar-acc39",
+      storageBucket: "saryuparivar-acc39.firebasestorage.app",
+      messagingSenderId: "429090609702",
+      appId: "1:429090609702:web:986e1f980a4f100445e4e7"
+    };
+
+    const app = initializeApp(firebaseConfig);
+
+    // Initialize Messaging
+    const messaging = getMessaging(app);
+
+    navigator.serviceWorker.register('./firebase-messaging-sw.js')
+    .then(function(registration) {
+      console.log("Service Worker registered: ", registration);
+    })
+    .catch(function(error) {
+      console.error("Service Worker registration failed: ", error);
+    });
+
+
+    // Request permission and get token
+    function getDeviceToken() {
+      getToken(messaging, { vapidKey: "BKfI1DRX-qq_ggNfgeRJI-E5L0-EvUFlliGmIpBoMr6Wr6qVIVu697OR7Io9CmzvkxA9gAt0_xpUA3EJTkrayxs" })
+        .then((currentToken) => {
+          if (currentToken) {
+            console.log("Device Token: ", currentToken);
+          } else {
+            console.warn("No device token available.");
+          }
+        })
+        .catch((error) => {
+          console.error("Error retrieving token: ", error);
+        });
+    }
+
+    getDeviceToken();
+  </script> -->
+</body>
+</html>

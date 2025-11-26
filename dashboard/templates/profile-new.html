@@ -1,0 +1,327 @@
+<!doctype html>
+{% load static %}
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="{% static 'images/saryu-parivaar-logo.png' %}">
+  <title>Saryu Parivar - Candidate Form</title>
+  <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css"/>
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/3.0.7/metisMenu.min.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body class=" bg-[#ffecce]">
+
+  <!-- dashboard -->
+  <section class="wrapper">
+    <div class="sidebar_wrapper" data-simplebar>
+      <div class="simplebar-wrapper">
+        <div class="simplebar-height-auto-observer-wrapper">
+          <div class="simplebar-height-auto-observer"></div>
+        </div>
+        <div class="simplebar-mask">
+          <div class="simplebar-offset">
+            <div class="simplebar-content-wrapper">
+              <div class="simplebar-content mm-active">
+                <div class="sidebar-header">
+                  <div>
+                    <img src="{% static 'images/saryu-parivaar-logo.png' %}" class="logo w-36">
+                  </div>
+                  <div class="toggle-icon m-auto">
+                    <i class="bx bx-arrow-to-left" id="btn"></i>
+                  </div>
+                </div>
+                <ul class="metisMenu mm-show" id="menu">
+                  <!-- <li class="mm-active">
+                    <a href="{% url 'all_profiles' %}">
+                      <div class="parent-icon">
+                        <i class="bx bxs-dashboard"></i>
+                      </div>
+                      <div class="menu-title">
+                        <span>Dashboard</span>
+                      </div>
+                    </a>
+                  </li> -->
+                  <li>
+                    <a class="has-arrow">
+                      <div class="parent-icon">
+                        <i class="bx bx-user"></i>
+                      </div>
+                      <div class="menu-title">
+                        <span>Matrimonial</span>
+                      </div>
+                    </a>
+                    <ul class="mm-collapse">
+                      <li>
+                        <a href="{% url 'all_profiles' %}">
+                          <i class='bx bx-right-arrow-alt'></i>
+                          All Profiles
+                        </a>
+                      </li>
+                      <li>
+                        <a href="{% url 'profile' %}">
+                          <i class='bx bx-right-arrow-alt'></i>
+                          My Profile
+                        </a>
+                      </li>
+                      <li>
+                        <a href="{% url 'payment' %}">
+                          <i class='bx bx-right-arrow-alt'></i>
+                          Payment
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>              
+            </div>
+          </div>
+        </div>
+        <div class="simplebar-placeholder"></div>
+      </div>
+      <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+        <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+      </div>
+      <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+        <div class="simplebar-scrollbar" style="height: 83px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
+      </div>
+    </div>
+    <header>
+      <div class="topbar d-flex align-items-center">
+        <nav class="navbar navbar-expand">
+          <div class="search-bar flex-grow-1">
+            <!-- <div class="position-relative search-bar-box">
+              <input type="text" class="form-control search-control" placeholder="Type to search...">
+              <span class="position-absolute top-50 search-show translate-middle-y">
+                <i class="bx bx-search"></i>
+              </span>
+              <span class="position-absolute top-50 search-close translate-middle-y">
+                <i class="bx bx-x"></i>
+              </span>
+            </div> -->
+          </div>
+          <!-- Payment Verification Badge -->
+          {% if payment_pending or not payment_done %}
+          <div class="payment-badge-container me-3">
+            <a href="/payment/" class="payment-verification-badge" title="{% if payment_pending %}Payment verification pending{% else %}Payment required{% endif %}" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%); color: white; border-radius: 20px; text-decoration: none; font-size: 12px; font-weight: 600; box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3); transition: all 0.3s ease;">
+              <i class="bx bx-time-five" style="font-size: 14px;"></i>
+              <span class="d-none d-md-inline">{% if payment_pending %}Verification Pending{% else %}Payment Required{% endif %}</span>
+              <span class="d-md-none">Pending</span>
+            </a>
+          </div>
+          {% endif %}
+          <div class="user-box dropdown">
+            <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="{{user_avatar}}" class="user-img" alt="user avatar">
+              <div class="user-info ps-3">
+                <p class="user-name mb-0">{{username}}</p>
+                <!-- <p class="designattion mb-0">Web Designer</p> -->
+              </div>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a href="{% url 'logout_user' %}" class="dropdown-item"><i class='bx bx-log-out-circle'></i> Logout</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <div class="page_wrapper">
+      <div class="page-content">
+        <div class="register-form-form bg-white p-10">
+          {% if profile_exists == True %}:
+              <h2 class="text-4xl font-medium montserrat text-center mb-5">Edit Profile</h2>
+          {% else %}
+              <h2 class="text-4xl font-medium montserrat text-center mb-5">Create Profile</h2>
+          {% endif %}
+          <!-- <h2 class="text-4xl font-medium montserrat text-center mb-5">Candidate Form</h2> -->
+          <form method="POST" action="/dashboard/my_profile/" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="block sm:flex">
+              {% if profile_exists == True %}:
+                <div class="mx-3 mb-3 w-full sm:w-1/2">
+                  <img src="{{form.instance.marriage_profile_pic.url}}" alt="Candidate Profile" width="200px">
+                </div>
+              {% endif %}
+            </div>
+            <div class="block">
+              <div class="mx-3 mb-3 w-full">
+                <label for="candidate_name" class="poppins">प्रत्याशी का नाम</label>
+                {{form.candidate_name}}
+                <!-- <input type="text" name="applicant-name" id="applicant-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Candidate's Name" required /> -->
+              </div>
+            </div>
+            <div class="block">
+              <div class="mx-3 mb-3 w-full">
+                <label for="father_name" class="poppins">पिता का नाम</label>
+                {{form.father_name}}
+                <!-- <input type="text" name="father-mother-name" id="father-mother-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Father's Name" required /> -->
+              </div>
+            </div>
+            <div class="block">
+              <div class="mx-3 mb-3 w-full">
+                <label for="education" class="poppins">शिक्षा</label>
+                <!-- <input type="text" name="education" id="education" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Education" required /> -->
+                {{form.education}}
+              </div>
+            </div>
+            <div class="block">
+              <div class="mx-3 mb-3 w-full">
+                <label for="gender" class="poppins">लिंग</label>
+                {{form.gender}}
+                <!-- <select name="gender" id="gender" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" required>
+                    <option value="Male" selected>Male</option>
+                    <option value="Female">Female</option>
+                </select> -->
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="height" class="poppins">ऊँचाई</label>
+                <!-- <input type="text" name="height" id="height" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Height" required /> -->
+                {{form.height}}
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="color" class="poppins">रंग</label>
+                {{form.color}}
+                <!-- <input type="text" name="color-complexion" id="color-complexion" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Color (Complexion)" required /> -->
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="occupation" class="poppins">प्रत्याशी का व्यवसाय</label>
+                {{form.occupation}}
+                <!-- <input type="text" name="applicant-occupation" id="applicant-occupation" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Applicant's Occupation" required /> -->
+              </div>
+            </div>
+            <div class="block sm:flex">                
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="annual_income" class="poppins">वार्षिक आय</label>
+                {{form.annual_income}}
+                <!-- <input type="text" name="annual-income" id="annual-income" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Annual Income" required /> -->
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="gotra" class="poppins">गोत्र</label>
+                <!-- <input type="text" name="gotra" id="gotra" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Gotra" required /> -->
+                {{form.gotra}}
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="is_manglik" class="poppins">मांगलिक</label>
+                {{form.is_manglik}}
+                <!-- <div class="flex space-x-4">
+                  <label class="poppins">
+                    <input type="radio" name="manglik" value="yes" class="mr-1">Yes
+                  </label>
+                  <label class="poppins">
+                    <input type="radio" name="manglik" value="no" class="mr-1">No
+                  </label>
+                </div> -->
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="DOB" class="poppins">जन्म दिनांक</label>
+                {{form.date_of_birth}}
+                <!-- <input type="date" name="DOB" id="DOB" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" required /> -->
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="time_of_birth" class="poppins">जन्म समय</label>
+                {{form.time_of_birth}}
+                <!-- <input type="time" name="TOB" id="TOB" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" required /> -->
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="birth_place" class="poppins">जन्म स्थान</label>
+                {{form.birth_place}}
+                <!-- <input type="text" name="birth-place" id="birth-place" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Place of Birth" required /> -->
+              </div>
+            </div>
+            <div class="block">
+              <div class="mx-3 mb-3 w-full">
+                <label for="father_or_guardian_occupation" class="poppins">पिता / पालक का व्यवसाय</label>
+                {{form.father_or_guardian_occupation}}
+                <!-- <input type="text" name="father-guardian-occupation" id="father-guardian-occupation" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Father's/Guardian's Occupation" required /> -->
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="city" class="poppins">शहर</label>
+                {{form.city}}
+                <!-- <input type="text" name="residential-address" id="residential-address" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Residential Address" required /> -->
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="current_address" class="poppins">निवास का पता</label>
+                {{form.current_address}}
+                <!-- <input type="text" name="residential-address" id="residential-address" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Residential Address" required /> -->
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="pincode" class="poppins">पिन</label>
+                {{form.pincode}}
+                <!-- <input type="text" name="pin" id="pin" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Pin" required /> -->
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="phone_number" class="poppins">संपर्क सूत्र-मोबाईल</label>
+                {{form.phone_number}}
+                <!-- <input type="tel" name="mobile-number" id="mobile-number" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Mobile Number" required /> -->
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="email_id" class="poppins">Email</label>
+                {{form.email_id}}
+                <!-- <input type="email" name="email" id="email" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Email" required /> -->
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="whatsapp" class="poppins">What's App</label>
+                {{form.whatsapp_phone_number}}
+                <!-- <input type="tel" name="whatsapp" id="whatsapp" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="What's App" required /> -->
+              </div>
+            </div>
+            <div class="block">
+              <div class="mx-3 mb-3 w-full">
+                <label for="partner_preference" class="poppins">वर/वधु हेतु प्राथमिकता</label>
+                {{form.partner_preference}}
+                <!-- <textarea id="preference" name="preference" rows="3" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Preference for Bride/Groom"></textarea> -->
+              </div>
+            </div>
+            <div class="block">
+              <div class="mx-3 mb-3 w-full">
+                <label for="if_candidate_is_widow_widower_divorced_or_disabled" class="poppins">यदि प्रत्याशी विधुर, विधवा, विकलांग, तलाकशुदा हो तो कृपया स्पष्ट रूप से बॉक्स में लिखें</label>
+                {{form.if_candidate_is_widow_widower_divorced_or_disabled}}
+                <!-- <textarea id="personal-info" name="personal-info" rows="3" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="If the applicant is a Widower, Widow, Disabled, Divorced, please clearly write in the box"></textarea> -->
+              </div>
+            </div>
+            <div class="block">
+              <div class="mx-3 mb-3 w-full">
+                <label for="marriage_profile_pic" class="poppins">Upload Picture Here</label>
+                {{form.marriage_profile_pic}}
+                <!-- <input type="file" name="upload-pic" id="upload-pic" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" required /> -->
+              </div>
+            </div>
+            <button type="submit" class="block bg-[#000] text-[#fff] mb-3 hover:bg-white hover:text-[#000] py-2.5 px-10 border-solid border-[1px] border-[#000] rounded-3xl focus:outline-none focus:shadow-outline poppins m-auto">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <footer class="bg-black py-2 text-white poppins">
+      <p class="text-center">Copyright &copy; 2024 Saryu Parivar. All Rights Reserved.</p>
+      <p class="text-center mb-0">Proudly designed and developed by Eagle in Cloud</p>
+    </footer>
+  </section>
+  <!-- end of dashboard -->
+ 
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/3.0.7/metisMenu.min.js"></script>
+  <script src="https://unpkg.com/boxicons@2.1.2/dist/boxicons.js"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

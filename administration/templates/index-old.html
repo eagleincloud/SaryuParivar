@@ -1,0 +1,639 @@
+<!doctype html>
+{% load static %}
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="{% static 'images/saryu-parivaar-logo.png' %}">
+  <title>Saryu Parivar - Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+      .messages {
+          margin: 10px 0;
+      }
+
+      .message {
+          padding: 10px;
+          border-radius: 5px;
+          margin-bottom: 10px;
+          position: relative; 
+      }
+
+      .message.success {
+          background-color: #d4edda;
+          color: #155724;
+          border: 1px solid #c3e6cb;
+      }
+
+      .message.error {
+          background-color: #f8d7da;
+          color: #721c24;
+          border: 1px solid #f5c6cb;
+      }
+
+      .message .close-btn {
+          position: absolute;  /* Position it relative to the .message container */
+          top: 10px;           /* Distance from the top */
+          right: 10px;         /* Distance from the right */
+          background: none;    /* No background */
+          border: none;        /* Remove border */
+          color: inherit;      /* Inherit text color */
+          font-size: 16px;     /* Set the size of the '×' symbol */
+          cursor: pointer;     /* Change cursor to pointer on hover */
+      }
+
+      .message .close-btn:hover {
+          color: #aaa;  /* Change color when the button is hovered */
+      }
+  </style>
+</head>
+<body>
+  <!-- logo and banner -->
+  <section class="logo-banner">
+    <div class="container m-auto">
+      <div class="grid grid-cols-2 items-center py-3">
+        <a href="/">
+          <img src="{% static 'images/saryu-parivaar-logo.png' %}" class="logo w-36">
+        </a>
+        <div class="btns text-end sm:flex sm:justify-end block">
+          <button class="border-solid border-[1px] border-[#f97718] py-2.5 px-5 rounded-3xl bg-[#f97718] text-[#fff] items-stretch hover:bg-white hover:text-[#f97718] transition ease-in-out sm:me-2 mb-[8px] sm:mb-0 login" type="button" data-bs-toggle="modal" data-bs-target="#loginForm">Login</button>
+          <button class="border-solid border-[1px] border-[#ffecce] py-2.5 px-5 rounded-3xl bg-[#ffecce] text-[#f97718] poppins hover:bg-[#f97718] hover:text-white hover:border-[#f97718] transition ease-in-out register" type="button" data-bs-toggle="modal" data-bs-target="#registerForm">Register</button>
+        </div>        
+      </div>
+      <p id="csrf-token-for-forms" hidden>{% csrf_token %}</p>
+      <div class="grid pt-[250px] pb-[100px]">
+        <div class="mx-3">
+          <!-- create_user.html -->
+          {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">
+                        <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+          {% endif %}
+
+          <h1 class="md:text-5xl font-medium montserrat text-center text-[#f97718] [text-shadow:_3px_3px_black] mb-10 text-4xl">Trusted Matrimony & Matchmaking Service</h1>
+  
+          <!-- <div class="banner-form">
+            <form class="form-row bg-[#ffecceab] py-3 sm:px-5 px-3 items-center grid lg:grid-cols-5 md:grid-cols-2 sm:grid-cols-1">
+              <div class="mx-3 lg:mb-0 mb-3">
+                <label for="looking-for" class="poppins">I'm looking for a</label>
+                <select id="looking-for" name="looking-for" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0">
+                  <option>Women</option>
+                  <option>Men</option>
+                </select>
+              </div>
+              <div class="mx-3 lg:mb-0 mb-3">
+                <label for="aged" class="poppins">aged</label>
+                <div class="flex items-center">
+                  <select id="aged" name="start-from" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0">
+                    <option>20</option>
+                    <option>21</option>
+                    <option selected>22</option>
+                    <option>23</option>
+                    <option>24</option>
+                    <option>25</option>
+                    <option>26</option>
+                    <option>27</option>
+                    <option>28</option>
+                    <option>29</option>
+                    <option>30</option>
+                    <option>31</option>
+                    <option>32</option>
+                    <option>33</option>
+                    <option>34</option>
+                    <option>35</option>
+                    <option>36</option>
+                    <option>37</option>
+                    <option>38</option>
+                    <option>39</option>
+                    <option>40</option>
+                    <option>41</option>
+                    <option>42</option>
+                    <option>43</option>
+                    <option>44</option>
+                    <option>45</option>
+                    <option>46</option>
+                    <option>47</option>
+                    <option>48</option>
+                    <option>49</option>
+                    <option>50</option>
+                    <option>51</option>
+                    <option>52</option>
+                    <option>53</option>
+                    <option>54</option>
+                    <option>55</option>
+                    <option>56</option>
+                    <option>57</option>
+                    <option>58</option>
+                    <option>59</option>
+                  </select>
+                  <div class="mx-2">to</div>
+                  <select id="aged" name="end-from" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0">
+                    <option>20</option>
+                    <option>21</option>
+                    <option>22</option>
+                    <option>23</option>
+                    <option>24</option>
+                    <option>25</option>
+                    <option>26</option>
+                    <option selected>27</option>
+                    <option>28</option>
+                    <option>29</option>
+                    <option>30</option>
+                    <option>31</option>
+                    <option>32</option>
+                    <option>33</option>
+                    <option>34</option>
+                    <option>35</option>
+                    <option>36</option>
+                    <option>37</option>
+                    <option>38</option>
+                    <option>39</option>
+                    <option>40</option>
+                    <option>41</option>
+                    <option>42</option>
+                    <option>43</option>
+                    <option>44</option>
+                    <option>45</option>
+                    <option>46</option>
+                    <option>47</option>
+                    <option>48</option>
+                    <option>49</option>
+                    <option>50</option>
+                    <option>51</option>
+                    <option>52</option>
+                    <option>53</option>
+                    <option>54</option>
+                    <option>55</option>
+                    <option>56</option>
+                    <option>57</option>
+                    <option>58</option>
+                    <option>59</option>
+                  </select>
+                </div>
+              </div>
+              <div class="mx-3 lg:mb-0 mb-3">
+                <label for="religion" class="poppins">of religion</label>
+                <select id="religion" name="religion" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0">
+                  <option selected>Select</option>
+                  <option>Hindu</option>
+                  <option>Muslim</option>
+                  <option>Christian</option>
+                  <option>Sikh</option>
+                  <option>Parsi</option>
+                  <option>Jain</option>
+                  <option>Buddhist</option>
+                  <option>Jewish</option>
+                  <option>No Religion</option>
+                  <option>Spiritual</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="mx-3 lg:mb-0 mb-3">
+                <label for="tongue" class="poppins">and mother tongue</label>
+                <select id="religion" name="religion" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0">
+                  <option selected>Select</option>
+                  <option>Aka</option>
+                  <option>Arabic</option>
+                  <option>Arunachali</option>
+                  <option>Assamese</option>
+                  <option>Awadhi</option>
+                  <option>Baluchi</option>
+                  <option>Bengali</option>
+                  <option>Bhojpuri</option>
+                  <option>Bhutia</option>
+                  <option>Brahui</option>
+                  <option>Brij</option>
+                  <option>Burmese</option>
+                  <option>Chattisgarhi</option>
+                  <option>Chinese</option>
+                  <option>Coorgi</option>
+                  <option>Dogri</option>
+                  <option>English</option>
+                  <option>French</option>
+                  <option>Garhwali</option>
+                  <option>Garo</option>
+                  <option>Gujarati</option>
+                  <option>Haryanavi</option>
+                  <option>Himachali/Pahari</option>
+                  <option>Hindi</option>
+                  <option>Hindko</option>
+                  <option>Kakbarak</option>
+                  <option>Kanauji</option>
+                  <option>Kannada</option>
+                  <option>Kashmiri</option>
+                  <option>Khandesi</option>
+                  <option>Khasi</option>
+                  <option>Konkani</option>
+                  <option>Koshali</option>
+                  <option>Kumaoni</option>
+                  <option>Kutchi</option>
+                  <option>Ladakhi</option>
+                  <option>Lepcha</option>
+                  <option>Magahi</option>
+                  <option>Maithili</option>
+                  <option>Malay</option>
+                  <option>Malayalam</option>
+                  <option>Manipuri</option>
+                  <option>Marathi</option>
+                  <option>Marwari</option>
+                  <option>Miji</option>
+                  <option>Mizo</option>
+                  <option>Monpa</option>
+                  <option>Nepali</option>
+                  <option>Odia</option>
+                  <option>Oriya</option>
+                  <option>Pashto</option>
+                  <option>Persian</option>
+                  <option>Punjabi</option>
+                  <option>Rajasthani</option>
+                  <option>Russian</option>
+                  <option>Sanskrit</option>
+                  <option>Santhali</option>
+                  <option>Seraiki</option>
+                  <option>Sindhi</option>
+                  <option>Sinhala</option>
+                  <option>Sourashtra</option>
+                  <option>Spanish</option>
+                  <option>Swedish</option>
+                  <option>Tagalog</option>
+                  <option>Tamil</option>
+                  <option>Telugu</option>
+                  <option>Tulu</option>
+                  <option>Urdu</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div class="mb-0">
+                <button class="border-solid border-[1px] border-[#f97718] py-2.5 px-5 rounded-3xl bg-[#f97718] text-white poppins hover:bg-transparent hover:text-[#f97718] transition ease-in-out">Let's Begin</button>
+              </div>
+            </form>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end logo and banner -->
+  
+  <!-- event -->
+  <section class="events py-[100px]">
+    <div class="container m-auto">
+      <div class="grid">
+        <div class="mx-3">
+          <h2 class="text-4xl font-medium montserrat mb-5 text-center mb-10">Upcoming Events</h2>
+        </div>
+      </div>
+      <div class="grid lg:grid-cols-2 md:grid-cols-1">
+        <div class="mx-3 mb-3 sm:flex block">
+          <div class="time md:w-1/5 bg-[#f97718] text-center text-white content-center poppins sm:w-2/6 w-full py-3 sm:py-0">
+            <h2 class="text-3xl date">26</h2>
+            <h2 class="text-3xl month">Dec</h2>
+          </div>
+          <div class="content md:w-4/5 bg-[#ffecce] px-10 sm:py-5 py-3 poppins sm:w-4/6 w-full">
+            <h2 class="text-2xl mb-3">Where does it come from</h2>
+            <p class="mb-3">If the customer is very smart, he or she will be able to achieve the desired result. To some of us especially, but which is as though it were assailed. Of those who are present, let it be flattering. From, he criticizes the responsibilities of repudiating the consequences of pain and in what way. To him, to assume?</p>
+            <a href="#" class="hover:text-[#f97718] transition ease-in-out">Read More</a>
+          </div>
+        </div>
+        <div class="mx-3 mb-3 sm:flex block">
+          <div class="time md:w-1/5 bg-[#f97718] text-center text-white content-center poppins sm:w-2/6 w-full py-3 sm:py-0">
+            <h2 class="text-3xl date">26</h2>
+            <h2 class="text-3xl month">Dec</h2>
+          </div>
+          <div class="content md:w-4/5 bg-[#ffecce] px-10 sm:py-5 py-3 poppins sm:w-4/6 w-full">
+            <h2 class="text-2xl mb-3">Where does it come from</h2>
+            <p class="mb-3">If the customer is very smart, he or she will be able to achieve the desired result. To some of us especially, but which is as though it were assailed. Of those who are present, let it be flattering. From, he criticizes the responsibilities of repudiating the consequences of pain and in what way. To him, to assume?</p>
+            <a href="#" class="hover:text-[#f97718] transition ease-in-out">Read More</a>
+          </div>
+        </div>
+        <div class="mx-3 mb-3 sm:flex block">
+          <div class="time md:w-1/5 bg-[#f97718] text-center text-white content-center poppins sm:w-2/6 w-full py-3 sm:py-0">
+            <h2 class="text-3xl date">26</h2>
+            <h2 class="text-3xl month">Dec</h2>
+          </div>
+          <div class="content md:w-4/5 bg-[#ffecce] px-10 sm:py-5 py-3 poppins sm:w-4/6 w-full">
+            <h2 class="text-2xl mb-3">Where does it come from</h2>
+            <p class="mb-3">If the customer is very smart, he or she will be able to achieve the desired result. To some of us especially, but which is as though it were assailed. Of those who are present, let it be flattering. From, he criticizes the responsibilities of repudiating the consequences of pain and in what way. To him, to assume?</p>
+            <a href="#" class="hover:text-[#f97718] transition ease-in-out">Read More</a>
+          </div>
+        </div>
+        <div class="mx-3 mb-3 sm:flex block">
+          <div class="time md:w-1/5 bg-[#f97718] text-center text-white content-center poppins sm:w-2/6 w-full py-3 sm:py-0">
+            <h2 class="text-3xl date">26</h2>
+            <h2 class="text-3xl month">Dec</h2>
+          </div>
+          <div class="content md:w-4/5 bg-[#ffecce] px-10 sm:py-5 py-3 poppins sm:w-4/6 w-full">
+            <h2 class="text-2xl mb-3">Where does it come from</h2>
+            <p class="mb-3">If the customer is very smart, he or she will be able to achieve the desired result. To some of us especially, but which is as though it were assailed. Of those who are present, let it be flattering. From, he criticizes the responsibilities of repudiating the consequences of pain and in what way. To him, to assume?</p>
+            <a href="#" class="hover:text-[#f97718] transition ease-in-out">Read More</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end of event -->
+
+  <!-- cta -->
+  <section class="cta py-[100px] bg-[#f97718]">
+    <div class="container m-auto">
+      <div class="grid items-center">
+        <div class="mx-3">
+          <div class="cta-content text-center">
+            <h2 class="text-4xl font-medium montserrat text-white mb-5">Exclusive & Personalised Matchmaking by Sarya Parivar</h2>
+            <ul class="md:flex text-white justify-center poppins mb-10 sm:block">
+              <li>Top Rated Consultants</li>
+              <li>5 times higher success rates</li>
+              <li>100% Privacy</li>
+            </ul>
+            <button class="border-solid border-[1px] border-[#ffecce] py-2.5 px-5 rounded-3xl bg-[#ffecce] text-[#f97718] poppins hover:bg-white hover:border-[#ffecce] transition ease-in-out" type="button" data-bs-toggle="modal" data-bs-target="#registerForm">Register</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end of cta -->
+
+  <!-- gallery -->
+  <section class="gallery py-[100px]">
+    <div class="container m-auto">
+      <div class="grid">
+        <div class="mx-3">
+          <h2 class="text-4xl font-medium montserrat mb-5 text-center mb-10">Gallery</h2>
+        </div>
+      </div>
+      <div class="mx-3">
+        <div class="owl-carousel owl-theme gallery-slider">
+          <div class="item">
+            <img src="image/banner-img.jpg" class="img-fluid">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end of gallery -->
+
+  <!-- testimonials -->
+  <section class="testimonials py-[100px] bg-[#ffecce]">
+    <div class="container m-auto">
+      <div class="grid">
+        <div class="mx-3">
+          <h2 class="text-4xl font-medium montserrat mb-5 text-center mb-10">Testimonials</h2>
+        </div>
+      </div>
+      <div class="mx-3">
+        <div class="owl-carousel owl-theme testimonial-slider relative">
+          <div class="item bg-white p-10">
+            <svg width="50" heigth="50" viewBox="0 0 24 24" fill="#f97718">
+              <path d="M4.58341 17.3211C3.55316 16.2274 3 15 3 13.0103C3 9.51086 5.45651 6.37366 9.03059 4.82318L9.92328 6.20079C6.58804 8.00539 5.93618 10.346 5.67564 11.822C6.21263 11.5443 6.91558 11.4466 7.60471 11.5105C9.40908 11.6778 10.8312 13.159 10.8312 15C10.8312 16.933 9.26416 18.5 7.33116 18.5C6.2581 18.5 5.23196 18.0095 4.58341 17.3211ZM14.5834 17.3211C13.5532 16.2274 13 15 13 13.0103C13 9.51086 15.4565 6.37366 19.0306 4.82318L19.9233 6.20079C16.588 8.00539 15.9362 10.346 15.6756 11.822C16.2126 11.5443 16.9156 11.4466 17.6047 11.5105C19.4091 11.6778 20.8312 13.159 20.8312 15C20.8312 16.933 19.2642 18.5 17.3312 18.5C16.2581 18.5 15.232 18.0095 14.5834 17.3211Z"></path>
+            </svg>          
+            <p class="poppins">I never believed in online matchmaking until I found Saryu Parivar. The personalized recommendations helped me find my soulmate, and now we’re planning our future together. Thank you for making this possible!</p>
+            <div class="lg:flex lg:items-center mt-3 montserrat">
+              <div class="img me-3">
+                <img src="image/banner-img.jpg" class="rounded-full object-cover h-full">
+              </div>
+              <h6 class="text-xl font-medium">Priya & Rajesh</h6>
+            </div>
+          </div>        
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end of testimonials -->
+  
+  <!-- footer -->
+  <section class="footer bg-black py-2 text-white poppins">
+    <div class="container m-auto">
+      <div class="grid">
+        <div class="mx-3">
+          <p class="text-center">Copyright &copy; 2024 Saryu Parivar. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end of footer -->
+
+  <!-- login popup -->
+  <div class="modal fade" id="loginForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="loginFormLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="text-4xl font-medium montserrat">Login</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">          
+          <form method="post", action="/verify_otp/">
+            {% csrf_token %}
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full">
+                <p id="otp_send_status" hidden></p>
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full">
+                <label for="phone-number" class="poppins">Phone</label>
+                <input type="number" name="otp_phone_number" id="phone-number" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Phone Number" required />
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full">
+                <label for="otp" class="poppins mb-1" id="otp-label" hidden>OTP</label>
+                <div class="flex">
+                  <!-- <input type="tel" name="otp_1" id="otp" class="w-full p-1.5 bg-transparent border-[1px] border-[#000] rounded poppins focus-visible:outline-0 mx-2" required maxlength="1"/>
+                  <input type="tel" name="otp_2" id="otp" class="w-full p-1.5 bg-transparent border-[1px] border-[#000] rounded poppins focus-visible:outline-0 mx-2" required maxlength="1"/>
+                  <input type="tel" name="otp_3" id="otp" class="w-full p-1.5 bg-transparent border-[1px] border-[#000] rounded poppins focus-visible:outline-0 mx-2" required maxlength="1"/>
+                  <input type="tel" name="otp_4" id="otp" class="w-full p-1.5 bg-transparent border-[1px] border-[#000] rounded poppins focus-visible:outline-0 mx-2" required maxlength="1"/>
+                  <input type="tel" name="otp_5" id="otp" class="w-full p-1.5 bg-transparent border-[1px] border-[#000] rounded poppins focus-visible:outline-0 mx-2" required maxlength="1"/> -->
+                  <input type="text" name="otp" id="otp_box" class="w-full p-1.5 bg-transparent border-[1px] border-[#000] rounded poppins focus-visible:outline-0 mx-2" required maxlength="6" minlength="6" hidden/>
+                </div>
+              </div>
+            </div>
+            <button type="button" class="block bg-black text-[#fff] mb-3 hover:bg-white hover:text-black py-2.5 px-10 border-solid border-[1px] border-black rounded-3xl focus:outline-none focus:shadow-outline poppins m-auto" id="request-otp-button" onclick="request_otp()">Request OTP</button>
+            <button type="submit" class="block bg-black text-[#fff] mb-3 hover:bg-white hover:text-black py-2.5 px-10 border-solid border-[1px] border-black rounded-3xl focus:outline-none focus:shadow-outline poppins m-auto" id="verify-otp-button" onclick="" hidden>Verify OTP</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end of login popup -->
+
+  <!-- register popup -->
+  <div class="modal fade" id="registerForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="registerFormLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="text-4xl font-medium montserrat">Register Here</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">          
+          <form method="POST" action="/" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                <label for="first_name" class="poppins">नाम (स्पष्ट अक्षरों में)</label>
+                <input type="text" name="first_name" id="first-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="First Name" required />
+              </div>
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                <label for="last_name" class="poppins">उपनाम (स्पष्ट अक्षरों में)</label>
+                <input type="text" name="last_name" id="last-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Last Name" required />
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                <label for="last_name" class="poppins">पिता का नाम</label>
+                <input type="text" name="father_name" id="father-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Father's Name" required />
+              </div>
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                <label for="form_type" class="poppins"></label>
+                <input type="text" name="form_type" id="form-type" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" value="Registration" hidden/>
+              </div>
+              <!-- <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="blood-group" class="poppins">ब्लड ग्रुप</label>
+                <input type="text" name="blood-group" id="blood-group" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Blood Group" required />
+              </div> -->
+              <!-- <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="gotra" class="poppins">गौत्र</label>
+                <input type="text" name="gotra" id="gotra" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Gotra" required />
+              </div> -->
+            </div>
+            <div class="block sm:flex">                
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="native_village" class="poppins">मूल निवासी गाँव</label>
+                <input type="text" name="native_village" id="native-village" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Native Village" required />
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="district" class="poppins">जिला</label>
+                <input type="text" name="district" id="dist" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Dist." required />
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="tehsil" class="poppins">तहसील</label>
+                <input type="text" name="tehsil" id="tehsil" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Tehsil" required />
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full w-1/2">
+                <label for="current_address" class="poppins">वर्तमान पता</label>
+                <input type="text" name="current_address" id="current-address" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Current Address" required />
+              </div>
+              <div class="mx-3 mb-3 w-full w-1/2">
+                <label for="phone_number" class="poppins">फोन</label>
+                <input type="number" name="phone_number" id="phone-number" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Phone Number" required />
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full w-1/2">
+                <label for="business_address" class="poppins">व्यवसाय का पता</label>
+                <input type="tel" name="business_address" id="business-address" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Business Address"/>
+              </div>
+              <div class="mx-3 mb-3 w-full w-1/2">
+                <label for="business_phone_number" class="poppins">व्यवसाय फोन</label>
+                <input type="number" name="business_phone_number" id="business-phone-number" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Business Phone Number"/>
+              </div>
+            </div>
+            <div class="block">
+              <div class="mx-3 mb-3 w-full">
+                <label for="profile_pic" class="poppins">Upload Picture Here</label>
+                <input type="file" name="profile_pic" id="upload-pic" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" required />
+              </div>
+            </div>
+            <!-- <h3 class="text-center text-2xl my-3 poppins">पारिवारिक जानकारीयां (Family Members Info)</h3>
+            <div id="hiddenDiv" class="hidden">
+              <div class="block sm:flex">
+                <div class="mx-3 mb-3 w-full sm:w-1/2">
+                  <label for="family-member" class="poppins">परिवार के सदस्यों का नाम</label>
+                  <input type="text" name="family-member" id="family-member" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Name of Family Members" required />
+                </div>
+                <div class="mx-3 mb-3 w-full sm:w-1/2">
+                  <label for="relation" class="poppins">संबंध</label>
+                  <input type="text" name="relative" id="relative" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Relative" required />
+                </div>
+              </div>
+              <div class="block sm:flex">
+                <div class="mx-3 mb-3 w-full w-1/2">
+                  <label for="age" class="poppins">आयु</label>
+                  <input type="text" name="age" id="age" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Age" required />
+                </div>
+                <div class="mx-3 mb-3 w-full w-1/2">
+                  <label for="education" class="poppins">शिक्षा</label>
+                  <input type="text" name="education" id="education" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Education" required />
+                </div>
+              </div>
+              <div class="block sm:flex">
+                <div class="mx-3 mb-3 w-full w-1/2">
+                  <label for="marriage-status" class="poppins">विवाहित / अविवाहित</label>
+                  <input type="text" name="marriage-status" id="marriage-status" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Married / Unmarried" required />
+                </div>
+                <div class="mx-3 mb-3 w-full w-1/2">
+                  <label for="buisiness" class="poppins">व्यवसाय / कार्यालय का पता</label>
+                  <input type="text" name="buisiness" id="buisiness" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Business / Office Address" required />
+                </div>
+              </div>
+            </div>
+            <button id="toggleButton" class="bg-black text-[#fff] mb-3 hover:bg-white hover:text-[#000] py-2.5 px-5 border-solid border-[1px] border-black rounded-3xl focus:outline-none focus:shadow-outline poppins">Add Family Member</button> -->
+            <button type="submit" class="block bg-black text-[#fff] mb-3 hover:bg-white hover:text-black py-2.5 px-10 border-solid border-[1px] border-black rounded-3xl focus:outline-none focus:shadow-outline poppins m-auto">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end of register popup -->
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+  <script>
+    const baseUrl = `${window.location.protocol}//${window.location.hostname}${window.location.port ? `:${window.location.port}` : ''}`;
+    function request_otp(){
+      phone_number_box = document.getElementById('phone-number')
+      otp_send_status = document.getElementById('otp_send_status')
+      const phone_number = phone_number_box.value.trim()
+
+      if (phone_number_box.value.trim()){
+        const apiUrl = `${baseUrl}/send_otp/`;
+        const csrfToken = document.getElementById('csrf-token-for-forms').getElementsByTagName('input')[0].value;
+        const postData = {
+          phone_number: phone_number
+        };
+
+        fetch(apiUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+          },
+          body: JSON.stringify(postData)
+        }).then(response => response.json())
+          .then(data => {
+            if (data.success === true){
+              request_otp_button = document.getElementById('request-otp-button')
+              verify_otp_button = document.getElementById('verify-otp-button')
+              otp_label = document.getElementById('otp-label')
+              otp_box = document.getElementById('otp_box')
+              request_otp_button.hidden = true
+              verify_otp_button.hidden = false
+              otp_label.hidden = false
+              otp_box.hidden = false
+            }else{
+              otp_send_status.textContent = data.message
+              otp_send_status.hidden = false
+            }
+          })
+          .catch(error => {
+            console.log('Error in OTP generation:', error);
+          });
+      }
+    }
+  </script>
+</body>
+</html>

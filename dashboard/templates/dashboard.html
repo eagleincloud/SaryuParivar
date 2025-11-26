@@ -1,0 +1,153 @@
+<!doctype html>
+{% load static %}
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="{% static 'images/saryu-parivaar-logo.png' %}">
+  <title>Saryu Parivar - Terms & Conditions</title>
+  <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css"/>
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/3.0.7/metisMenu.min.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body class=" bg-[#ffecce]">
+
+  <!-- dashboard -->
+  <section class="wrapper">
+    <div class="sidebar_wrapper" data-simplebar>
+      <div class="simplebar-wrapper">
+        <div class="simplebar-height-auto-observer-wrapper">
+          <div class="simplebar-height-auto-observer"></div>
+        </div>
+        <div class="simplebar-mask">
+          <div class="simplebar-offset">
+            <div class="simplebar-content-wrapper">
+              <div class="simplebar-content mm-active">
+                <div class="sidebar-header">
+                  <div>
+                    <img src="{% static 'images/saryu-parivaar-logo.png' %}" class="logo w-36">
+                  </div>
+                  <div class="toggle-icon m-auto">
+                    <i class="bx bx-arrow-to-left" id="btn"></i>
+                  </div>
+                </div>
+                <ul class="metisMenu mm-show" id="menu">
+                  <!-- <li class="mm-active">
+                    <a href="{% url 'all_profiles' %}">
+                      <div class="parent-icon">
+                        <i class="bx bxs-dashboard"></i>
+                      </div>
+                      <div class="menu-title">
+                        <span>Dashboard</span>
+                      </div>
+                    </a>
+                  </li> -->
+                  <li>
+                    <a class="has-arrow">
+                      <div class="parent-icon">
+                        <i class="bx bx-user"></i>
+                      </div>
+                      <div class="menu-title">
+                        <span>Matrimonial</span>
+                      </div>
+                    </a>
+                    <ul class="mm-collapse">
+                      <li>
+                        <a href="{% url 'all_profiles' %}">
+                          <i class='bx bx-right-arrow-alt'></i>
+                          All Profiles
+                        </a>
+                      </li>
+                      <li>
+                        <a href="{% url 'profile' %}">
+                          <i class='bx bx-right-arrow-alt'></i>
+                          My Profile
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>              
+            </div>
+          </div>
+        </div>
+        <div class="simplebar-placeholder"></div>
+      </div>
+      <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+        <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+      </div>
+      <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+        <div class="simplebar-scrollbar" style="height: 83px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
+      </div>
+    </div>
+    <header>
+      <div class="topbar d-flex align-items-center">
+        <nav class="navbar navbar-expand">
+          <div class="search-bar flex-grow-1">
+            <div class="position-relative search-bar-box">
+              <!-- <input type="text" class="form-control search-control" placeholder="Type to search...">
+              <span class="position-absolute top-50 search-show translate-middle-y">
+                <i class="bx bx-search"></i>
+              </span>
+              <span class="position-absolute top-50 search-close translate-middle-y">
+                <i class="bx bx-x"></i>
+              </span> -->
+            </div>
+          </div>
+          <div class="user-box dropdown">
+            <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="{{user_avatar}}" class="user-img" alt="user avatar">
+              <div class="user-info ps-3">
+                <p class="user-name mb-0">{{username}}</p>
+                <!-- <p class="designattion mb-0">Web Designer</p> -->
+              </div>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a href="{% url 'logout_user' %}" class="dropdown-item"><i class='bx bx-log-out-circle'></i> Logout</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <div class="page_wrapper">
+      <div class="page-content">
+        <div class="grid lg:grid-cols-3 md:grid-cols-2">
+          <div class="mx-3 mb-3">
+            <div class="content-center bg-[#fff] text-center poppins w-full h-[250px] p-3 matrimonial">
+              <h2 class="text-3xl text-white mb-5">Matrimonial</h2>
+              <!-- <img src="{% static 'images/banner-img.jpg' %}" class="logo w-36"> -->
+              <div class="btn-grp block 2xl:flex justify-center">
+                <a href="{% url 'profile' %}" class="border-solid border-[1px] border-[#f97718] py-2.5 px-5 rounded-3xl bg-[#f97718] text-[#fff] items-stretch hover:bg-white hover:text-[#f97718] transition ease-in-out 2xl:me-2 mb-[8px] 2xl:mb-[0px] mx-auto block w-fit">My Profile</a>
+                <a href="{% url 'all_profiles' %}" class="border-solid border-[1px] border-[#f97718] py-2.5 px-5 rounded-3xl bg-[#f97718] text-[#fff] items-stretch hover:bg-white hover:text-[#f97718] transition ease-in-out 2xl:me-2 mb-[8px] 2xl:mb-[0px] mx-auto block w-fit">All Profiles</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="bg-black py-2 text-white poppins">
+      <p class="text-center">Copyright &copy; 2024 Saryu Parivar. All Rights Reserved.</p>
+      <p class="text-center mb-0">Proudly designed and developed by Eagle in Cloud</p>
+    </footer>
+  </section>
+  <!-- end of dashboard --> 
+  
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/3.0.7/metisMenu.min.js"></script>
+  <script src="https://unpkg.com/boxicons@2.1.2/dist/boxicons.js"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

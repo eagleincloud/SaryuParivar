@@ -1,0 +1,10 @@
+.login-logo img {
+    width: 400px;
+    height: auto; /* Maintains the aspect ratio */
+}
+
+.login-logo picture {
+    display: flex; /* Optional, ensures proper layout */
+    justify-content: center; /* Centers the image horizontally */
+    align-items: center; /* Centers the image vertically if needed */
+}

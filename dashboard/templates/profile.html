@@ -1,0 +1,321 @@
+<!doctype html>
+{% load static %}
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="{% static 'images/saryu-parivaar-logo.png' %}">
+  <title>Saryu Parivar - Candidate Form</title>
+  <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css"/>
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/3.0.7/metisMenu.min.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body class=" bg-[#ffecce]">
+
+  <!-- dashboard -->
+  <section class="wrapper">
+    <div class="sidebar_wrapper" data-simplebar>
+      <div class="simplebar-wrapper">
+        <div class="simplebar-height-auto-observer-wrapper">
+          <div class="simplebar-height-auto-observer"></div>
+        </div>
+        <div class="simplebar-mask">
+          <div class="simplebar-offset">
+            <div class="simplebar-content-wrapper">
+              <div class="simplebar-content mm-active">
+                <div class="sidebar-header">
+                  <div>
+                    <img src="{% static 'images/saryu-parivaar-logo.png' %}" class="logo w-36">
+                  </div>
+                  <div class="toggle-icon m-auto">
+                    <i class="bx bx-arrow-to-left" id="btn"></i>
+                  </div>
+                </div>
+                <ul class="metisMenu mm-show" id="menu">
+                  <li class="mm-active">
+                    <a href="{% url 'all_profiles' %}">
+                      <div class="parent-icon">
+                        <i class="bx bxs-dashboard"></i>
+                      </div>
+                      <div class="menu-title">
+                        <span>Dashboard</span>
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <a class="has-arrow">
+                      <div class="parent-icon">
+                        <i class="bx bx-user"></i>
+                      </div>
+                      <div class="menu-title">
+                        <span>Matrimonial</span>
+                      </div>
+                    </a>
+                    <ul class="mm-collapse">
+                      <li>
+                        <a href="{% url 'all_profiles' %}">
+                          <i class='bx bx-right-arrow-alt'></i>
+                          All Profiles
+                        </a>
+                      </li>
+                      <li>
+                        <a href="{% url 'profile' %}">
+                          <i class='bx bx-right-arrow-alt'></i>
+                          My Profile
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </div>              
+            </div>
+          </div>
+        </div>
+        <div class="simplebar-placeholder"></div>
+      </div>
+      <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+        <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+      </div>
+      <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+        <div class="simplebar-scrollbar" style="height: 83px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
+      </div>
+    </div>
+    <header>
+      <div class="topbar d-flex align-items-center">
+        <nav class="navbar navbar-expand">
+          <div class="search-bar flex-grow-1">
+            <!-- <div class="position-relative search-bar-box">
+              <input type="text" class="form-control search-control" placeholder="Type to search...">
+              <span class="position-absolute top-50 search-show translate-middle-y">
+                <i class="bx bx-search"></i>
+              </span>
+              <span class="position-absolute top-50 search-close translate-middle-y">
+                <i class="bx bx-x"></i>
+              </span>
+            </div> -->
+          </div>
+          <div class="user-box dropdown">
+            <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="{{user_avatar}}" class="user-img" alt="user avatar">
+              <div class="user-info ps-3">
+                <p class="user-name mb-0">{{username}}</p>
+                <!-- <p class="designattion mb-0">Web Designer</p> -->
+              </div>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a href="{% url 'logout_user' %}" class="dropdown-item"><i class='bx bx-log-out-circle'></i> Logout</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <div class="page_wrapper">
+      <div class="page-content">
+        <div class="register-form-form bg-white p-10">
+          {% if profile_exists == True %}:
+              <h2 class="text-4xl font-medium montserrat text-center mb-5">Edit Profile</h2>
+          {% else %}
+              <h2 class="text-4xl font-medium montserrat text-center mb-5">Create Profile</h2>
+          {% endif %}
+          <!-- <h2 class="text-4xl font-medium montserrat text-center mb-5">Candidate Form</h2> -->
+          <form method="POST" action="/dashboard/my_profile/" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="block sm:flex">
+              {% if profile_exists == True %}:
+                <img src="{{form.instance.marriage_profile_pic.url}}" alt="Candidate Profile", width="200px">
+              {% endif %}
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                <label for="first_name" class="poppins">नाम (स्पष्ट अक्षरों में)</label>
+                {{form.first_name}}
+                <!-- <input type="text" name="first_name" id="first-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="First Name" required /> -->
+              </div>
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                <label for="last_name" class="poppins">उपनाम (स्पष्ट अक्षरों में)</label>
+                {{form.last_name}}
+                <!-- <input type="text" name="last_name" id="last-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Last Name" required /> -->
+              </div>
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                <label for="gender" class="poppins">लिंग</label>
+                {{form.gender}}
+                <!-- <select name="gender" id="gender" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" required>
+                    <option value="Male" selected>Male</option>
+                    <option value="Female">Female</option>
+                </select> -->
+              </div>
+            </div>
+            <div class="block sm:flex">
+                <div class="mx-3 mb-3 w-full w-1/2">
+                  <br>
+                  <label for="education" class="poppins">शिक्षा</label>
+                  {{form.education}}
+                  <!-- <input type="text" name="education" id="education" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Education" required /> -->
+                </div>
+                <div class="mx-3 mb-3 w-full sm:w-1/2">
+                    <label for="height-feet" class="poppins">ऊंचाई फ़ीट</label>
+                    {{form.height_feet}}
+                    <!-- <input type="text" name="head_of_the_family_name" id="family-head-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Name of the Head of the family" required /> -->
+                </div>
+                <div class="mx-3 mb-3 w-full sm:w-1/2">
+                    <label for="height-inches" class="poppins">ऊंचाई इंच</label>
+                    {{form.height_inches}}
+                    <!-- <input type="text" name="father_name" id="father-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Father's Name" required /> -->
+                </div>
+              </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full w-1/2">
+                <br>
+                <label for="color" class="poppins">रंग</label>
+                {{form.color}}
+                <!-- <input type="text" name="education" id="education" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Education" required /> -->
+              </div>
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                  <label for="family-head-name" class="poppins">परिवार के मुखिया का नाम (स्पष्ट अक्षरों में)</label>
+                  {{form.head_of_the_family_name}}
+                  <!-- <input type="text" name="head_of_the_family_name" id="family-head-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Name of the Head of the family" required /> -->
+              </div>
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                  <label for="father_name" class="poppins">पिता का नाम</label>
+                  {{form.father_name}}
+                  <!-- <input type="text" name="father_name" id="father-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Father's Name" required /> -->
+              </div>
+            </div>
+            <div class="block sm:flex">
+                <div class="mx-3 mb-3 w-full sm:w-1/2">
+                  <label for="mother_name" class="poppins">माता का नाम</label>
+                  {{form.mother_name}}
+                  <!-- <input type="text" name="mother_name" id="mother-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Mother's Name" required /> -->
+                </div>
+                <div class="mx-3 mb-3 w-full w-2/6">
+                    <label for="date_of_birth" class="poppins">जन्म तिथि</label>
+                    {{form.date_of_birth}}
+                    <!-- <input type="date" name="date_of_birth" id="DOB" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Date of Birth" required /> -->
+                </div>
+                <div class="mx-3 mb-3 w-full w-2/6">
+                    <label for="time_of_birth" class="poppins">जन्म समय</label>
+                    {{form.time_of_birth}}
+                    <!-- <input type="time" name="time_of_birth" id="TOB" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Time of Birth" /> -->
+                </div>
+            </div>
+            <div class="block sm:flex">
+                <div class="mx-3 mb-3 w-full w-2/6">
+                  <label for="blood_group" class="poppins">ब्लड ग्रुप</label>
+                  {{form.blood_group}}
+                  <!-- <input type="text" name="blood_group" id="blood-group" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Blood Group" /> -->
+                </div>
+                <div class="mx-3 mb-3 w-full w-2/6">
+                    <label for="gotra" class="poppins">गोत्र</label>
+                    {{form.gotra}}
+                    <!-- <input type="text" name="gotra" id="gotra" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Gotra" /> -->
+                </div>               
+                <div class="mx-3 mb-3 w-full w-2/6">
+                    <label for="native_village" class="poppins">मूल निवासी गाँव</label>
+                    {{form.native_village}}
+                    <!-- <input type="text" name="native_village" id="native-village" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Native Village" /> -->
+                </div>
+            </div>
+            <div class="block sm:flex">
+                <div class="mx-3 mb-3 w-full w-2/6">
+                  <label for="district" class="poppins">जिला</label>
+                  {{form.district}}
+                  <!-- <input type="text" name="district" id="dist" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Dist." required /> -->
+                </div>
+                <div class="mx-3 mb-3 w-full w-2/6">
+                    <label for="tehsil" class="poppins">तहसील</label>
+                    {{form.tehsil}}
+                    <!-- <input type="text" name="tehsil" id="tehsil" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Tehsil" /> -->
+                </div>
+                <div class="mx-3 mb-3 w-full w-1/2">
+                    <label for="current_address" class="poppins">वर्तमान पता</label>
+                    {{form.current_address}}
+                    <!-- <input type="text" name="current_address" id="current-address" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Current Address" required /> -->
+                </div>
+                <div class="mx-3 mb-3 w-full w-1/2">
+                    <label for="phone_number" class="poppins">फोन</label>
+                    {{form.phone_number}}
+                    <!-- <input type="number" name="phone_number" id="phone-number" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Phone Number" required /> -->
+                </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full w-1/2">
+                <label for="business_address" class="poppins">व्यवसाय का पता</label>
+                {{form.business_address}}
+                <!-- <input type="tel" name="business_address" id="business-address" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Business Address" /> -->
+              </div>
+              <div class="mx-3 mb-3 w-full w-1/2">
+                <label for="business_phone_number" class="poppins">व्यवसाय फोन</label>
+                {{form.business_phone_number}}
+                <!-- <input type="tel" name="business_phone_number" id="business-phone-number" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Business Phone Number" /> -->
+              </div>
+            </div>
+            <div class="block">
+              <div class="mx-3 mb-3 w-full">
+                <label for="marriage_profile_pic" class="poppins">Upload Picture</label>
+                {{form.marriage_profile_pic}}
+                <!-- <input type="file" name="marriage_profile_pic" id="marriage-profile-pic" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" required /> -->
+              </div>
+            </div>
+            <!-- <h3 class="text-center text-2xl my-3 poppins">पारिवारिक जानकारीयां (Family Members Info)</h3>
+            <div id="hiddenDiv" class="hidden">
+              <div class="block sm:flex">
+                <div class="mx-3 mb-3 w-full sm:w-1/2">
+                  <label for="family-member" class="poppins">परिवार के सदस्यों का नाम</label>
+                  <input type="text" name="family-member" id="family-member" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Name of Family Members" required />
+                </div>
+                <div class="mx-3 mb-3 w-full sm:w-1/2">
+                  <label for="relation" class="poppins">संबंध</label>
+                  <input type="text" name="relative" id="relative" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Relative" required />
+                </div>
+              </div>
+              <div class="block sm:flex">
+                <div class="mx-3 mb-3 w-full w-1/2">
+                  <label for="age" class="poppins">आयु</label>
+                  <input type="text" name="age" id="age" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Age" required />
+                </div>
+                <div class="mx-3 mb-3 w-full w-1/2">
+                  <label for="education" class="poppins">शिक्षा</label>
+                  <input type="text" name="education" id="education" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Education" required />
+                </div>
+              </div>
+              <div class="block sm:flex">
+                <div class="mx-3 mb-3 w-full w-1/2">
+                  <label for="marriage-status" class="poppins">विवाहित / अविवाहित</label>
+                  <input type="text" name="marriage-status" id="marriage-status" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Married / Unmarried" required />
+                </div>
+                <div class="mx-3 mb-3 w-full w-1/2">
+                  <label for="buisiness" class="poppins">व्यवसाय / कार्यालय का पता</label>
+                  <input type="text" name="buisiness" id="buisiness" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Business / Office Address" required />
+                </div>
+              </div>
+            </div> -->
+            <!-- <button id="toggleButton" class="bg-black text-[#fff] mb-3 hover:bg-white hover:text-[#000] py-2.5 px-5 border-solid border-[1px] border-black rounded-3xl focus:outline-none focus:shadow-outline poppins">Add Family Member</button> -->
+            <button type="submit" class="block bg-black text-[#fff] mb-3 hover:bg-white hover:text-black py-2.5 px-10 border-solid border-[1px] border-black rounded-3xl focus:outline-none focus:shadow-outline poppins m-auto">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <footer class="bg-black py-2 text-white poppins">
+      <p class="text-center">Copyright &copy; 2024 Saryu Parivar. All Rights Reserved.</p>
+      <p class="text-center mb-0">Proudly designed and developed by Eagle in Cloud</p>
+    </footer>
+  </section>
+  <!-- end of dashboard -->
+ 
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/3.0.7/metisMenu.min.js"></script>
+  <script src="https://unpkg.com/boxicons@2.1.2/dist/boxicons.js"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,408 @@
+<!doctype html>
+{% load static %}
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="{% static 'images/saryu-parivaar-logo.png' %}">
+  <title>Saryu Parivar - Candidate Profile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+  <!-- header -->
+  <section class="header">
+    <div class="container m-auto">
+      <div class="grid grid-cols-2 items-center py-3">
+        <a href="/">
+          <img src="{% static 'images/saryu-parivaar-logo.png' %}" class="logo w-36">
+        </a>
+        <!-- <div class="btns text-end sm:flex sm:justify-end block">
+          <button class="border-solid border-[1px] border-[#f97718] py-2.5 px-5 rounded-3xl bg-[#f97718] text-[#fff] items-stretch hover:bg-white hover:text-[#f97718] transition ease-in-out sm:me-2 mb-[8px] sm:mb-0 login" type="button" data-bs-toggle="modal" data-bs-target="#loginForm">Login</button>
+          <button class="border-solid border-[1px] border-[#ffecce] py-2.5 px-5 rounded-3xl bg-[#ffecce] text-[#f97718] poppins hover:bg-[#f97718] hover:text-white hover:border-[#f97718] transition ease-in-out register" type="button" data-bs-toggle="modal" data-bs-target="#registerForm">Register</button>
+        </div> -->
+      </div>
+    </div>
+  </section>
+  <!-- end header -->
+
+  <!-- all profiles -->
+  <section class="all-profiles py-[100px] bg-[#ffecce]">
+    <div class="container m-auto">
+      <div class="grid grid-cols-1">        
+        <div class="mx-3">
+          <div class="register-form-form bg-white p-10 mb-3">
+            <div class="grid lg:grid-cols-3 grid-cols-1 items-center">
+              <div class="mx-3">
+                <img src="{% static 'images/banner-img.jpg' %}" class="img-fluid w-full m-auto border-2 p-2 mb-2 sm:mb-0">
+              </div>
+              <div class="col-span-2 mx-3 columns-1 lg:columns-2">
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Applicant's Name:</h3>
+                  <span class="poppins w-1/2">Applicant's Name</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Date of Birth:</h3>
+                  <span class="poppins w-1/2">Date of Birth</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Place of Birth:</h3>
+                  <span class="poppins w-1/2">Place of Birth</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Gotra:</h3>
+                  <span class="poppins w-1/2">Gotra</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Height:</h3>
+                  <span class="poppins w-1/2">Height</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Education:</h3>
+                  <span class="poppins w-1/2">Education</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Occupation:</h3>
+                  <span class="poppins w-1/2">Occupation</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Annual Income:</h3>
+                  <span class="poppins w-1/2">Annual Income</span>
+                </div>                
+              </div>
+            </div>
+          </div>
+          <div class="register-form-form bg-white p-10 mb-3">
+            <div class="grid lg:grid-cols-3 grid-cols-1 items-center">
+              <div class="mx-3">
+                <img src="{% static 'images/banner-img.jpg' %}" class="img-fluid w-full m-auto border-2 p-2 mb-2 sm:mb-0">
+              </div>
+              <div class="col-span-2 mx-3 columns-1 lg:columns-2">
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Applicant's Name:</h3>
+                  <span class="poppins w-1/2">Applicant's Name</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Date of Birth:</h3>
+                  <span class="poppins w-1/2">Date of Birth</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Place of Birth:</h3>
+                  <span class="poppins w-1/2">Place of Birth</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Gotra:</h3>
+                  <span class="poppins w-1/2">Gotra</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Height:</h3>
+                  <span class="poppins w-1/2">Height</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Education:</h3>
+                  <span class="poppins w-1/2">Education</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Occupation:</h3>
+                  <span class="poppins w-1/2">Occupation</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Annual Income:</h3>
+                  <span class="poppins w-1/2">Annual Income</span>
+                </div>                
+              </div>
+            </div>
+          </div>
+          <div class="register-form-form bg-white p-10 mb-3">
+            <div class="grid lg:grid-cols-3 grid-cols-1 items-center">
+              <div class="mx-3">
+                <img src="{% static 'images/banner-img.jpg' %}" class="img-fluid w-full m-auto border-2 p-2 mb-2 sm:mb-0">
+              </div>
+              <div class="col-span-2 mx-3 columns-1 lg:columns-2">
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Applicant's Name:</h3>
+                  <span class="poppins w-1/2">Applicant's Name</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Date of Birth:</h3>
+                  <span class="poppins w-1/2">Date of Birth</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Place of Birth:</h3>
+                  <span class="poppins w-1/2">Place of Birth</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Gotra:</h3>
+                  <span class="poppins w-1/2">Gotra</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Height:</h3>
+                  <span class="poppins w-1/2">Height</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Education:</h3>
+                  <span class="poppins w-1/2">Education</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Occupation:</h3>
+                  <span class="poppins w-1/2">Occupation</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Annual Income:</h3>
+                  <span class="poppins w-1/2">Annual Income</span>
+                </div>                
+              </div>
+            </div>
+          </div>
+          <div class="register-form-form bg-white p-10 mb-3">
+            <div class="grid lg:grid-cols-3 grid-cols-1 items-center">
+              <div class="mx-3">
+                <img src="{% static 'images/banner-img.jpg' %}" class="img-fluid w-full m-auto border-2 p-2 mb-2 sm:mb-0">
+              </div>
+              <div class="col-span-2 mx-3 columns-1 lg:columns-2">
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Applicant's Name:</h3>
+                  <span class="poppins w-1/2">Applicant's Name</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Date of Birth:</h3>
+                  <span class="poppins w-1/2">Date of Birth</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Place of Birth:</h3>
+                  <span class="poppins w-1/2">Place of Birth</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Gotra:</h3>
+                  <span class="poppins w-1/2">Gotra</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Height:</h3>
+                  <span class="poppins w-1/2">Height</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Education:</h3>
+                  <span class="poppins w-1/2">Education</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Occupation:</h3>
+                  <span class="poppins w-1/2">Occupation</span>
+                </div>
+                <div class="flex mb-2 items-center">
+                  <h3 class="font-medium poppins me-2 w-1/2">Annual Income:</h3>
+                  <span class="poppins w-1/2">Annual Income</span>
+                </div>                
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mx-3">
+          <nav class="flex justify-center">
+            <ul class="inline-flex -space-x-px text-base h-10">
+              <li>
+                <a href="#" class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-[#f97718] hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-[#f97718] hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-[#f97718] hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
+              </li>
+              <li>
+                <a href="#" aria-current="page" class="flex items-center justify-center px-4 h-10 text-[#fff] border border-gray-300 bg-[#f97718] hover:bg-[#fff] hover:text-[#f97718] dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
+              </li>
+              <li>
+                <a href="#" class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end of all profiles -->
+  
+  <!-- footer -->
+  <section class="footer bg-black py-2 text-white poppins">
+    <div class="container m-auto">
+      <div class="grid">
+        <div class="mx-3">
+          <p class="text-center">Copyright &copy; 2024 Saryu Parivar. All Rights Reserved.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end of footer -->
+
+  <!-- login popup -->
+  <div class="modal fade" id="loginForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="loginFormLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="text-4xl font-medium montserrat">Login</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">          
+          <form post="" >
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full">
+                <label for="phone-number" class="poppins">फोन</label>
+                <input type="tel" name="phone-number" id="phone-number" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Phone Number" required />
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full">
+                <label for="otp" class="poppins mb-1">OTP</label>
+                <div class="flex">
+                  <input type="tel" name="otp" id="otp" class="w-full p-1.5 bg-transparent border-[1px] border-[#000] rounded poppins focus-visible:outline-0 mx-2" required />
+                  <input type="tel" name="otp" id="otp" class="w-full p-1.5 bg-transparent border-[1px] border-[#000] rounded poppins focus-visible:outline-0 mx-2" required />
+                  <input type="tel" name="otp" id="otp" class="w-full p-1.5 bg-transparent border-[1px] border-[#000] rounded poppins focus-visible:outline-0 mx-2" required />
+                  <input type="tel" name="otp" id="otp" class="w-full p-1.5 bg-transparent border-[1px] border-[#000] rounded poppins focus-visible:outline-0 mx-2" required />
+                  <input type="tel" name="otp" id="otp" class="w-full p-1.5 bg-transparent border-[1px] border-[#000] rounded poppins focus-visible:outline-0 mx-2" required />
+                  <input type="tel" name="otp" id="otp" class="w-full p-1.5 bg-transparent border-[1px] border-[#000] rounded poppins focus-visible:outline-0 mx-2" required />
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="block bg-black text-[#fff] mb-3 hover:bg-white hover:text-black py-2.5 px-10 border-solid border-[1px] border-black rounded-3xl focus:outline-none focus:shadow-outline poppins m-auto">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end of login popup -->
+
+  <!-- register popup -->
+  <div class="modal fade" id="registerForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="registerFormLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="text-4xl font-medium montserrat">Register Here</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">          
+          <form post="" >
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                <label for="family-head-name" class="poppins">परिवार के मुखिया का नाम (स्पष्ट अक्षरों में)</label>
+                <input type="text" name="family-head-name" id="family-head-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Name of the Head of the family" required />
+              </div>
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                <label for="father-name" class="poppins">पिता का नाम</label>
+                <input type="text" name="father-name" id="father-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Father's Name" required />
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="DOB" class="poppins">जन्म तिथि</label>
+                <input type="date" name="DOB" id="DOB" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Father's Name" required />
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="blood-group" class="poppins">ब्लड ग्रुप</label>
+                <input type="text" name="blood-group" id="blood-group" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Blood Group" required />
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="gotra" class="poppins">गौत्र</label>
+                <input type="text" name="gotra" id="gotra" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Gotra" required />
+              </div>
+            </div>
+            <div class="block sm:flex">                
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="native-village" class="poppins">मूल निवासी गाँव</label>
+                <input type="text" name="native-village" id="native-village" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Native Village" required />
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="dist" class="poppins">जिला</label>
+                <input type="text" name="dist" id="dist" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Dist." required />
+              </div>
+              <div class="mx-3 mb-3 w-full w-2/6">
+                <label for="tehsil" class="poppins">तहसील</label>
+                <input type="text" name="tehsil" id="tehsil" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Tehsil" required />
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full w-1/2">
+                <label for="current-address" class="poppins">वर्तमान पता</label>
+                <input type="text" name="current-address" id="current-address" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Current Address" required />
+              </div>
+              <div class="mx-3 mb-3 w-full w-1/2">
+                <label for="phone-number" class="poppins">फोन</label>
+                <input type="tel" name="phone-number" id="phone-number" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Phone Number" required />
+              </div>
+            </div>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full w-1/2">
+                <label for="business-address" class="poppins">व्यवसाय का पता</label>
+                <input type="tel" name="business-address" id="business-address" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Business Address" required />
+              </div>
+              <div class="mx-3 mb-3 w-full w-1/2">
+                <label for="phone-number" class="poppins">फोन</label>
+                <input type="tel" name="phone-number" id="phone-number" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Phone Number" required />
+              </div>
+            </div>
+            <div class="block">
+              <div class="mx-3 mb-3 w-full">
+                <label for="upload-pic" class="poppins">Upload Picture Here</label>
+                <input type="file" name="upload-pic" id="upload-pic" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" required />
+              </div>
+            </div>
+            <h3 class="text-center text-2xl my-3 poppins">पारिवारिक जानकारीयां (Family Members Info)</h3>
+            <div id="hiddenDiv" class="hidden">
+              <div class="block sm:flex">
+                <div class="mx-3 mb-3 w-full sm:w-1/2">
+                  <label for="family-member" class="poppins">परिवार के सदस्यों का नाम</label>
+                  <input type="text" name="family-member" id="family-member" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Name of Family Members" required />
+                </div>
+                <div class="mx-3 mb-3 w-full sm:w-1/2">
+                  <label for="relation" class="poppins">संबंध</label>
+                  <input type="text" name="relative" id="relative" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Relative" required />
+                </div>
+              </div>
+              <div class="block sm:flex">
+                <div class="mx-3 mb-3 w-full w-1/2">
+                  <label for="age" class="poppins">आयु</label>
+                  <input type="text" name="age" id="age" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Age" required />
+                </div>
+                <div class="mx-3 mb-3 w-full w-1/2">
+                  <label for="education" class="poppins">शिक्षा</label>
+                  <input type="text" name="education" id="education" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Education" required />
+                </div>
+              </div>
+              <div class="block sm:flex">
+                <div class="mx-3 mb-3 w-full w-1/2">
+                  <label for="marriage-status" class="poppins">विवाहित / अविवाहित</label>
+                  <input type="text" name="marriage-status" id="marriage-status" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Married / Unmarried" required />
+                </div>
+                <div class="mx-3 mb-3 w-full w-1/2">
+                  <label for="buisiness" class="poppins">व्यवसाय / कार्यालय का पता</label>
+                  <input type="text" name="buisiness" id="buisiness" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Business / Office Address" required />
+                </div>
+              </div>
+            </div>
+            <button id="toggleButton" class="bg-black text-[#fff] mb-3 hover:bg-white hover:text-[#000] py-2.5 px-5 border-solid border-[1px] border-black rounded-3xl focus:outline-none focus:shadow-outline poppins">Add Family Member</button>
+            <button type="submit" class="block bg-black text-[#fff] mb-3 hover:bg-white hover:text-black py-2.5 px-10 border-solid border-[1px] border-black rounded-3xl focus:outline-none focus:shadow-outline poppins m-auto">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end of register popup -->
+  
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

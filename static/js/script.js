@@ -124,3 +124,121 @@ $("#btn").click(function(){
     $(".sidebar_wrapper .toggle-icon").removeClass("ms-auto");
     $(".sidebar_wrapper .toggle-icon").addClass("m-auto");
 });
+
+// ============================================
+// MOBILE DEVICE DETECTION
+// ============================================
+(function() {
+    'use strict';
+    
+    // Detect mobile device
+    function detectMobileDevice() {
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+        
+        // Check for mobile devices
+        const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+        
+        // Check for touch support
+        const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        
+        // Check screen width
+        const isSmallScreen = window.innerWidth <= 768;
+        
+        // Check for mobile-specific features
+        const isMobileDevice = isMobile || (hasTouch && isSmallScreen);
+        
+        // Check for tablet
+        const isTablet = /ipad|android(?!.*mobile)|tablet/i.test(userAgent.toLowerCase()) && window.innerWidth <= 1024;
+        
+        return {
+            isMobile: isMobileDevice,
+            isTablet: isTablet,
+            hasTouch: hasTouch,
+            screenWidth: window.innerWidth
+        };
+    }
+    
+    // Apply mobile classes
+    function applyMobileClasses() {
+        const device = detectMobileDevice();
+        const body = document.body;
+        
+        // Remove existing device classes
+        body.classList.remove('mobile-device', 'tablet-device', 'desktop-device');
+        
+        if (device.isMobile) {
+            body.classList.add('mobile-device');
+        } else if (device.isTablet) {
+            body.classList.add('tablet-device');
+        } else {
+            body.classList.add('desktop-device');
+        }
+        
+        // Add touch class if touch is supported
+        if (device.hasTouch) {
+            body.classList.add('touch-device');
+        }
+        
+        // Store device info for later use
+        window.deviceInfo = device;
+    }
+    
+    // Run on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        applyMobileClasses();
+        
+        // Re-check on resize (with debounce)
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                applyMobileClasses();
+            }, 250);
+        });
+        
+        // Re-check on orientation change
+        window.addEventListener('orientationchange', function() {
+            setTimeout(function() {
+                applyMobileClasses();
+            }, 100);
+        });
+    });
+    
+    // Also run immediately if DOM is already loaded
+    if (document.readyState === 'loading') {
+        // DOM is still loading
+    } else {
+        // DOM is already loaded
+        applyMobileClasses();
+    }
+})();
+
+// Mobile sidebar overlay handler
+document.addEventListener('DOMContentLoaded', function() {
+    // Create sidebar overlay for mobile
+    if (!document.querySelector('.sidebar-overlay')) {
+        const overlay = document.createElement('div');
+        overlay.className = 'sidebar-overlay';
+        overlay.addEventListener('click', function() {
+            document.querySelector('.wrapper').classList.remove('active');
+        });
+        document.body.appendChild(overlay);
+    }
+    
+    // Close sidebar when clicking outside on mobile
+    const sidebarToggle = document.getElementById('btn');
+    if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function() {
+            const wrapper = document.querySelector('.wrapper');
+            if (window.deviceInfo && window.deviceInfo.isMobile) {
+                // On mobile, toggle overlay
+                const overlay = document.querySelector('.sidebar-overlay');
+                if (wrapper.classList.contains('active')) {
+                    overlay.style.display = 'block';
+                } else {
+                    overlay.style.display = 'none';
+                }
+            }
+        });
+    }
+});

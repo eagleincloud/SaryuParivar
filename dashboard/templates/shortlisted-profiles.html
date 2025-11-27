@@ -61,7 +61,7 @@
           <div class="user-box dropdown">
             <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <img src="{{user_avatar|default:''}}" class="user-img" alt="user avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-              <div class="user-img" style="display:none; width:40px; height:40px; border-radius:50%; background:#f97718; color:white; text-align:center; line-height:40px; font-weight:bold;">{{username|first|upper|default:'U'}}</div>
+              <div class="user-img user-avatar-fallback">{{username|first|upper|default:'U'}}</div>
               <div class="user-info ps-3">
                 <p class="user-name mb-0">{{username}}</p>
               </div>
@@ -77,12 +77,6 @@
     </header>
     <div class="page_wrapper">
       <div class="page-content">
-        <!-- PAGE TYPE: SHORTLISTED PROFILES LIST -->
-        <div style="background: linear-gradient(135deg, #2196f3 0%, #21cbf3 100%); padding: 20px; margin: 20px; border-radius: 10px; text-align: center; margin-bottom: 30px; border: 5px solid blue;">
-          <h1 style="color: white; font-size: 32px; font-weight: bold; margin: 0;">❤️ MY SHORTLISTED PROFILES PAGE - VIEW YOUR FAVORITES</h1>
-          <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 18px;">This is the Shortlisted Profiles List Page - URL: /dashboard/shortlisted_profiles/</p>
-          <p style="color: yellow; margin: 10px 0 0 0; font-weight: bold;">If you see this, you are on the CORRECT Shortlisted Profiles page!</p>
-        </div>
         <div class="mx-3 mb-4">
           <h1 class="text-4xl font-medium montserrat mb-0">My Shortlisted Profiles - View Your Favorites</h1>
           <p class="poppins text-gray-600 mb-4 mt-2">Profiles you've shortlisted for potential matches</p>
@@ -92,23 +86,23 @@
           <div class="grid lg:grid-cols-2 gap-4">
             {% for profile in profiles %}
               <div class="mx-3 mb-3">
-                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300" style="border: 2px solid #f97718;">
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 card-primary-border">
                   <div class="p-4">
                     <div class="grid lg:grid-cols-3 grid-cols-1 items-center">
                       <div class="text-center mb-3 lg:mb-0">
                         {% if profile.safe_image_url %}
-                          <img src="{{profile.safe_image_url}}" alt="{{profile.candidate_name}}" class="img-fluid rounded-lg mx-auto mb-2" style="width: 150px; height: 200px; object-fit: cover; border: 3px solid #f97718;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                          <div class="rounded-lg mx-auto mb-2 d-flex align-items-center justify-content-center" style="width: 150px; height: 200px; background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%); display: none;">
-                            <i class="bx bx-user" style="font-size: 60px; color: white;"></i>
+                          <img src="{{profile.safe_image_url}}" alt="{{profile.candidate_name}}" class="img-fluid rounded-lg mx-auto mb-2 profile-image-wrapper" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                          <div class="rounded-lg mx-auto mb-2 d-flex align-items-center justify-content-center bg-gradient-orange" style="width: 150px; height: 200px; display: none;">
+                            <i class="bx bx-user committee-member-icon"></i>
                           </div>
                         {% else %}
-                          <div class="rounded-lg mx-auto mb-2 d-flex align-items-center justify-content-center" style="width: 150px; height: 200px; background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%);">
-                            <i class="bx bx-user" style="font-size: 60px; color: white;"></i>
+                          <div class="rounded-lg mx-auto mb-2 d-flex align-items-center justify-content-center bg-gradient-orange" style="width: 150px; height: 200px;">
+                            <i class="bx bx-user committee-member-icon"></i>
                           </div>
                         {% endif %}
                         <h3 class="text-xl font-semibold poppins mb-1">{{profile.candidate_name}}</h3>
                       </div>
-                      <div class="col-span-2 poppins" style="font-size: 14px; color: #666;">
+                      <div class="col-span-2 poppins text-medium-gray" style="font-size: 14px;">
                         <div class="mb-2"><strong>Gender:</strong> {{profile.gender|default:"Not specified"}}</div>
                         <div class="mb-2"><strong>Age:</strong> {{profile.age|default:"N/A"}} {% if profile.age %}years{% endif %}</div>
                         <div class="mb-2"><strong>Father:</strong> {{profile.father_name|default:"Not specified"}}</div>
@@ -140,9 +134,9 @@
         {% else %}
           <div class="mx-3 mb-3">
             <div class="bg-white p-8 rounded-lg text-center">
-              <i class="bx bx-heart" style="font-size: 64px; color: #ccc; margin-bottom: 20px;"></i>
-              <h3 class="text-2xl font-semibold poppins mb-2" style="color: #666;">No Shortlisted Profiles</h3>
-              <p class="poppins mb-4" style="color: #999;">You haven't shortlisted any profiles yet. Browse profiles and shortlist the ones you're interested in.</p>
+              <i class="bx bx-heart empty-state-icon"></i>
+              <h3 class="text-2xl font-semibold poppins mb-2 empty-state-title">No Shortlisted Profiles</h3>
+              <p class="poppins mb-4 empty-state-text">You haven't shortlisted any profiles yet. Browse profiles and shortlist the ones you're interested in.</p>
               <a href="{% url 'all_profiles' %}" class="btn-modern poppins inline-block" style="font-size: 16px; padding: 12px 30px; text-decoration: none;">
                 <i class="bx bx-search"></i> Browse Profiles
               </a>
@@ -160,13 +154,13 @@
   <!-- Contact Modal -->
   <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
-        <div class="modal-header" style="border-bottom: 2px solid #ffecce; background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%); border-radius: 20px 20px 0 0;">
+      <div class="modal-content modal-content-modern">
+        <div class="modal-header modal-header-gradient">
           <h5 class="modal-title montserrat text-white" id="contactModalLabel">Contact Details for <span id="contactProfileName"></span></h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body p-4 text-center">
-          <p class="poppins text-lg mb-4" style="color: #333;">You can contact <span id="contactProfileNameBody" class="font-semibold" style="color: #f97718;"></span> using the details below:</p>
+          <p class="poppins text-lg mb-4 text-dark-gray">You can contact <span id="contactProfileNameBody" class="font-semibold text-primary-orange"></span> using the details below:</p>
           <div class="contact-info-grid grid grid-cols-1 gap-4">
             <a id="contactPhoneLink" href="#" class="contact-link d-flex align-items-center justify-content-center p-3 rounded-lg bg-[#ffecce] text-[#f97718] poppins font-semibold hover:bg-[#f97718] hover:text-white transition ease-in-out" style="text-decoration: none; box-shadow: 0 2px 8px rgba(249, 119, 24, 0.1);">
               <i class="bx bx-phone-call me-2" style="font-size: 24px;"></i> <span id="contactPhoneNumber"></span>

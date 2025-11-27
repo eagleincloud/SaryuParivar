@@ -117,14 +117,14 @@ def upload_to_s3(file_content, bucket_name, key, content_type=None):
         if content_type:
             extra_args['ContentType'] = content_type
         
-        # Set ACL to public-read
-        extra_args['ACL'] = 'public-read'
+        # Don't set ACL - bucket doesn't support ACLs (use bucket policy instead)
+        # extra_args['ACL'] = 'public-read'
         
         s3_client.upload_fileobj(
             BytesIO(file_content) if isinstance(file_content, bytes) else file_content,
             bucket_name,
             key,
-            ExtraArgs=extra_args
+            ExtraArgs=extra_args if extra_args else None
         )
         return True
     

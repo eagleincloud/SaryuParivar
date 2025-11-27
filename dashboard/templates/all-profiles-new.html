@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="{% static 'images/saryu-parivaar-logo.png' %}">
+  <link rel="icon" type="image/x-icon" href="/media/saryu-parivaar-logo.png?v=4">
   <title>Saryu Parivar - Terms & Conditions</title>
   <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css"/>
   <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
@@ -31,55 +31,18 @@
             <div class="simplebar-content-wrapper">
               <div class="simplebar-content mm-active">
                 <div class="sidebar-header">
-                  <div>
-                    <img src="{% static 'images/saryu-parivaar-logo.png' %}" class="logo w-36">
+                  <div style="position: relative; display: inline-block; padding: 12px; background: radial-gradient(circle, rgba(249, 119, 24, 0.15) 0%, transparent 75%); border-radius: 50%; box-shadow: 0 0 30px rgba(249, 119, 24, 0.2);">
+                    <div style="position: relative; border-radius: 50%; overflow: hidden; padding: 4px; background: linear-gradient(135deg, rgba(249, 119, 24, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);">
+                      <img src="/media/saryu-parivaar-logo.png?v=4" class="logo w-36" style="max-width: 200px; height: auto; border-radius: 50%; display: block; filter: drop-shadow(0 4px 12px rgba(249, 119, 24, 0.3)); position: relative; z-index: 1;" alt="Saryu Parivar Logo">
+                      <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%; box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.6), inset 0 0 60px rgba(249, 119, 24, 0.2); pointer-events: none; z-index: 2;"></div>
+                      <div style="position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; border-radius: 50%; background: linear-gradient(135deg, rgba(249, 119, 24, 0.4), rgba(255, 140, 66, 0.2), rgba(249, 119, 24, 0.4)); filter: blur(8px); z-index: 0; opacity: 0.7;"></div>
+                    </div>
                   </div>
                   <div class="toggle-icon m-auto">
                     <i class="bx bx-arrow-to-left" id="btn"></i>
                   </div>
                 </div>
-                <ul class="metisMenu mm-show" id="menu">
-                  <!-- <li class="mm-active">
-                    <a href="{%url 'all_profiles'  %}">
-                      <div class="parent-icon">
-                        <i class="bx bxs-dashboard"></i>
-                      </div>
-                      <div class="menu-title">
-                        <span>Dashboard</span>
-                      </div>
-                    </a>
-                  </li> -->
-                  <li>
-                    <a class="has-arrow">
-                      <div class="parent-icon">
-                        <i class="bx bx-user"></i>
-                      </div>
-                      <div class="menu-title">
-                        <span>Matrimonial</span>
-                      </div>
-                    </a>
-                    <ul class="mm-collapse">
-                      <li>
-                        <a href="{% url 'all_profiles' %}">
-                          <i class='bx bx-right-arrow-alt'></i>
-                          All Profiles
-                        </a>
-                      </li>
-                      <li>
-                        <a href="{% url 'profile' %}">
-                          <i class='bx bx-right-arrow-alt'></i>
-                          My Profile
-                        </a>
-                      </li>
-                      <li>
-                        <a href="{% url 'payment' %}">
-                          <i class='bx bx-right-arrow-alt'></i>
-                          Payment
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                {% include 'includes/sidebar.html' %}
               </div>              
             </div>
           </div>
@@ -147,6 +110,29 @@
             opacity: 0.6;
             user-select: none;
           }
+          
+          /* Payment Verification Overlay - Above blur */
+          .payment-verification-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100 !important;
+            background: rgba(255, 255, 255, 0.98) !important;
+            padding: 25px 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3) !important;
+            text-align: center;
+            max-width: 85%;
+            border: 3px solid #f97718;
+            pointer-events: auto !important;
+            backdrop-filter: blur(10px);
+            filter: none !important; /* Ensure overlay is not blurred */
+          }
+          
+          .payment-verification-overlay * {
+            filter: none !important; /* Ensure all content inside is not blurred */
+          }
           /* Mobile Responsive */
           @media (max-width: 768px) {
             .payment-badge-container {
@@ -171,6 +157,22 @@
             }
           }
         </style>
+        {% if not payment_done %}
+        <!-- Single Payment Verification Message - Shown Once at Top -->
+        <div class="mx-3 mb-6" style="margin-top: 20px;">
+          <div class="payment-verification-banner" style="background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%); padding: 25px 35px; border-radius: 20px; box-shadow: 0 10px 40px rgba(255, 152, 0, 0.3); text-align: center; border: 3px solid #ff9800; position: relative; overflow: hidden;">
+            <div style="position: absolute; top: -50%; right: -20%; width: 300px; height: 300px; background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%); border-radius: 50%;"></div>
+            <div style="position: relative; z-index: 1;">
+              <i class="bx bx-lock-alt" style="font-size: 56px; color: white; margin-bottom: 15px; display: block; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));"></i>
+              <h4 class="poppins font-bold mb-3" style="color: white; font-size: 22px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">Payment Verification Required</h4>
+              <p class="poppins mb-4" style="color: white; font-size: 16px; line-height: 1.6; opacity: 0.95;">You are not verified. Please complete payment for verification to view profile details.</p>
+              <a href="/payment/" class="inline-block bg-white text-[#ff9800] px-8 py-3 rounded-lg poppins hover:bg-[#fff5e6] transition-all duration-300 shadow-lg hover:shadow-xl" style="text-decoration: none; font-size: 16px; font-weight: 600; box-shadow: 0 4px 15px rgba(255,255,255,0.4);">
+                <i class="bx bx-credit-card"></i> Make Payment
+              </a>
+            </div>
+          </div>
+        </div>
+        {% endif %}
           <div class="grid">
             <div class="mx-3 mb-3">
               <div class="banner-form bg-white">
@@ -235,10 +237,16 @@
               </div>
             </div>
           </div>
+          <!-- DEBUG BANNER: This is the Browse Profiles page -->
+          <div style="background: linear-gradient(135deg, #4caf50 0%, #45a049 100%); padding: 20px; margin: 20px; border-radius: 10px; text-align: center; margin-bottom: 30px; border: 5px solid green;">
+            <h1 style="color: white; font-size: 32px; font-weight: bold; margin: 0;">🔍 BROWSE PROFILES PAGE</h1>
+            <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 18px;">This is the Browse All Profiles Page - URL: /dashboard/</p>
+            <p style="color: yellow; margin: 10px 0 0 0; font-weight: bold;">If you see this, you are on the Browse Profiles page!</p>
+          </div>
           <div class="grid grid-cols-1 lg:grid-cols-2" id="profile-list">
             {% if profiles %}
               {% for profile in profiles %}
-                <div class="mx-3 mb-3 {% if not payment_done %}profile-blurred{% endif %}">
+                <div class="mx-3 mb-3" style="position: relative;">
                 <div class="grid lg:grid-cols-3 grid-cols-1 items-center bg-white p-2" {% if not payment_done %}style="filter: blur(5px); pointer-events: none; opacity: 0.6;"{% endif %}>
                   <div class="mx-3">
                     <img src="{{profile.marriage_profile_pic.url|default:''}}" class="img-fluid w-full m-auto border-2 p-2 mb-2">
@@ -281,26 +289,20 @@
                       <h3 class="font-medium poppins me-2 w-1/2">Gotra:</h3>
                       <span class="poppins w-1/2">{{profile.gotra|default:''}}</span>
                     </div>
-                    <div class="flex mb-2 items-center">
-                      <h3 class="font-medium poppins me-2 w-1/2">Phone Number:</h3>
-                      <span class="poppins w-1/2">{{profile.phone_number|default:''}}</span>
+                    {% if payment_done %}
+                    <div class="flex mb-2 items-center justify-center mt-4 gap-2">
+                      <button type="button" class="border-solid border-[1px] border-[#f97718] py-2.5 px-5 rounded-3xl bg-[#f97718] text-[#fff] poppins hover:bg-transparent hover:text-[#f97718] transition ease-in-out contact-btn" onclick="showContactModal('{{profile.id}}', '{{profile.candidate_name}}', '{{profile.phone_number}}', '{{profile.whatsapp_phone_number|default:""}}', '{{profile.email_id|default:""}}')" style="font-weight: 600;">
+                        <i class="bx bx-phone"></i> Contact
+                      </button>
+                      <button type="button" class="shortlist-btn border-solid border-[1px] py-2.5 px-5 rounded-3xl poppins transition ease-in-out" 
+                              onclick="toggleShortlist({{profile.id}})" 
+                              data-profile-id="{{profile.id}}"
+                              style="font-weight: 600; {% if profile.is_shortlisted %}border-[#f97718]; background: #f97718; color: #fff;{% else %}border-gray-400; background: transparent; color: #666;{% endif %}">
+                        <i class="bx {% if profile.is_shortlisted %}bxs-heart{% else %}bx-heart{% endif %}"></i> 
+                        <span class="shortlist-text">{% if profile.is_shortlisted %}Shortlisted{% else %}Shortlist{% endif %}</span>
+                      </button>
                     </div>
-                    <!-- <div class="flex mb-2 items-center">
-                      <h3 class="font-medium poppins me-2 w-1/2">Is Manglik:</h3>
-                      <span class="poppins w-1/2">{{profile.is_manglik}}</span>
-                    </div> -->
-                    <!-- <div class="flex mb-2 items-center">
-                      <h3 class="font-medium poppins me-2 w-1/2">Gender:</h3>
-                      <span class="poppins w-1/2">{{profile.gender}}</span>
-                    </div> -->
-                    <!-- <div class="flex mb-2 items-center">
-                      <h3 class="font-medium poppins me-2 w-1/2">Occupation:</h3>
-                      <span class="poppins w-1/2">{{</span>
-                    </div>
-                    <div class="flex mb-2 items-center">
-                      <h3 class="font-medium poppins me-2 w-1/2">Annual Income:</h3>
-                      <span class="poppins w-1/2">Annual Income</span>
-                    </div>  -->
+                    {% endif %}
                   </div>
                 </div>
               </div>
@@ -428,13 +430,40 @@
       const profiles = data.profiles;
       const paymentRequired = data.payment_required || false;
 
+      // Show/hide payment banner based on payment status
+      const paymentBanner = document.querySelector('.payment-verification-banner');
+      if (paymentBanner) {
+        if (paymentRequired) {
+          paymentBanner.style.display = 'block';
+        } else {
+          paymentBanner.style.display = 'none';
+        }
+      }
+
       // // Update the profile list
       profileList.innerHTML = ''; // Clear current profiles
+      
+      if (profiles.length === 0) {
+        profileList.innerHTML = `
+          <div class="col-span-2 mx-3 mb-3">
+            <div class="bg-white p-8 rounded-lg text-center">
+              <i class="bx bx-user-x" style="font-size: 64px; color: #ccc; margin-bottom: 20px;"></i>
+              <h3 class="text-2xl font-semibold poppins mb-2" style="color: #666;">No Profiles Found</h3>
+              <p class="poppins mb-4" style="color: #999;">No profiles match your filter criteria. Please try different filters.</p>
+            </div>
+          </div>
+        `;
+        return;
+      }
+      
       profiles.forEach((profile) => {
           const blurStyle = paymentRequired ? 'style="filter: blur(5px); pointer-events: none; opacity: 0.6;"' : '';
-          const blurClass = paymentRequired ? 'profile-blurred' : '';
+          const isShortlisted = profile.is_shortlisted || false;
+          const shortlistBtnStyle = isShortlisted ? 'border-[#f97718]; background: #f97718; color: #fff;' : 'border-gray-400; background: transparent; color: #666;';
+          const shortlistIcon = isShortlisted ? 'bxs-heart' : 'bx-heart';
+          const shortlistText = isShortlisted ? 'Shortlisted' : 'Shortlist';
           const profileCard = `
-              <div class="mx-3 mb-3 ${blurClass}">
+              <div class="mx-3 mb-3" style="position: relative;">
                 <div class="grid lg:grid-cols-3 grid-cols-1 items-center bg-white p-2" ${blurStyle}>
                   <div class="mx-3">
                     <img src="${profile.marriage_profile_pic}" class="img-fluid w-full m-auto border-2 p-2 mb-2">
@@ -481,6 +510,20 @@
                       <h3 class="font-medium poppins me-2 w-1/2">Phone Number:</h3>
                       <span class="poppins w-1/2">${profile.phone_number}</span>
                     </div>
+                          ${!paymentRequired ? `
+                          <div class="flex mb-2 items-center justify-center mt-4 gap-2">
+                            <button type="button" class="border-solid border-[1px] border-[#f97718] py-2.5 px-5 rounded-3xl bg-[#f97718] text-[#fff] poppins hover:bg-transparent hover:text-[#f97718] transition ease-in-out contact-btn" onclick="showContactModal('${profile.id}', '${profile.candidate_name}', '${profile.phone_number}', '${profile.whatsapp_phone_number || ''}', '${profile.email_id || ''}')" style="font-weight: 600;">
+                              <i class="bx bx-phone"></i> Contact
+                            </button>
+                            <button type="button" class="shortlist-btn border-solid border-[1px] py-2.5 px-5 rounded-3xl poppins transition ease-in-out" 
+                                    onclick="toggleShortlist(${profile.id})" 
+                                    data-profile-id="${profile.id}"
+                                    style="font-weight: 600; ${shortlistBtnStyle}">
+                              <i class="bx ${shortlistIcon}"></i> 
+                              <span class="shortlist-text">${shortlistText}</span>
+                            </button>
+                          </div>
+                          ` : ''}
                   </div>
                 </div>
             </div>
@@ -559,6 +602,65 @@
     //         profileList.insertAdjacentHTML('beforeend', profileCard);
     //     });
     // });
+    
+    // Shortlist functionality
+    async function toggleShortlist(profileId) {
+      const btn = document.querySelector(`.shortlist-btn[data-profile-id="${profileId}"]`);
+      if (!btn) return;
+      
+      const icon = btn.querySelector('i');
+      const text = btn.querySelector('.shortlist-text');
+      
+      try {
+        const response = await fetch(`/dashboard/toggle_shortlist/${profileId}/`, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          if (data.is_shortlisted) {
+            btn.style.borderColor = '#f97718';
+            btn.style.background = '#f97718';
+            btn.style.color = '#fff';
+            icon.className = 'bx bxs-heart';
+            text.textContent = 'Shortlisted';
+          } else {
+            btn.style.borderColor = 'gray';
+            btn.style.background = 'transparent';
+            btn.style.color = '#666';
+            icon.className = 'bx bx-heart';
+            text.textContent = 'Shortlist';
+          }
+          
+          // Show toast notification
+          showToast(data.message, 'success');
+        } else {
+          showToast(data.error || 'Failed to update shortlist', 'error');
+        }
+      } catch (error) {
+        console.error('Error toggling shortlist:', error);
+        showToast('An error occurred. Please try again.', 'error');
+      }
+    }
+    
+    function showToast(message, type) {
+      const toast = document.createElement('div');
+      toast.className = `alert alert-${type === 'success' ? 'success' : 'danger'} poppins`;
+      toast.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 300px; padding: 15px 20px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s';
+        setTimeout(() => toast.remove(), 300);
+      }, 3000);
+    }
   </script>
 </body>
 </html>

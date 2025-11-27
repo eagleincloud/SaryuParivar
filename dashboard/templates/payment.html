@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="{% static 'images/saryu-parivaar-logo.png' %}">
+  <link rel="icon" type="image/x-icon" href="/media/saryu-parivaar-logo.png?v=4">
   <title>Saryu Parivar - Candidate Form</title>
   <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css"/>
   <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
@@ -31,55 +31,18 @@
             <div class="simplebar-content-wrapper">
               <div class="simplebar-content mm-active">
                 <div class="sidebar-header">
-                  <div>
-                    <img src="{% static 'images/saryu-parivaar-logo.png' %}" class="logo w-36">
+                  <div style="position: relative; display: inline-block; padding: 12px; background: radial-gradient(circle, rgba(249, 119, 24, 0.15) 0%, transparent 75%); border-radius: 50%; box-shadow: 0 0 30px rgba(249, 119, 24, 0.2);">
+                    <div style="position: relative; border-radius: 50%; overflow: hidden; padding: 4px; background: linear-gradient(135deg, rgba(249, 119, 24, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);">
+                      <img src="/media/saryu-parivaar-logo.png?v=4" class="logo w-36" style="max-width: 200px; height: auto; border-radius: 50%; display: block; filter: drop-shadow(0 4px 12px rgba(249, 119, 24, 0.3)); position: relative; z-index: 1;" alt="Saryu Parivar Logo">
+                      <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%; box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.6), inset 0 0 60px rgba(249, 119, 24, 0.2); pointer-events: none; z-index: 2;"></div>
+                      <div style="position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; border-radius: 50%; background: linear-gradient(135deg, rgba(249, 119, 24, 0.4), rgba(255, 140, 66, 0.2), rgba(249, 119, 24, 0.4)); filter: blur(8px); z-index: 0; opacity: 0.7;"></div>
+                    </div>
                   </div>
                   <div class="toggle-icon m-auto">
                     <i class="bx bx-arrow-to-left" id="btn"></i>
                   </div>
                 </div>
-                <ul class="metisMenu mm-show" id="menu">
-                  <!-- <li class="mm-active">
-                    <a href="{% url 'all_profiles' %}">
-                      <div class="parent-icon">
-                        <i class="bx bxs-dashboard"></i>
-                      </div>
-                      <div class="menu-title">
-                        <span>Dashboard</span>
-                      </div>
-                    </a>
-                  </li> -->
-                  <li>
-                    <a class="has-arrow">
-                      <div class="parent-icon">
-                        <i class="bx bx-user"></i>
-                      </div>
-                      <div class="menu-title">
-                        <span>Matrimonial</span>
-                      </div>
-                    </a>
-                    <ul class="mm-collapse">
-                      <li>
-                        <a href="{% url 'all_profiles' %}">
-                          <i class='bx bx-right-arrow-alt'></i>
-                          All Profiles
-                        </a>
-                      </li>
-                      <li>
-                        <a href="{% url 'profile' %}">
-                          <i class='bx bx-right-arrow-alt'></i>
-                          My Profile
-                        </a>
-                      </li>
-                      <li>
-                        <a href="{% url 'payment' %}">
-                          <i class='bx bx-right-arrow-alt'></i>
-                          Payment
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                {% include 'includes/sidebar.html' %}
               </div>              
             </div>
           </div>
@@ -140,7 +103,7 @@
             <h2 class="text-4xl font-medium montserrat text-center mb-5">Edit Profile</h2>
             <div class="block sm:flex">
                 <div class="mx-3 mb-3 w-full">
-                  <img src="{% static 'images/qr_code.jpeg' %}" alt="Candidate Profile" width="200px">
+                  <img src="/media/qr_code.jpeg?v=4" alt="Candidate Profile" width="200px">
                 </div>
             </div>
         </div>
@@ -232,30 +195,113 @@
                 {% endif %}
                 
                 {% if not payment_done or not payment_transaction or payment_transaction.payment_status != 'completed' %}
-                <div class="text-center mb-4">
-                    <div class="d-inline-block p-4" style="background: linear-gradient(135deg, #fff8e1 0%, #ffe082 100%); border-radius: 20px; box-shadow: 0 8px 24px rgba(249, 119, 24, 0.2);">
-                        <img 
-                        src="{% static 'images/qr_code.jpeg' %}" 
-                        alt="Payment QR Code"
-                        class="img-fluid"
-                        style="max-width: 350px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-                    </div>
+                <!-- Payment Options Tabs -->
+                <div class="mb-4">
+                    <ul class="nav nav-tabs justify-content-center poppins" id="paymentTabs" role="tablist" style="border-bottom: 2px solid #ffecce;">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active poppins" id="upi-tab" data-bs-toggle="tab" data-bs-target="#upi-payment" type="button" role="tab" style="color: #f97718; font-weight: 600; border: none; background: transparent; padding: 12px 20px;">
+                                <i class="bx bx-qr-scan"></i> UPI Payment
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link poppins" id="bank-tab" data-bs-toggle="tab" data-bs-target="#bank-payment" type="button" role="tab" style="color: #f97718; font-weight: 600; border: none; background: transparent; padding: 12px 20px;">
+                                <i class="bx bx-building"></i> Bank Transfer
+                            </button>
+                        </li>
+                    </ul>
                 </div>
                 
-                <div class="text-center mb-4">
-                    <div class="alert alert-info poppins" style="background: #ffecce; border: 2px solid #f97718; color: #f97718; border-radius: 12px; padding: 15px; display: inline-block;">
-                        <strong style="font-size: 18px;">Registration Fee:</strong>
-                        <span style="font-size: 24px; font-weight: 700; margin-left: 10px;">₹{% if payment_amount %}{{ payment_amount|floatformat:2 }}{% else %}500.00{% endif %}</span>
+                <div class="tab-content" id="paymentTabContent">
+                    <!-- UPI Payment Tab -->
+                    <div class="tab-pane fade show active" id="upi-payment" role="tabpanel">
+                        <div class="text-center mb-4">
+                            <div class="d-inline-block p-4" style="background: linear-gradient(135deg, #fff8e1 0%, #ffe082 100%); border-radius: 20px; box-shadow: 0 8px 24px rgba(249, 119, 24, 0.2);">
+                                <img 
+                                src="/media/qr_code.jpeg?v=4" 
+                                alt="Payment QR Code"
+                                class="img-fluid"
+                                style="max-width: 350px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);"
+                                onerror="this.src='/media/qr_code.jpeg?v=' + Date.now();">
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mb-4">
+                            <div class="alert alert-info poppins" style="background: #ffecce; border: 2px solid #f97718; color: #f97718; border-radius: 12px; padding: 15px; display: inline-block;">
+                                <strong style="font-size: 18px;">Registration Fee:</strong>
+                                <span style="font-size: 24px; font-weight: 700; margin-left: 10px;">₹{% if payment_amount %}{{ payment_amount|floatformat:2 }}{% else %}500.00{% endif %}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mb-4">
+                            <p class="poppins mb-2" style="color: #333; font-size: 16px; font-weight: 600;">
+                                <i class="bx bx-credit-card"></i> UPI ID:
+                            </p>
+                            <p class="poppins mb-0" style="color: #f97718; font-size: 20px; font-weight: 700; background: #ffecce; padding: 10px 20px; border-radius: 10px; display: inline-block;">
+                                yespay.oats9425081010@yesbankltd
+                            </p>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="text-center mb-4">
-                    <p class="poppins mb-2" style="color: #333; font-size: 16px; font-weight: 600;">
-                        <i class="bx bx-credit-card"></i> UPI ID:
-                    </p>
-                    <p class="poppins mb-0" style="color: #f97718; font-size: 20px; font-weight: 700; background: #ffecce; padding: 10px 20px; border-radius: 10px; display: inline-block;">
-                        adityagtiwari92-1@okicici
-                    </p>
+                    
+                    <!-- Bank Transfer Tab -->
+                    <div class="tab-pane fade" id="bank-payment" role="tabpanel">
+                        <div class="bg-white p-5 rounded-lg" style="border: 2px solid #ffecce; border-radius: 15px;">
+                            <h3 class="text-2xl font-bold poppins mb-4 text-center" style="color: #f97718;">
+                                <i class="bx bx-building"></i> Bank Transfer Details
+                            </h3>
+                            
+                            <div class="mb-4">
+                                <div class="alert alert-info poppins" style="background: #ffecce; border: 2px solid #f97718; color: #f97718; border-radius: 12px; padding: 15px; display: inline-block; width: 100%;">
+                                    <strong style="font-size: 18px;">Registration Fee:</strong>
+                                    <span style="font-size: 24px; font-weight: 700; margin-left: 10px;">₹{% if payment_amount %}{{ payment_amount|floatformat:2 }}{% else %}500.00{% endif %}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="p-3" style="background: #fff8e1; border-radius: 10px; border-left: 4px solid #f97718;">
+                                        <label class="poppins mb-1 d-block" style="color: #666; font-size: 12px; font-weight: 600;">Bank Name</label>
+                                        <p class="poppins mb-0" style="color: #333; font-size: 16px; font-weight: 700;">ARIHANT URBAN CO-OPERATIVE BANK LTD.</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="p-3" style="background: #fff8e1; border-radius: 10px; border-left: 4px solid #f97718;">
+                                        <label class="poppins mb-1 d-block" style="color: #666; font-size: 12px; font-weight: 600;">IFSC Code</label>
+                                        <p class="poppins mb-0" style="color: #333; font-size: 16px; font-weight: 700;">HDFCOCACOBL</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="p-3" style="background: #fff8e1; border-radius: 10px; border-left: 4px solid #f97718;">
+                                        <label class="poppins mb-1 d-block" style="color: #666; font-size: 12px; font-weight: 600;">Account Number</label>
+                                        <p class="poppins mb-0" style="color: #333; font-size: 16px; font-weight: 700;">001100201003768</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="p-3" style="background: #fff8e1; border-radius: 10px; border-left: 4px solid #f97718;">
+                                        <label class="poppins mb-1 d-block" style="color: #666; font-size: 12px; font-weight: 600;">Account Type</label>
+                                        <p class="poppins mb-0" style="color: #333; font-size: 16px; font-weight: 700;">Savings Account</p>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="p-3" style="background: #fff8e1; border-radius: 10px; border-left: 4px solid #f97718;">
+                                        <label class="poppins mb-1 d-block" style="color: #666; font-size: 12px; font-weight: 600;">Bank Address</label>
+                                        <p class="poppins mb-0" style="color: #333; font-size: 14px;">Abhay Prashal, 10, Race Course Road, INDORE - 452 003</p>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="p-3" style="background: #fff8e1; border-radius: 10px; border-left: 4px solid #f97718;">
+                                        <label class="poppins mb-1 d-block" style="color: #666; font-size: 12px; font-weight: 600;">Account Holder Name</label>
+                                        <p class="poppins mb-0" style="color: #333; font-size: 16px; font-weight: 700;">SARYURARIN BRAHMAN SAAB SEWA SANSHTHA</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 p-3" style="background: #e8f5e9; border-radius: 10px; border: 1px solid #4caf50;">
+                                <p class="poppins mb-0" style="color: #2e7d32; font-size: 14px;">
+                                    <i class="bx bx-info-circle"></i> <strong>Note:</strong> After making the bank transfer, please upload the payment proof (cheque copy or transaction screenshot) below for faster verification.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 {% endif %}
                 
@@ -269,7 +315,8 @@
                             <i class="bx bx-upload"></i> Upload Payment Proof (Optional)
                         </label>
                         <input type="file" name="payment_proof" id="payment_proof" accept="image/*" class="form-control poppins" style="border: 2px dashed #f97718; border-radius: 12px; padding: 15px; background: #fff8e1;">
-                        <small class="text-muted poppins mt-2 d-block">You can upload a screenshot or photo of your payment confirmation (optional). You can also upload it later from your dashboard.</small>
+                        <small class="text-muted poppins mt-2 d-block">You can upload a screenshot or photo of your payment confirmation (optional). Maximum file size: 5MB. You can also upload it later from your dashboard.</small>
+                        <div id="payment-image-size-error" class="alert alert-danger mt-2 poppins" style="display: none; font-size: 12px; padding: 8px; border-radius: 8px; background: #fee; border: 1px solid #fcc;"></div>
                     </div>
                     
                     <div id="payment_status_message" class="alert" style="display: none; border-radius: 10px;"></div>
@@ -315,6 +362,8 @@
       const formData = new FormData(form);
       const statusDiv = document.getElementById('payment_status_message');
       const submitBtn = document.getElementById('submit_payment_btn');
+      const imageSizeError = document.getElementById('payment-image-size-error');
+      const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
       
       // Check if file is selected (optional)
       const fileInput = document.getElementById('payment_proof');
@@ -323,6 +372,44 @@
         statusDiv.textContent = 'Please select a payment proof file to upload.';
         statusDiv.style.display = 'block';
         return;
+      }
+      
+      // Validate image size
+      const file = fileInput.files[0];
+      if (file && file.size > MAX_IMAGE_SIZE) {
+        const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+        if (imageSizeError) {
+          imageSizeError.innerHTML = `<i class="bx bx-error-circle"></i> Image file is too large (${sizeInMB} MB). Maximum allowed size is 5 MB. Please select a smaller image.`;
+          imageSizeError.style.display = 'block';
+          imageSizeError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        fileInput.value = ''; // Clear the file input
+        return;
+      } else {
+        // Hide error if file is valid
+        if (imageSizeError) {
+          imageSizeError.style.display = 'none';
+        }
+      }
+      
+      // Add file size validation on change
+      if (fileInput) {
+        fileInput.addEventListener('change', function(e) {
+          const selectedFile = e.target.files[0];
+          if (selectedFile && selectedFile.size > MAX_IMAGE_SIZE) {
+            const sizeInMB = (selectedFile.size / (1024 * 1024)).toFixed(2);
+            if (imageSizeError) {
+              imageSizeError.innerHTML = `<i class="bx bx-error-circle"></i> Image file is too large (${sizeInMB} MB). Maximum allowed size is 5 MB. Please select a smaller image.`;
+              imageSizeError.style.display = 'block';
+              imageSizeError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+            e.target.value = ''; // Clear the file input
+          } else {
+            if (imageSizeError) {
+              imageSizeError.style.display = 'none';
+            }
+          }
+        });
       }
       
       submitBtn.disabled = true;

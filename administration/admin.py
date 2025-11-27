@@ -277,11 +277,20 @@ def custom_index(request, extra_context=None):
 
 admin.site.index = custom_index
 
+class CommitteeMemberAdmin(admin.ModelAdmin):
+    list_display = ('name', 'designation', 'phone_number', 'email', 'is_active', 'display_order')
+    list_filter = ('is_active', 'designation')
+    search_fields = ('name', 'designation', 'phone_number', 'email')
+    fields = ('name', 'designation', 'phone_number', 'email', 'address', 'photo', 'is_active', 'display_order', 'created_at', 'updated_at')
+    readonly_fields = ('created_at', 'updated_at')
+    list_editable = ('display_order', 'is_active')
+
 admin.site.register(models.CustomUser, UserAdmin)
 admin.site.register(models.SamajGallery, SamajGalleryAdmin)
 admin.site.register(models.SamajEvent, SamajEventAdmin)
 admin.site.register(models.PaymentTransaction, PaymentTransactionAdmin)
 admin.site.register(models.OTPRequestCounter, OTPRequestCounterAdmin)
+admin.site.register(models.CommitteeMember, CommitteeMemberAdmin)
 # admin.site.register(models.UserOTP)
 admin.site.register(models.Promotion)
 admin.site.register(models.Testimonial)

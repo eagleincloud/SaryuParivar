@@ -76,8 +76,10 @@ class CandidateProfile(DateFields):
         ('Female', 'Female')
     ]
 
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    candidate_name = models.CharField(max_length=500) 
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='candidate_profiles', help_text='User who created this profile (can create multiple profiles for family members)')
+    candidate_name = models.CharField(max_length=500)
+    relationship_to_user = models.CharField(max_length=100, blank=True, null=True, help_text='Relationship to profile creator (e.g., Son, Daughter, Self, Brother, Sister, etc.)')
+    is_shared = models.BooleanField(default=True, help_text='Share this profile in matrimonial listings') 
     gender = models.CharField(max_length=6, choices=GENDER_CHOICES, default='Male')
     height = models.CharField(max_length=50)
     color = models.CharField(max_length=10, blank=True, null=True)
@@ -96,8 +98,8 @@ class CandidateProfile(DateFields):
     city = models.CharField(max_length=500, null=True)
     current_address =  models.TextField()
     pincode = models.CharField(max_length=6, blank=True, null=True)
-    phone_number = models.CharField(max_length=10, unique=True)
-    whatsapp_phone_number = models.CharField(max_length=10, unique=True, blank=True, null=True)
+    phone_number = models.CharField(max_length=10)
+    whatsapp_phone_number = models.CharField(max_length=10, blank=True, null=True)
     email_id = models.EmailField(blank=True, null=True)
     partner_preference = models.CharField(max_length=500, blank=True, null=True)
     if_candidate_is_widow_widower_divorced_or_disabled = models.CharField(max_length=500, blank=True, null=True)
@@ -119,3 +121,17 @@ class CandidateProfile(DateFields):
 
     def __str__(self):
         return f'{self.candidate_name}'
+
+
+class ShortlistedProfile(DateFields):
+    """Model to track profiles shortlisted by users"""
+    user = models.ForeignKey('administration.CustomUser', on_delete=models.CASCADE, related_name='shortlisted_profiles')
+    profile = models.ForeignKey(CandidateProfile, on_delete=models.CASCADE, related_name='shortlisted_by')
+    
+    class Meta:
+        verbose_name = 'Shortlisted Profile'
+        verbose_name_plural = 'Shortlisted Profiles'
+        unique_together = ('user', 'profile')  # Prevent duplicate shortlists
+    
+    def __str__(self):
+        return f'{self.user.show_username()} shortlisted {self.profile.candidate_name}'

@@ -1,0 +1,278 @@
+<!doctype html>
+{% load static %}
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/media/saryu-parivaar-logo.png?v=4">
+  <title>Saryu Parivar - My Shortlisted Profiles</title>
+  <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css"/>
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/3.0.7/metisMenu.min.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body class=" bg-[#ffecce]">
+
+  <!-- dashboard -->
+  <section class="wrapper">
+    <div class="sidebar_wrapper" data-simplebar>
+      <div class="simplebar-wrapper">
+        <div class="simplebar-height-auto-observer-wrapper">
+          <div class="simplebar-height-auto-observer"></div>
+        </div>
+        <div class="simplebar-mask">
+          <div class="simplebar-offset">
+            <div class="simplebar-content-wrapper">
+              <div class="simplebar-content mm-active">
+                <div class="sidebar-header">
+                  <div style="position: relative; display: inline-block; padding: 12px; background: radial-gradient(circle, rgba(249, 119, 24, 0.15) 0%, transparent 75%); border-radius: 50%; box-shadow: 0 0 30px rgba(249, 119, 24, 0.2);">
+                    <div style="position: relative; border-radius: 50%; overflow: hidden; padding: 4px; background: linear-gradient(135deg, rgba(249, 119, 24, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);">
+                      <img src="/media/saryu-parivaar-logo.png?v=4" class="logo w-36" style="max-width: 200px; height: auto; border-radius: 50%; display: block; filter: drop-shadow(0 4px 12px rgba(249, 119, 24, 0.3)); position: relative; z-index: 1;" alt="Saryu Parivar Logo">
+                      <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%; box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.6), inset 0 0 60px rgba(249, 119, 24, 0.2); pointer-events: none; z-index: 2;"></div>
+                      <div style="position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; border-radius: 50%; background: linear-gradient(135deg, rgba(249, 119, 24, 0.4), rgba(255, 140, 66, 0.2), rgba(249, 119, 24, 0.4)); filter: blur(8px); z-index: 0; opacity: 0.7;"></div>
+                    </div>
+                  </div>
+                  <div class="toggle-icon m-auto">
+                    <i class="bx bx-arrow-to-left" id="btn"></i>
+                  </div>
+                </div>
+                {% include 'includes/sidebar.html' %}
+              </div>              
+            </div>
+          </div>
+        </div>
+        <div class="simplebar-placeholder"></div>
+      </div>
+      <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+        <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+      </div>
+      <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+        <div class="simplebar-scrollbar" style="height: 83px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
+      </div>
+    </div>
+    <header>
+      <div class="topbar d-flex align-items-center">
+        <nav class="navbar navbar-expand">
+          <div class="search-bar flex-grow-1"></div>
+          <div class="user-box dropdown">
+            <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="{{user_avatar|default:''}}" class="user-img" alt="user avatar" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+              <div class="user-img" style="display:none; width:40px; height:40px; border-radius:50%; background:#f97718; color:white; text-align:center; line-height:40px; font-weight:bold;">{{username|first|upper|default:'U'}}</div>
+              <div class="user-info ps-3">
+                <p class="user-name mb-0">{{username}}</p>
+              </div>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a href="{% url 'logout_user' %}" class="dropdown-item"><i class='bx bx-log-out-circle'></i> Logout</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <div class="page_wrapper">
+      <div class="page-content">
+        <!-- PAGE TYPE: SHORTLISTED PROFILES LIST -->
+        <div style="background: linear-gradient(135deg, #2196f3 0%, #21cbf3 100%); padding: 20px; margin: 20px; border-radius: 10px; text-align: center; margin-bottom: 30px; border: 5px solid blue;">
+          <h1 style="color: white; font-size: 32px; font-weight: bold; margin: 0;">❤️ MY SHORTLISTED PROFILES PAGE - VIEW YOUR FAVORITES</h1>
+          <p style="color: rgba(255,255,255,0.9); margin: 10px 0 0 0; font-size: 18px;">This is the Shortlisted Profiles List Page - URL: /dashboard/shortlisted_profiles/</p>
+          <p style="color: yellow; margin: 10px 0 0 0; font-weight: bold;">If you see this, you are on the CORRECT Shortlisted Profiles page!</p>
+        </div>
+        <div class="mx-3 mb-4">
+          <h1 class="text-4xl font-medium montserrat mb-0">My Shortlisted Profiles - View Your Favorites</h1>
+          <p class="poppins text-gray-600 mb-4 mt-2">Profiles you've shortlisted for potential matches</p>
+        </div>
+
+        {% if profiles %}
+          <div class="grid lg:grid-cols-2 gap-4">
+            {% for profile in profiles %}
+              <div class="mx-3 mb-3">
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300" style="border: 2px solid #f97718;">
+                  <div class="p-4">
+                    <div class="grid lg:grid-cols-3 grid-cols-1 items-center">
+                      <div class="text-center mb-3 lg:mb-0">
+                        {% if profile.safe_image_url %}
+                          <img src="{{profile.safe_image_url}}" alt="{{profile.candidate_name}}" class="img-fluid rounded-lg mx-auto mb-2" style="width: 150px; height: 200px; object-fit: cover; border: 3px solid #f97718;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                          <div class="rounded-lg mx-auto mb-2 d-flex align-items-center justify-content-center" style="width: 150px; height: 200px; background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%); display: none;">
+                            <i class="bx bx-user" style="font-size: 60px; color: white;"></i>
+                          </div>
+                        {% else %}
+                          <div class="rounded-lg mx-auto mb-2 d-flex align-items-center justify-content-center" style="width: 150px; height: 200px; background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%);">
+                            <i class="bx bx-user" style="font-size: 60px; color: white;"></i>
+                          </div>
+                        {% endif %}
+                        <h3 class="text-xl font-semibold poppins mb-1">{{profile.candidate_name}}</h3>
+                      </div>
+                      <div class="col-span-2 poppins" style="font-size: 14px; color: #666;">
+                        <div class="mb-2"><strong>Gender:</strong> {{profile.gender|default:"Not specified"}}</div>
+                        <div class="mb-2"><strong>Age:</strong> {{profile.age|default:"N/A"}} {% if profile.age %}years{% endif %}</div>
+                        <div class="mb-2"><strong>Father:</strong> {{profile.father_name|default:"Not specified"}}</div>
+                        <div class="mb-2"><strong>Education:</strong> {{profile.education|truncatewords:8|default:"Not specified"}}</div>
+                        <div class="mb-2"><strong>Occupation:</strong> {{profile.occupation|default:"Not specified"}}</div>
+                        {% if profile.city %}
+                          <div class="mb-2"><strong>City:</strong> {{profile.city}}</div>
+                        {% endif %}
+                        {% if profile.height %}
+                          <div class="mb-2"><strong>Height:</strong> {{profile.height}}</div>
+                        {% endif %}
+                        {% if payment_done %}
+                        <div class="flex gap-2 mt-4">
+                          <button type="button" class="border-solid border-[1px] border-[#f97718] py-2 px-4 rounded-lg bg-[#f97718] text-white poppins hover:bg-transparent hover:text-[#f97718] transition ease-in-out" onclick="showContactModal('{{profile.id}}', '{{profile.candidate_name}}', '{{profile.phone_number}}', '{{profile.whatsapp_phone_number|default:""}}', '{{profile.email_id|default:""}}')" style="font-weight: 600; font-size: 14px;">
+                            <i class="bx bx-phone"></i> Contact
+                          </button>
+                          <button type="button" class="border-solid border-[1px] border-red-400 py-2 px-4 rounded-lg bg-red-400 text-white poppins hover:bg-transparent hover:text-red-400 transition ease-in-out" onclick="removeFromShortlist({{profile.id}})" style="font-weight: 600; font-size: 14px;">
+                            <i class="bx bx-x"></i> Remove
+                          </button>
+                        </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="mx-3 mb-3">
+            <div class="bg-white p-8 rounded-lg text-center">
+              <i class="bx bx-heart" style="font-size: 64px; color: #ccc; margin-bottom: 20px;"></i>
+              <h3 class="text-2xl font-semibold poppins mb-2" style="color: #666;">No Shortlisted Profiles</h3>
+              <p class="poppins mb-4" style="color: #999;">You haven't shortlisted any profiles yet. Browse profiles and shortlist the ones you're interested in.</p>
+              <a href="{% url 'all_profiles' %}" class="btn-modern poppins inline-block" style="font-size: 16px; padding: 12px 30px; text-decoration: none;">
+                <i class="bx bx-search"></i> Browse Profiles
+              </a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    <footer class="bg-black py-2 text-white poppins">
+      <p class="text-center">Copyright &copy; 2024 Saryu Parivar. All Rights Reserved.</p>
+      <p class="text-center mb-0">Proudly designed and developed by Eagle in Cloud</p>
+    </footer>
+  </section>
+  
+  <!-- Contact Modal -->
+  <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content" style="border-radius: 20px; border: none; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+        <div class="modal-header" style="border-bottom: 2px solid #ffecce; background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%); border-radius: 20px 20px 0 0;">
+          <h5 class="modal-title montserrat text-white" id="contactModalLabel">Contact Details for <span id="contactProfileName"></span></h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4 text-center">
+          <p class="poppins text-lg mb-4" style="color: #333;">You can contact <span id="contactProfileNameBody" class="font-semibold" style="color: #f97718;"></span> using the details below:</p>
+          <div class="contact-info-grid grid grid-cols-1 gap-4">
+            <a id="contactPhoneLink" href="#" class="contact-link d-flex align-items-center justify-content-center p-3 rounded-lg bg-[#ffecce] text-[#f97718] poppins font-semibold hover:bg-[#f97718] hover:text-white transition ease-in-out" style="text-decoration: none; box-shadow: 0 2px 8px rgba(249, 119, 24, 0.1);">
+              <i class="bx bx-phone-call me-2" style="font-size: 24px;"></i> <span id="contactPhoneNumber"></span>
+            </a>
+            <a id="contactWhatsappLink" href="#" target="_blank" class="contact-link d-flex align-items-center justify-content-center p-3 rounded-lg bg-[#e6ffed] text-[#25d366] poppins font-semibold hover:bg-[#25d366] hover:text-white transition ease-in-out" style="text-decoration: none; box-shadow: 0 2px 8px rgba(37, 211, 102, 0.1);">
+              <i class="bx bxl-whatsapp me-2" style="font-size: 24px;"></i> <span id="contactWhatsappNumber"></span>
+            </a>
+            <a id="contactEmailLink" href="#" class="contact-link d-flex align-items-center justify-content-center p-3 rounded-lg bg-[#e0f2f7] text-[#007bff] poppins font-semibold hover:bg-[#007bff] hover:text-white transition ease-in-out" style="text-decoration: none; box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);">
+              <i class="bx bx-envelope me-2" style="font-size: 24px;"></i> <span id="contactEmail"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/3.0.7/metisMenu.min.js"></script>
+  <script src="https://unpkg.com/boxicons@2.1.2/dist/boxicons.js"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+  
+  <script>
+    // Initialize SimpleBar for sidebar scrolling
+    document.addEventListener('DOMContentLoaded', function() {
+      const sidebarWrapper = document.querySelector('.sidebar_wrapper[data-simplebar]');
+      if (sidebarWrapper && !sidebarWrapper.simpleBarInstance) {
+        new SimpleBar(sidebarWrapper, {
+          autoHide: false,
+          scrollbarMinSize: 100
+        });
+        sidebarWrapper.simpleBarInstance = true;
+      }
+      
+      // Initialize MetisMenu
+      if (typeof MetisMenu !== 'undefined') {
+        new MetisMenu('#menu');
+      }
+    });
+    
+    function showContactModal(profileId, name, phone, whatsapp, email) {
+      document.getElementById('contactProfileName').textContent = name;
+      document.getElementById('contactProfileNameBody').textContent = name;
+
+      const phoneLink = document.getElementById('contactPhoneLink');
+      const whatsappLink = document.getElementById('contactWhatsappLink');
+      const emailLink = document.getElementById('contactEmailLink');
+
+      if (phone) {
+        phoneLink.href = `tel:${phone}`;
+        document.getElementById('contactPhoneNumber').textContent = phone;
+        phoneLink.style.display = 'flex';
+      } else {
+        phoneLink.style.display = 'none';
+      }
+
+      if (whatsapp) {
+        whatsappLink.href = `https://wa.me/${whatsapp}`;
+        document.getElementById('contactWhatsappNumber').textContent = whatsapp;
+        whatsappLink.style.display = 'flex';
+      } else {
+        whatsappLink.style.display = 'none';
+      }
+
+      if (email) {
+        emailLink.href = `mailto:${email}`;
+        document.getElementById('contactEmail').textContent = email;
+        emailLink.style.display = 'flex';
+      } else {
+        emailLink.style.display = 'none';
+      }
+
+      var contactModal = new bootstrap.Modal(document.getElementById('contactModal'));
+      contactModal.show();
+    }
+    
+    async function removeFromShortlist(profileId) {
+      if (!confirm('Are you sure you want to remove this profile from your shortlist?')) {
+        return;
+      }
+      
+      try {
+        const response = await fetch(`/dashboard/toggle_shortlist/${profileId}/`, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'Content-Type': 'application/json',
+          },
+        });
+        
+        const data = await response.json();
+        
+        if (data.success && !data.is_shortlisted) {
+          // Reload page to update the list
+          window.location.reload();
+        } else {
+          alert(data.error || 'Failed to remove from shortlist');
+        }
+      } catch (error) {
+        console.error('Error removing from shortlist:', error);
+        alert('An error occurred. Please try again.');
+      }
+    }
+  </script>
+</body>
+</html>
+

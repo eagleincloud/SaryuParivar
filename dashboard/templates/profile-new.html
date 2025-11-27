@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="{% static 'images/saryu-parivaar-logo.png' %}">
+  <link rel="icon" type="image/x-icon" href="/media/saryu-parivaar-logo.png?v=4">
   <title>Saryu Parivar - Candidate Form</title>
   <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css"/>
   <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
@@ -31,55 +31,18 @@
             <div class="simplebar-content-wrapper">
               <div class="simplebar-content mm-active">
                 <div class="sidebar-header">
-                  <div>
-                    <img src="{% static 'images/saryu-parivaar-logo.png' %}" class="logo w-36">
+                  <div style="position: relative; display: inline-block; padding: 12px; background: radial-gradient(circle, rgba(249, 119, 24, 0.15) 0%, transparent 75%); border-radius: 50%; box-shadow: 0 0 30px rgba(249, 119, 24, 0.2);">
+                    <div style="position: relative; border-radius: 50%; overflow: hidden; padding: 4px; background: linear-gradient(135deg, rgba(249, 119, 24, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);">
+                      <img src="/media/saryu-parivaar-logo.png?v=4" class="logo w-36" style="max-width: 200px; height: auto; border-radius: 50%; display: block; filter: drop-shadow(0 4px 12px rgba(249, 119, 24, 0.3)); position: relative; z-index: 1;" alt="Saryu Parivar Logo">
+                      <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%; box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.6), inset 0 0 60px rgba(249, 119, 24, 0.2); pointer-events: none; z-index: 2;"></div>
+                      <div style="position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; border-radius: 50%; background: linear-gradient(135deg, rgba(249, 119, 24, 0.4), rgba(255, 140, 66, 0.2), rgba(249, 119, 24, 0.4)); filter: blur(8px); z-index: 0; opacity: 0.7;"></div>
+                    </div>
                   </div>
                   <div class="toggle-icon m-auto">
                     <i class="bx bx-arrow-to-left" id="btn"></i>
                   </div>
                 </div>
-                <ul class="metisMenu mm-show" id="menu">
-                  <!-- <li class="mm-active">
-                    <a href="{% url 'all_profiles' %}">
-                      <div class="parent-icon">
-                        <i class="bx bxs-dashboard"></i>
-                      </div>
-                      <div class="menu-title">
-                        <span>Dashboard</span>
-                      </div>
-                    </a>
-                  </li> -->
-                  <li>
-                    <a class="has-arrow">
-                      <div class="parent-icon">
-                        <i class="bx bx-user"></i>
-                      </div>
-                      <div class="menu-title">
-                        <span>Matrimonial</span>
-                      </div>
-                    </a>
-                    <ul class="mm-collapse">
-                      <li>
-                        <a href="{% url 'all_profiles' %}">
-                          <i class='bx bx-right-arrow-alt'></i>
-                          All Profiles
-                        </a>
-                      </li>
-                      <li>
-                        <a href="{% url 'profile' %}">
-                          <i class='bx bx-right-arrow-alt'></i>
-                          My Profile
-                        </a>
-                      </li>
-                      <li>
-                        <a href="{% url 'payment' %}">
-                          <i class='bx bx-right-arrow-alt'></i>
-                          Payment
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                {% include 'includes/sidebar.html' %}
               </div>              
             </div>
           </div>
@@ -137,26 +100,32 @@
     <div class="page_wrapper">
       <div class="page-content">
         <div class="register-form-form bg-white p-10">
-          {% if profile_exists == True %}:
+          {% if profile_exists == True %}
               <h2 class="text-4xl font-medium montserrat text-center mb-5">Edit Profile</h2>
+              <p class="text-center poppins mb-5 text-gray-600">Update profile details for {{profile.candidate_name}}</p>
           {% else %}
-              <h2 class="text-4xl font-medium montserrat text-center mb-5">Create Profile</h2>
+              <h2 class="text-4xl font-medium montserrat text-center mb-5">Create Matrimonial Profile</h2>
+              <p class="text-center poppins mb-5 text-gray-600">Create a profile for yourself, your son, daughter, or any family member</p>
           {% endif %}
-          <!-- <h2 class="text-4xl font-medium montserrat text-center mb-5">Candidate Form</h2> -->
-          <form method="POST" action="/dashboard/my_profile/" enctype="multipart/form-data">
+          <form method="POST" action="{% if profile %}/dashboard/edit_profile/{{profile.id}}/{% else %}/dashboard/create_profile/{% endif %}" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="block sm:flex">
               {% if profile_exists == True %}:
                 <div class="mx-3 mb-3 w-full sm:w-1/2">
-                  <img src="{{form.instance.marriage_profile_pic.url}}" alt="Candidate Profile" width="200px">
+                  {% if form.instance.marriage_profile_pic %}
+                    <img src="{{form.instance.marriage_profile_pic.url|default:''}}" alt="Candidate Profile" width="200px" onerror="this.style.display='none';">
+                  {% endif %}
                 </div>
               {% endif %}
             </div>
-            <div class="block">
-              <div class="mx-3 mb-3 w-full">
-                <label for="candidate_name" class="poppins">प्रत्याशी का नाम</label>
+            <div class="block sm:flex">
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                <label for="relationship_to_user" class="poppins">Relationship <span class="text-gray-500">(Who is this profile for?)</span></label>
+                {{form.relationship_to_user}}
+              </div>
+              <div class="mx-3 mb-3 w-full sm:w-1/2">
+                <label for="candidate_name" class="poppins">प्रत्याशी का नाम (Candidate's Name)</label>
                 {{form.candidate_name}}
-                <!-- <input type="text" name="applicant-name" id="applicant-name" class="w-full p-1.5 bg-transparent border-b-[1px] border-[#000] poppins focus-visible:outline-0" placeholder="Candidate's Name" required /> -->
               </div>
             </div>
             <div class="block">

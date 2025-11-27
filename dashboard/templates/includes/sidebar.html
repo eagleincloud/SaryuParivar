@@ -1,0 +1,64 @@
+<!-- Standard Sidebar Menu - Include this in all dashboard pages -->
+<ul class="metisMenu mm-show" id="menu">
+  <li>
+    <a href="{% url 'all_profiles' %}">
+      <div class="parent-icon">
+        <i class="bx bxs-dashboard"></i>
+      </div>
+      <div class="menu-title">
+        <span>Dashboard</span>
+      </div>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'user_profile' %}">
+      <div class="parent-icon">
+        <i class="bx bx-user-circle"></i>
+      </div>
+      <div class="menu-title">
+        <span>My Profile</span>
+      </div>
+    </a>
+  </li>
+  <li>
+    <a class="has-arrow">
+      <div class="parent-icon">
+        <i class="bx bx-heart"></i>
+      </div>
+      <div class="menu-title">
+        <span>Matrimonial</span>
+      </div>
+    </a>
+    <ul class="mm-collapse">
+      <li>
+        <a href="{% url 'all_profiles' %}">
+          <i class='bx bx-right-arrow-alt'></i>
+          Browse Profiles
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'shortlisted_profiles' %}">
+          <i class='bx bx-right-arrow-alt'></i>
+          My Shortlisted Profiles
+        </a>
+      </li>
+      <li>
+        <a href="{% url 'create_profile' %}">
+          <i class='bx bx-right-arrow-alt'></i>
+          Create Matrimonial Profile
+        </a>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <a href="{% url 'payment' %}">
+      <div class="parent-icon">
+        <i class="bx bx-wallet"></i>
+      </div>
+      <div class="menu-title">
+        <span>Payment</span>
+      </div>
+    </a>
+  </li>
+</ul>
+

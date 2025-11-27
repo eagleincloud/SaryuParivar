@@ -1,0 +1,232 @@
+<!doctype html>
+{% load static %}
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="/media/saryu-parivaar-logo.png?v=4">
+  <title>Saryu Parivar - My Profiles</title>
+  <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css"/>
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/3.0.7/metisMenu.min.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body class="bg-[#ffecce]">
+
+  <!-- dashboard -->
+  <section class="wrapper">
+    <div class="sidebar_wrapper" data-simplebar>
+      <div class="simplebar-wrapper">
+        <div class="simplebar-height-auto-observer-wrapper">
+          <div class="simplebar-height-auto-observer"></div>
+        </div>
+        <div class="simplebar-mask">
+          <div class="simplebar-offset">
+            <div class="simplebar-content-wrapper">
+              <div class="simplebar-content mm-active">
+                <div class="sidebar-header">
+                  <div style="position: relative; display: inline-block; padding: 12px; background: radial-gradient(circle, rgba(249, 119, 24, 0.15) 0%, transparent 75%); border-radius: 50%; box-shadow: 0 0 30px rgba(249, 119, 24, 0.2);">
+                    <div style="position: relative; border-radius: 50%; overflow: hidden; padding: 4px; background: linear-gradient(135deg, rgba(249, 119, 24, 0.3) 0%, rgba(255, 255, 255, 0.1) 100%);">
+                      <img src="/media/saryu-parivaar-logo.png?v=4" class="logo w-36" style="max-width: 200px; height: auto; border-radius: 50%; display: block; filter: drop-shadow(0 4px 12px rgba(249, 119, 24, 0.3)); position: relative; z-index: 1;" alt="Saryu Parivar Logo">
+                      <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%; box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.6), inset 0 0 60px rgba(249, 119, 24, 0.2); pointer-events: none; z-index: 2;"></div>
+                      <div style="position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px; border-radius: 50%; background: linear-gradient(135deg, rgba(249, 119, 24, 0.4), rgba(255, 140, 66, 0.2), rgba(249, 119, 24, 0.4)); filter: blur(8px); z-index: 0; opacity: 0.7;"></div>
+                    </div>
+                  </div>
+                  <div class="toggle-icon m-auto">
+                    <i class="bx bx-arrow-to-left" id="btn"></i>
+                  </div>
+                </div>
+                {% include 'includes/sidebar.html' %}
+              </div>              
+            </div>
+          </div>
+        </div>
+        <div class="simplebar-placeholder"></div>
+      </div>
+      <div class="simplebar-track simplebar-horizontal" style="visibility: hidden;">
+        <div class="simplebar-scrollbar" style="width: 0px; display: none;"></div>
+      </div>
+      <div class="simplebar-track simplebar-vertical" style="visibility: visible;">
+        <div class="simplebar-scrollbar" style="height: 83px; transform: translate3d(0px, 0px, 0px); display: block;"></div>
+      </div>
+    </div>
+    <header>
+      <div class="topbar d-flex align-items-center">
+        <nav class="navbar navbar-expand">
+          <div class="search-bar flex-grow-1"></div>
+          <div class="user-box dropdown">
+            <a class="d-flex align-items-center nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <img src="{{user_avatar}}" class="user-img" alt="user avatar">
+              <div class="user-info ps-3">
+                <p class="user-name mb-0">{{username}}</p>
+              </div>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <a href="{% url 'logout_user' %}" class="dropdown-item"><i class='bx bx-log-out-circle'></i> Logout</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <div class="page_wrapper">
+      <div class="page-content">
+        <div class="mx-3 mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="text-4xl font-medium montserrat mb-0">My Profiles</h1>
+            <a href="{% url 'create_profile' %}" class="btn-modern poppins" style="font-size: 16px; padding: 12px 30px;">
+              <i class="bx bx-plus"></i> Create New Profile
+            </a>
+          </div>
+          <p class="poppins text-gray-600 mb-4">Manage profiles for yourself, your son, daughter, or any family member. Share profiles to make them visible in matrimonial listings.</p>
+        </div>
+
+        {% if profiles %}
+          <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-4">
+            {% for profile in profiles %}
+              <div class="mx-3 mb-3">
+                <div class="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300" style="border: 2px solid {% if profile.is_shared %}#4caf50{% else %}#ccc{% endif %};">
+                  <div class="p-4">
+                    <div class="text-center mb-3">
+                      {% if profile.safe_image_url %}
+                        <img src="{{profile.safe_image_url}}" alt="{{profile.candidate_name}}" class="img-fluid rounded-circle mx-auto mb-2" style="width: 120px; height: 120px; object-fit: cover; border: 4px solid {% if profile.is_shared %}#4caf50{% else %}#ccc{% endif %};" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div class="rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center" style="width: 120px; height: 120px; background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%); display: none;">
+                          <i class="bx bx-user" style="font-size: 60px; color: white;"></i>
+                        </div>
+                      {% else %}
+                        <div class="rounded-circle mx-auto mb-2 d-flex align-items-center justify-content-center" style="width: 120px; height: 120px; background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%);">
+                          <i class="bx bx-user" style="font-size: 60px; color: white;"></i>
+                        </div>
+                      {% endif %}
+                      <h3 class="text-xl font-semibold poppins mb-1">{{profile.candidate_name}}</h3>
+                      {% if profile.relationship_to_user %}
+                        <p class="text-sm poppins mb-2" style="color: #666;">{{profile.relationship_to_user}}</p>
+                      {% endif %}
+                      <div class="mb-3">
+                        {% if profile.is_shared %}
+                          <span class="badge bg-success poppins" style="padding: 6px 12px; border-radius: 20px;">
+                            <i class="bx bx-check-circle"></i> Shared
+                          </span>
+                        {% else %}
+                          <span class="badge bg-secondary poppins" style="padding: 6px 12px; border-radius: 20px;">
+                            <i class="bx bx-x-circle"></i> Not Shared
+                          </span>
+                        {% endif %}
+                      </div>
+                    </div>
+                    
+                    <div class="mb-3 poppins" style="font-size: 14px; color: #666;">
+                      <div class="mb-1"><strong>Gender:</strong> {{profile.gender|default:"Not specified"}}</div>
+                      <div class="mb-1"><strong>Age:</strong> {{profile.age|default:"N/A"}} {% if profile.age %}years{% endif %}</div>
+                      <div class="mb-1"><strong>Education:</strong> {{profile.education|truncatewords:5|default:"Not specified"}}</div>
+                      {% if profile.city %}
+                        <div class="mb-1"><strong>City:</strong> {{profile.city}}</div>
+                      {% endif %}
+                    </div>
+                    
+                    <div class="d-flex gap-2 flex-wrap">
+                      <a href="{% url 'edit_profile' profile.id %}" class="btn btn-sm poppins" style="background: #f97718; color: white; border: none; flex: 1; min-width: 100px;">
+                        <i class="bx bx-edit"></i> Edit
+                      </a>
+                      <a href="{% url 'toggle_profile_share' profile.id %}" class="btn btn-sm poppins" style="background: {% if profile.is_shared %}#6c757d{% else %}#4caf50{% endif %}; color: white; border: none; flex: 1; min-width: 100px;">
+                        <i class="bx {% if profile.is_shared %}bx-hide{% else %}bx-show{% endif %}"></i> {% if profile.is_shared %}Unshare{% else %}Share{% endif %}
+                      </a>
+                      <button onclick="shareProfile({{profile.id}}, '{{profile.candidate_name|escapejs}}')" class="btn btn-sm poppins" style="background: #2196f3; color: white; border: none; flex: 1; min-width: 100px;">
+                        <i class="bx bx-share-alt"></i> Share
+                      </button>
+                      <a href="{% url 'delete_profile' profile.id %}" class="btn btn-sm btn-danger poppins" onclick="return confirm('Are you sure you want to delete this profile?');" style="flex: 1; min-width: 100px;">
+                        <i class="bx bx-trash"></i> Delete
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="mx-3 mb-3">
+            <div class="bg-white p-8 rounded-lg text-center">
+              <i class="bx bx-user-plus" style="font-size: 64px; color: #ccc; margin-bottom: 20px;"></i>
+              <h3 class="text-2xl font-semibold poppins mb-2" style="color: #666;">No Profiles Created</h3>
+              <p class="poppins mb-4" style="color: #999;">Create profiles for yourself, your son, daughter, or any family member to get started.</p>
+              <a href="{% url 'create_profile' %}" class="btn-modern poppins inline-block" style="font-size: 16px; padding: 12px 30px; text-decoration: none;">
+                <i class="bx bx-plus"></i> Create Your First Profile
+              </a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    <footer class="bg-black py-2 text-white poppins">
+      <p class="text-center">Copyright &copy; 2024 Saryu Parivar. All Rights Reserved.</p>
+      <p class="text-center mb-0">Proudly designed and developed by Eagle in Cloud</p>
+    </footer>
+  </section>
+  
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/simplebar@latest/dist/simplebar.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/3.0.7/metisMenu.min.js"></script>
+  <script src="https://unpkg.com/boxicons@2.1.2/dist/boxicons.js"></script>
+  <script src="{% static 'js/script.js' %}"></script>
+  
+  <script>
+    // Initialize SimpleBar for sidebar scrolling
+    document.addEventListener('DOMContentLoaded', function() {
+      const sidebarWrapper = document.querySelector('.sidebar_wrapper[data-simplebar]');
+      if (sidebarWrapper && !sidebarWrapper.simpleBarInstance) {
+        new SimpleBar(sidebarWrapper, {
+          autoHide: false,
+          scrollbarMinSize: 100
+        });
+        sidebarWrapper.simpleBarInstance = true;
+      }
+      
+      // Initialize MetisMenu
+      if (typeof MetisMenu !== 'undefined') {
+        new MetisMenu('#menu');
+      }
+    });
+    
+    function shareProfile(profileId, candidateName) {
+      const profileUrl = `${window.location.origin}/dashboard/view_profile/${profileId}/`;
+      const shareText = `Check out ${candidateName}'s matrimonial profile on Saryu Parivar: ${profileUrl}`;
+      
+      if (navigator.share) {
+        navigator.share({
+          title: `${candidateName} - Matrimonial Profile`,
+          text: shareText,
+          url: profileUrl
+        }).catch(err => {
+          console.log('Error sharing:', err);
+          copyToClipboard(profileUrl, candidateName);
+        });
+      } else {
+        copyToClipboard(profileUrl, candidateName);
+      }
+    }
+    
+    function copyToClipboard(url, name) {
+      navigator.clipboard.writeText(url).then(() => {
+        alert(`Profile link for ${name} copied to clipboard! You can now share it.`);
+      }).catch(err => {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = url;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        alert(`Profile link for ${name} copied to clipboard! You can now share it.`);
+      });
+    }
+  </script>
+</body>
+</html>
+

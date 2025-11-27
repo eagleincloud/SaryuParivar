@@ -261,6 +261,26 @@ class Testimonial(DateFields):
         return self.made_by
 
 
+class CommitteeMember(DateFields):
+    """Model to store designated committee members of SaryuParin Brahmin Samaj"""
+    name = models.CharField(max_length=200)
+    designation = models.CharField(max_length=200, help_text='e.g., President, Secretary, Treasurer, etc.')
+    phone_number = models.CharField(max_length=10, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+    photo = models.ImageField(upload_to='committee_members', blank=True, null=True)
+    is_active = models.BooleanField(default=True, help_text='Show this member in the active committee')
+    display_order = models.PositiveIntegerField(default=0, help_text='Order in which to display (lower numbers first)')
+
+    class Meta:
+        verbose_name = 'Committee Member'
+        verbose_name_plural = 'Committee Members'
+        ordering = ['display_order', 'name']
+
+    def __str__(self):
+        return f"{self.name} - {self.designation}"
+
+
 class PaymentTransaction(DateFields):
     """Model to track payment transactions"""
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='payment_transactions')

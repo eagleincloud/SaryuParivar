@@ -46,6 +46,8 @@ def homepage(request):
                 'date_of_event': samaj_event.date_of_event.strftime('%d %b, %Y')
             } for samaj_event in samaj_event_objs
         ]
+        # Get active committee members
+        committee_members = models.CommitteeMember.objects.filter(is_active=True).order_by('display_order', 'name')
         
         # Check if this is a redirect after registration (ONLY show modal if URL parameter exists)
         registration_success = request.GET.get('registration_success') == '1'
@@ -121,6 +123,7 @@ def homepage(request):
             'samaj_events': samaj_events,
             'promotions': promotions,
             'testimonials': testimonials,
+            'committee_members': committee_members,
             'registration_success': registration_success,
             # Always provide payment variables to prevent template errors
             'payment_amount': None,

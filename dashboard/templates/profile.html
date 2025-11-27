@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/x-icon" href="{% static 'images/saryu-parivaar-logo.png' %}">
+  <link rel="icon" type="image/x-icon" href="/media/saryu-parivaar-logo.png?v=4">
   <title>Saryu Parivar - Candidate Form</title>
   <link rel="stylesheet" href="https://unpkg.com/simplebar@latest/dist/simplebar.css"/>
   <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
@@ -32,48 +32,13 @@
               <div class="simplebar-content mm-active">
                 <div class="sidebar-header">
                   <div>
-                    <img src="{% static 'images/saryu-parivaar-logo.png' %}" class="logo w-36">
+                    <img src="/media/saryu-parivaar-logo.png?v=4" class="logo w-36">
                   </div>
                   <div class="toggle-icon m-auto">
                     <i class="bx bx-arrow-to-left" id="btn"></i>
                   </div>
                 </div>
-                <ul class="metisMenu mm-show" id="menu">
-                  <li class="mm-active">
-                    <a href="{% url 'all_profiles' %}">
-                      <div class="parent-icon">
-                        <i class="bx bxs-dashboard"></i>
-                      </div>
-                      <div class="menu-title">
-                        <span>Dashboard</span>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a class="has-arrow">
-                      <div class="parent-icon">
-                        <i class="bx bx-user"></i>
-                      </div>
-                      <div class="menu-title">
-                        <span>Matrimonial</span>
-                      </div>
-                    </a>
-                    <ul class="mm-collapse">
-                      <li>
-                        <a href="{% url 'all_profiles' %}">
-                          <i class='bx bx-right-arrow-alt'></i>
-                          All Profiles
-                        </a>
-                      </li>
-                      <li>
-                        <a href="{% url 'profile' %}">
-                          <i class='bx bx-right-arrow-alt'></i>
-                          My Profile
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                {% include 'includes/sidebar.html' %}
               </div>              
             </div>
           </div>

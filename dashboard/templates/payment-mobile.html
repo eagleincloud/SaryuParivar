@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Saryu Parivar</title>
+    <link rel="icon" type="image/x-icon" href="/media/saryu-parivaar-logo.png?v=4">
+    <style>
+        :root {
+            --primary: #f97718;
+            --bg-light: #ffecce;
+            --bg-white: #FFFFFF;
+            --text-dark: #1F2937;
+            --text-gray: #6B7280;
+            --border-light: #E5E7EB;
+            --shadow-sm: 0 1px 2px rgba(249, 119, 24, 0.1);
+            --shadow-md: 0 4px 6px rgba(249, 119, 24, 0.15);
+            --success: #4caf50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        body {
+            padding-bottom: 70px;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border-light);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            background: var(--bg-light);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .logout-btn {
+            padding: 8px 12px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            margin: 60px auto 0;
+            padding: 0 12px;
+            padding-bottom: 80px;
+        }
+
+        .card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .card-subtitle {
+            font-size: 14px;
+            color: var(--text-gray);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, var(--success) 0%, #45a049 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .success-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .success-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .success-subtitle {
+            font-size: 16px;
+            margin-bottom: 16px;
+            opacity: 0.95;
+        }
+
+        .subscription-badge {
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 16px;
+            display: inline-block;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--bg-light);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: var(--text-gray);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .qr-container {
+            background: linear-gradient(135deg, #fff8e1 0%, #ffe082 100%);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(249, 119, 24, 0.2);
+        }
+
+        .qr-code {
+            max-width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .amount-badge {
+            background: var(--bg-light);
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .amount-label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .amount-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .upi-id {
+            background: var(--bg-light);
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .upi-label {
+            font-size: 13px;
+            color: var(--text-gray);
+            margin-bottom: 6px;
+        }
+
+        .upi-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .bank-details {
+            background: #fff8e1;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--primary);
+        }
+
+        .bank-label {
+            font-size: 12px;
+            color: var(--text-gray);
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .bank-value {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        /* iOS-style form inputs - using global styles from style.css */
+        .form-input {
+            /* All styles inherited from global iOS form styles in style.css */
+            width: 100%;
+            border: 1.5px dashed var(--primary);
+            font-family: inherit;
+            outline: none;
+            background: #fff8e1;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(249, 119, 24, 0.1);
+        }
+
+        .form-help {
+            font-size: 12px;
+            color: var(--text-gray);
+            margin-top: 6px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 12px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--bg-light);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .alert {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .alert-info {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid var(--success);
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffc107;
+        }
+
+        .nav-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-white);
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 0;
+            color: var(--text-gray);
+            font-size: 12px;
+            flex: 1;
+            text-decoration: none;
+            border: none;
+            background: none;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item-icon {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <img src="/media/saryu-parivaar-logo.png?v=4" alt="Saryu Parivar">
+            <span>Payment</span>
+        </div>
+        <div class="header-actions">
+            <a href="{% url 'user_profile' %}" class="icon-btn" title="Profile">👤</a>
+            <a href="{% url 'logout_user' %}" class="logout-btn">🚪</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                {% if 'success' in message.tags %}
+                <div class="alert alert-info">
+                    {{ message }}
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        <div class="card">
+            {% if payment_done and payment_transaction and payment_transaction.payment_status == 'completed' %}
+            <!-- Payment Success Message -->
+            <div class="success-message">
+                <div class="success-icon">✓</div>
+                <div class="success-title">Payment Successful!</div>
+                <div class="success-subtitle">Your payment has been verified and approved.</div>
+                <div class="subscription-badge">
+                    <div style="font-size: 16px; font-weight: 600; margin-bottom: 4px;">📅 Annual Subscription Activated</div>
+                    {% if payment_transaction.subscription_start_date and payment_transaction.subscription_end_date %}
+                    <div style="font-size: 14px;">Valid until: <strong>{{ payment_transaction.subscription_end_date|date:"F d, Y" }}</strong></div>
+                    {% endif %}
+                </div>
+            </div>
+            {% else %}
+            <div class="card-title">Complete Payment</div>
+            <div class="card-subtitle">Scan the QR code below to make payment via UPI</div>
+            {% endif %}
+
+            {% if not payment_done or not payment_transaction or payment_transaction.payment_status != 'completed' %}
+            <!-- Payment Tabs -->
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('upi')">📱 UPI</button>
+                <button class="tab-btn" onclick="switchTab('bank')">🏦 Bank</button>
+            </div>
+
+            <!-- UPI Payment Tab -->
+            <div id="upi-tab" class="tab-content active">
+                <div class="qr-container">
+                    <img src="/media/qr_code.jpeg?v=4" alt="Payment QR Code" class="qr-code" onerror="this.src='/media/qr_code.jpeg?v=' + Date.now();">
+                </div>
+                
+                <div class="amount-badge">
+                    <div class="amount-label">Registration Fee</div>
+                    <div class="amount-value">₹{% if payment_amount %}{{ payment_amount|floatformat:2 }}{% else %}250.00{% endif %}</div>
+                </div>
+                
+                <div class="upi-id">
+                    <div class="upi-label">💳 UPI ID</div>
+                    <div class="upi-value">yespay.oats9425081010@yesbankltd</div>
+                </div>
+                
+                <!-- UPI Payment Options -->
+                <div style="margin-top: 20px;">
+                    <div style="text-align: center; margin-bottom: 12px; font-size: 14px; font-weight: 600; color: var(--text-dark);">
+                        📱 Pay with UPI Apps:
+                    </div>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <button type="button" onclick="openUPIApp('googlepay')" style="width: 100%; padding: 14px; background: white; border: 2px solid #e0e0e0; border-radius: 10px; font-weight: 600; font-size: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: flex-start; gap: 12px; transition: all 0.3s;">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Google_Pay_%28GPay%29_Logo.svg/512px-Google_Pay_%28GPay%29_Logo.svg.png" alt="Google Pay" style="height: 32px; width: auto; object-fit: contain;">
+                            <span style="color: #333; font-weight: 600;">Google Pay</span>
+                        </button>
+                        <button type="button" onclick="openUPIApp('phonepe')" style="width: 100%; padding: 14px; background: white; border: 2px solid #e0e0e0; border-radius: 10px; font-weight: 600; font-size: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: flex-start; gap: 12px; transition: all 0.3s;">
+                            <div style="width: 32px; height: 32px; background: #5F259F; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">P</div>
+                            <span style="color: #333; font-weight: 600;">PhonePe</span>
+                        </button>
+                        <button type="button" onclick="openUPIApp('paytm')" style="width: 100%; padding: 14px; background: white; border: 2px solid #e0e0e0; border-radius: 10px; font-weight: 600; font-size: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: flex-start; gap: 12px; transition: all 0.3s;">
+                            <div style="width: 32px; height: 32px; background: #00BAF2; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 14px;">Pay</div>
+                            <span style="color: #333; font-weight: 600;">Paytm</span>
+                        </button>
+                        <button type="button" onclick="openUPIApp('amazonpay')" style="width: 100%; padding: 14px; background: white; border: 2px solid #e0e0e0; border-radius: 10px; font-weight: 600; font-size: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: flex-start; gap: 12px; transition: all 0.3s;">
+                            <div style="width: 32px; height: 32px; background: #FF9900; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px;">A</div>
+                            <span style="color: #333; font-weight: 600;">Amazon Pay</span>
+                        </button>
+                        <button type="button" onclick="openUPIApp('bhim')" style="width: 100%; padding: 14px; background: white; border: 2px solid #e0e0e0; border-radius: 10px; font-weight: 600; font-size: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: flex-start; gap: 12px; transition: all 0.3s;">
+                            <div style="width: 32px; height: 32px; background: #6C5CE7; border-radius: 6px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 12px;">BHIM</div>
+                            <span style="color: #333; font-weight: 600;">BHIM</span>
+                        </button>
+                    </div>
+                    <style>
+                        button[onclick*="openUPIApp"]:hover {
+                            transform: translateY(-2px);
+                            box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+                            border-color: var(--primary) !important;
+                        }
+                    </style>
+                </div>
+            </div>
+
+            <!-- Bank Transfer Tab -->
+            <div id="bank-tab" class="tab-content">
+                <div class="amount-badge">
+                    <div class="amount-label">Registration Fee</div>
+                    <div class="amount-value">₹{% if payment_amount %}{{ payment_amount|floatformat:2 }}{% else %}250.00{% endif %}</div>
+                </div>
+
+                <div class="bank-details">
+                    <div class="bank-label">Bank Name</div>
+                    <div class="bank-value">ARIHANT URBAN CO-OPERATIVE BANK LTD.</div>
+                </div>
+
+                <div class="bank-details">
+                    <div class="bank-label">IFSC Code</div>
+                    <div class="bank-value">HDFCOCACOBL</div>
+                </div>
+
+                <div class="bank-details">
+                    <div class="bank-label">Account Number</div>
+                    <div class="bank-value">001100201003768</div>
+                </div>
+
+                <div class="bank-details">
+                    <div class="bank-label">Account Type</div>
+                    <div class="bank-value">Savings Account</div>
+                </div>
+
+                <div class="bank-details">
+                    <div class="bank-label">Account Holder Name</div>
+                    <div class="bank-value">SARYURARIN BRAHMAN SAAB SEWA SANSHTHA</div>
+                </div>
+
+                <div class="bank-details">
+                    <div class="bank-label">Bank Address</div>
+                    <div class="bank-value">Abhay Prashal, 10, Race Course Road, INDORE - 452 003</div>
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>📝 Note:</strong> After making the bank transfer, please upload the payment proof (cheque copy or transaction screenshot) below for faster verification.
+                </div>
+            </div>
+            {% endif %}
+
+            {% if payment_transaction %}
+            <form id="payment_verification_form" method="POST" action="/verify_payment/" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="transaction_id" value="{{ payment_transaction.transaction_id }}">
+                
+                <div class="form-group">
+                    <label class="form-label">📤 Upload Payment Proof (Optional)</label>
+                    <input type="file" name="payment_proof" id="payment_proof" accept="image/*" class="form-input">
+                    <div class="form-help">You can upload a screenshot or photo of your payment confirmation. Max 5MB.</div>
+                    <div id="payment-image-size-error" class="alert alert-warning" style="display: none; margin-top: 8px;"></div>
+                </div>
+                
+                <div id="payment_status_message" class="alert" style="display: none;"></div>
+                
+                {% if payment_done and payment_transaction and payment_transaction.payment_status == 'completed' %}
+                <button type="button" onclick="continueToPortal()" class="btn btn-success">→ Go to Dashboard</button>
+                {% else %}
+                <button type="button" onclick="continueToPortal()" class="btn btn-primary">→ Continue to Portal</button>
+                <button type="button" onclick="submitPaymentProof()" class="btn btn-secondary">📤 Upload Payment Proof</button>
+                {% endif %}
+            </form>
+            {% endif %}
+
+            {% if not payment_done or not payment_transaction or payment_transaction.payment_status != 'completed' %}
+            <div class="alert alert-info" style="margin-top: 20px;">
+                <strong>ℹ️ Note:</strong> After uploading payment proof, admin will verify your payment and grant you full access.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="nav-bottom">
+        <a href="/" class="nav-item">
+            <div class="nav-item-icon">🏠</div>
+            <div>Home</div>
+        </a>
+        <a href="{% url 'all_profiles' %}" class="nav-item">
+            <div class="nav-item-icon">👥</div>
+            <div>Profiles</div>
+        </a>
+        <a href="{% url 'my_profiles' %}" class="nav-item">
+            <div class="nav-item-icon">📋</div>
+            <div>My Profiles</div>
+        </a>
+        <a href="{% url 'shortlisted_profiles' %}" class="nav-item">
+            <div class="nav-item-icon">❤️</div>
+            <div>Shortlisted</div>
+        </a>
+        <a href="{% url 'payment' %}" class="nav-item active">
+            <div class="nav-item-icon">💳</div>
+            <div>Payment</div>
+        </a>
+    </div>
+
+    <script>
+        // UPI Payment App Opening Function
+        function openUPIApp(app) {
+            const upiId = 'yespay.oats9425081010@yesbankltd';
+            const amount = {% if payment_amount %}{{ payment_amount|floatformat:2 }}{% else %}250.00{% endif %};
+            const payeeName = 'Saryu Parivar';
+            
+            let upiUrl = '';
+            
+            switch(app) {
+                case 'googlepay':
+                    upiUrl = `tez://upi/pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR`;
+                    break;
+                case 'phonepe':
+                    upiUrl = `phonepe://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR`;
+                    break;
+                case 'paytm':
+                    upiUrl = `paytmmp://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR`;
+                    break;
+                case 'amazonpay':
+                    upiUrl = `amazonpay://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR`;
+                    break;
+                case 'bhim':
+                    upiUrl = `bhim://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR`;
+                    break;
+                default:
+                    // Universal UPI format
+                    upiUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=INR`;
+            }
+            
+            // Try to open the app
+            window.location.href = upiUrl;
+            
+            // Fallback: If app doesn't open, show UPI ID for manual entry
+            setTimeout(function() {
+                if (confirm('If the app didn\'t open, please copy the UPI ID and make payment manually:\n\n' + upiId + '\n\nAmount: ₹' + amount)) {
+                    // Copy UPI ID to clipboard
+                    if (navigator.clipboard) {
+                        navigator.clipboard.writeText(upiId).then(function() {
+                            alert('UPI ID copied to clipboard!');
+                        });
+                    } else {
+                        // Fallback for older browsers
+                        const textArea = document.createElement('textarea');
+                        textArea.value = upiId;
+                        document.body.appendChild(textArea);
+                        textArea.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        alert('UPI ID copied to clipboard!');
+                    }
+                }
+            }, 1000);
+        }
+        
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function continueToPortal() {
+            window.location.href = '/dashboard/';
+        }
+
+        async function submitPaymentProof() {
+            const form = document.getElementById('payment_verification_form');
+            const formData = new FormData(form);
+            const statusDiv = document.getElementById('payment_status_message');
+            const imageSizeError = document.getElementById('payment-image-size-error');
+            const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
+            
+            const fileInput = document.getElementById('payment_proof');
+            if (!fileInput.files || fileInput.files.length === 0) {
+                statusDiv.className = 'alert alert-warning';
+                statusDiv.textContent = 'Please select a payment proof file to upload.';
+                statusDiv.style.display = 'block';
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            if (file && file.size > MAX_IMAGE_SIZE) {
+                const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+                imageSizeError.innerHTML = `⚠️ Image file is too large (${sizeInMB} MB). Maximum allowed size is 5 MB.`;
+                imageSizeError.style.display = 'block';
+                fileInput.value = '';
+                return;
+            }
+            
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                
+                if (data.success) {
+                    statusDiv.className = 'alert alert-info';
+                    statusDiv.textContent = '✅ Payment proof uploaded successfully! Admin will verify your payment soon.';
+                    statusDiv.style.display = 'block';
+                    fileInput.value = '';
+                } else {
+                    statusDiv.className = 'alert alert-warning';
+                    statusDiv.textContent = data.message || 'Error uploading payment proof. Please try again.';
+                    statusDiv.style.display = 'block';
+                }
+            } catch (error) {
+                statusDiv.className = 'alert alert-warning';
+                statusDiv.textContent = 'Network error. Please try again.';
+                statusDiv.style.display = 'block';
+            }
+        }
+
+        // Image size validation on change
+        document.getElementById('payment_proof')?.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const imageSizeError = document.getElementById('payment-image-size-error');
+            const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
+            
+            if (file && file.size > MAX_IMAGE_SIZE) {
+                const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+                imageSizeError.innerHTML = `⚠️ Image file is too large (${sizeInMB} MB). Maximum allowed size is 5 MB.`;
+                imageSizeError.style.display = 'block';
+                e.target.value = '';
+            } else {
+                imageSizeError.style.display = 'none';
+            }
+        });
+    </script>
+    
+    <!-- Support Widget -->
+    {% include 'includes/support_widget.html' %}
+</body>
+</html>
+

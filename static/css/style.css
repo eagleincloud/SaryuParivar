@@ -767,32 +767,163 @@ html {
   box-shadow: 0 8px 30px rgba(0,0,0,0.12);
 }
 
-/* Modern Form Inputs */
+/* iOS-Style Form Inputs - Universal */
 input[type="text"],
 input[type="tel"],
 input[type="email"],
+input[type="password"],
 input[type="date"],
 input[type="time"],
+input[type="number"],
+input[type="url"],
 textarea,
-select {
-  border-radius: 8px;
-  border: 2px solid #e0e0e0;
-  padding: 12px 16px;
-  transition: all 0.3s ease;
-  font-family: 'Poppins', sans-serif;
+select,
+.form-control,
+.form-input,
+.form-select,
+.form-textarea {
+  /* iOS-like appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  
+  /* iOS-style rounded corners */
+  border-radius: 12px;
+  
+  /* Clean border */
+  border: 1.5px solid #d1d5db;
+  background-color: #ffffff;
+  
+  /* iOS-like padding */
+  padding: 14px 16px;
+  
+  /* Typography */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #1f2937;
+  line-height: 1.5;
+  
+  /* Smooth transitions */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Remove default focus outline */
+  outline: none;
+  
+  /* iOS-like shadow */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
+/* iOS-style focus state */
 input[type="text"]:focus,
 input[type="tel"]:focus,
 input[type="email"]:focus,
+input[type="password"]:focus,
 input[type="date"]:focus,
 input[type="time"]:focus,
+input[type="number"]:focus,
+input[type="url"]:focus,
 textarea:focus,
-select:focus {
+select:focus,
+.form-control:focus,
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
   border-color: #f97718;
-  outline: none;
-  box-shadow: 0 0 0 4px rgba(249, 119, 24, 0.1);
-  transform: translateY(-2px);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4px rgba(249, 119, 24, 0.1), 0 2px 8px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+/* iOS-style placeholder */
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+  opacity: 1;
+}
+
+/* iOS-style select dropdown */
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7280' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 12px;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+select:focus {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23f97718' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+}
+
+/* iOS-style textarea */
+textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
+}
+
+/* iOS-style disabled state */
+input:disabled,
+textarea:disabled,
+select:disabled {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* iOS-style error state */
+input.error,
+textarea.error,
+select.error,
+.form-control.error,
+.form-input.error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+input.error:focus,
+textarea.error:focus,
+select.error:focus,
+.form-control.error:focus,
+.form-input.error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1), 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* iOS-style form labels */
+label,
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+/* iOS-style form groups */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* iOS-style file input */
+input[type="file"] {
+  border: none;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+input[type="file"]:focus {
+  outline: 2px solid #f97718;
+  outline-offset: 4px;
+  border-radius: 8px;
 }
 
 /* Modern Submit Buttons */
@@ -819,6 +950,360 @@ button[type="submit"]:hover,
 button[type="submit"]:active,
 .btn-submit:active {
   transform: translateY(0);
+}
+
+/* ========== iOS-STYLE FORM ELEMENTS ========== */
+/* Universal iOS-style form inputs - applies to all forms */
+input[type="text"],
+input[type="tel"],
+input[type="email"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+input[type="number"],
+input[type="url"],
+input[type="search"],
+input[type="file"],
+textarea,
+select,
+.form-control,
+.form-input,
+.form-select,
+.form-textarea,
+.form-control:not([type]),
+input.form-control,
+select.form-control,
+textarea.form-control,
+input[type="text"].form-control,
+input[type="email"].form-control,
+input[type="password"].form-control,
+input[type="tel"].form-control,
+input[type="number"].form-control,
+input[type="date"].form-control,
+input[type="time"].form-control,
+textarea.form-control,
+select.form-control {
+  /* iOS-like appearance - remove native styling */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  
+  /* iOS-style rounded corners (12px is iOS standard) */
+  border-radius: 12px !important;
+  
+  /* Clean, subtle border - iOS style */
+  border: 1.5px solid #d1d5db !important;
+  background-color: #ffffff !important;
+  
+  /* iOS-like padding (14px vertical, 16px horizontal) */
+  padding: 14px 16px !important;
+  
+  /* iOS system font stack */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 400;
+  color: #1f2937 !important;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  
+  /* Smooth iOS-like transitions */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Remove default focus outline */
+  outline: none !important;
+  
+  /* iOS-like subtle shadow */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  
+  /* Prevent zoom on iOS devices */
+  font-size: 16px !important;
+  
+  /* Ensure full width for proper iOS look */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* iOS-style focus state */
+input[type="text"]:focus,
+input[type="tel"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+input[type="number"]:focus,
+input[type="url"]:focus,
+input[type="search"]:focus,
+textarea:focus,
+select:focus,
+.form-control:focus,
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus,
+input.form-control:focus,
+select.form-control:focus,
+textarea.form-control:focus {
+  border-color: #f97718 !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 0 0 4px rgba(249, 119, 24, 0.1), 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+  transform: translateY(-1px);
+}
+
+/* iOS-style placeholder */
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af;
+  font-weight: 400;
+  opacity: 1;
+}
+
+/* iOS-style select dropdown */
+select,
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7280' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 12px;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+select:focus,
+.form-select:focus {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23f97718' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+}
+
+/* iOS-style textarea */
+textarea,
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+  line-height: 1.6;
+}
+
+/* iOS-style disabled state */
+input:disabled,
+textarea:disabled,
+select:disabled,
+.form-control:disabled,
+.form-input:disabled {
+  background-color: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
+  border-color: #e5e7eb;
+}
+
+/* iOS-style error state */
+input.error,
+textarea.error,
+select.error,
+.form-control.error,
+.form-input.error,
+.form-select.error,
+.form-textarea.error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+input.error:focus,
+textarea.error:focus,
+select.error:focus,
+.form-control.error:focus,
+.form-input.error:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1), 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* iOS-style form labels */
+label,
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+/* iOS-style form groups */
+.form-group {
+  margin-bottom: 20px;
+}
+
+/* iOS-style file input wrapper */
+.file-input-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.file-input-wrapper input[type="file"] {
+  position: absolute;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 0;
+  box-shadow: none;
+  font-size: 14px;
+}
+
+.file-input-wrapper input[type="file"]:focus {
+  outline: 2px solid #f97718;
+  outline-offset: 4px;
+  border-radius: 8px;
+}
+
+.file-input-label {
+  display: block;
+  padding: 14px 16px;
+  background: #f9fafb;
+  border: 1.5px dashed #d1d5db;
+  border-radius: 12px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.file-input-label:hover {
+  background: #f3f4f6;
+  border-color: #f97718;
+  color: #f97718;
+}
+
+/* iOS-style checkbox and radio (if needed) */
+input[type="checkbox"],
+input[type="radio"] {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid #d1d5db;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  background-color: #f97718;
+  border-color: #f97718;
+}
+
+/* iOS-style button enhancements */
+button[type="submit"],
+.submit-btn,
+.membership-btn,
+.btn-modern {
+  /* iOS-style button appearance */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  
+  /* iOS-style rounded corners */
+  border-radius: 12px !important;
+  
+  /* Smooth transitions */
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* iOS-like font */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+  font-weight: 600;
+  
+  /* Remove default button styling */
+  border: none;
+  outline: none;
+}
+
+button[type="submit"]:focus,
+.submit-btn:focus,
+.membership-btn:focus,
+.btn-modern:focus {
+  outline: 2px solid #f97718;
+  outline-offset: 2px;
+}
+
+/* Ensure all form elements in modals use iOS styling */
+.modal input[type="text"],
+.modal input[type="tel"],
+.modal input[type="email"],
+.modal input[type="password"],
+.modal input[type="number"],
+.modal textarea,
+.modal select,
+.modal .form-control,
+.modal .form-input {
+  border-radius: 12px !important;
+  border: 1.5px solid #d1d5db !important;
+  padding: 14px 16px !important;
+  font-size: 16px !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+.modal input[type="text"]:focus,
+.modal input[type="tel"]:focus,
+.modal input[type="email"]:focus,
+.modal input[type="password"]:focus,
+.modal input[type="number"]:focus,
+.modal textarea:focus,
+.modal select:focus,
+.modal .form-control:focus,
+.modal .form-input:focus {
+  border-color: #f97718 !important;
+  box-shadow: 0 0 0 4px rgba(249, 119, 24, 0.1), 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* iOS-style form containers */
+.form-container,
+.register-form-form,
+.modal-body form {
+  /* Ensure all child inputs use iOS styling */
+}
+
+.form-container input,
+.register-form-form input,
+.modal-body form input,
+.form-container textarea,
+.register-form-form textarea,
+.modal-body form textarea,
+.form-container select,
+.register-form-form select,
+.modal-body form select {
+  border-radius: 12px !important;
+  border: 1.5px solid #d1d5db !important;
+  padding: 14px 16px !important;
+  font-size: 16px !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif !important;
+}
+
+.form-container input:focus,
+.register-form-form input:focus,
+.modal-body form input:focus,
+.form-container textarea:focus,
+.register-form-form textarea:focus,
+.modal-body form textarea:focus,
+.form-container select:focus,
+.register-form-form select:focus,
+.modal-body form select:focus {
+  border-color: #f97718 !important;
+  box-shadow: 0 0 0 4px rgba(249, 119, 24, 0.1), 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* iOS-style search input */
+input[type="search"] {
+  padding-left: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%239ca3af' d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04 0.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left 16px center;
+  background-size: 16px;
+}
+
+input[type="search"]:focus {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%23f97718' d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04 0.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E");
 }
 
 /* Loading Spinner */
@@ -1398,13 +1883,137 @@ footer {
         display: none !important;
     }
     
-    /* Forms */
+    /* Forms - Mobile Optimized */
     .form-row {
         flex-direction: column !important;
     }
     .form-row > div {
         width: 100% !important;
         margin-bottom: 15px !important;
+    }
+    
+    /* Registration Form Mobile Styling */
+    #registerForm .block.sm\\:flex {
+        flex-direction: column !important;
+    }
+    #registerForm .mx-3 {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        margin-bottom: 16px !important;
+    }
+    #registerForm .w-full {
+        width: 100% !important;
+    }
+    #registerForm input[type="text"],
+    #registerForm input[type="tel"],
+    #registerForm input[type="email"],
+    #registerForm textarea,
+    #registerForm select {
+        width: 100% !important;
+        padding: 14px 16px !important;
+        font-size: 16px !important;
+        border-radius: 12px !important;
+        border: 1.5px solid #d1d5db !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+    }
+    #registerForm input:focus,
+    #registerForm textarea:focus,
+    #registerForm select:focus {
+        border-color: #f97718 !important;
+        box-shadow: 0 0 0 4px rgba(249, 119, 24, 0.1) !important;
+        outline: none !important;
+    }
+    #registerForm label {
+        display: block !important;
+        margin-bottom: 8px !important;
+        font-weight: 600 !important;
+        font-size: 14px !important;
+        color: #333 !important;
+    }
+    
+    /* Profile Forms Mobile Styling */
+    .register-form-form {
+        padding: 20px 16px !important;
+        margin: 10px !important;
+    }
+    .register-form-form .block.sm\\:flex {
+        flex-direction: column !important;
+    }
+    .register-form-form .mx-3 {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+        margin-bottom: 16px !important;
+    }
+    .register-form-form input[type="text"],
+    .register-form-form input[type="tel"],
+    .register-form-form input[type="email"],
+    .register-form-form input[type="date"],
+    .register-form-form input[type="number"],
+    .register-form-form textarea,
+    .register-form-form select {
+        width: 100% !important;
+        padding: 14px 16px !important;
+        font-size: 16px !important;
+        border-radius: 12px !important;
+        border: 1.5px solid #d1d5db !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+        margin-bottom: 0 !important;
+    }
+    .register-form-form input:focus,
+    .register-form-form textarea:focus,
+    .register-form-form select:focus {
+        border-color: #f97718 !important;
+        box-shadow: 0 0 0 4px rgba(249, 119, 24, 0.1) !important;
+        outline: none !important;
+    }
+    .register-form-form label {
+        display: block !important;
+        margin-bottom: 8px !important;
+        font-weight: 600 !important;
+        font-size: 14px !important;
+        color: #333 !important;
+    }
+    .register-form-form .form-group {
+        margin-bottom: 20px !important;
+    }
+    
+    /* User Profile Form Mobile Styling */
+    .form-card {
+        padding: 20px 16px !important;
+        margin: 10px !important;
+    }
+    .form-card .form-group {
+        margin-bottom: 20px !important;
+    }
+    .form-card input[type="text"],
+    .form-card input[type="tel"],
+    .form-card input[type="email"],
+    .form-card input[type="date"],
+    .form-card textarea,
+    .form-card select {
+        width: 100% !important;
+        padding: 14px 16px !important;
+        font-size: 16px !important;
+        border-radius: 12px !important;
+        border: 1.5px solid #d1d5db !important;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+    }
+    .form-card input:focus,
+    .form-card textarea:focus,
+    .form-card select:focus {
+        border-color: #f97718 !important;
+        box-shadow: 0 0 0 4px rgba(249, 119, 24, 0.1) !important;
+        outline: none !important;
+    }
+    .form-card .form-label {
+        display: block !important;
+        margin-bottom: 8px !important;
+        font-weight: 600 !important;
+        font-size: 14px !important;
+        color: #333 !important;
     }
     
     /* Cards */

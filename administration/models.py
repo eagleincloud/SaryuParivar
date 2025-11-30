@@ -281,6 +281,42 @@ class CommitteeMember(DateFields):
         return f"{self.name} - {self.designation}"
 
 
+class SupportRequest(DateFields):
+    """Model to store user support requests and inquiries"""
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('in_progress', 'In Progress'),
+        ('resolved', 'Resolved'),
+        ('closed', 'Closed'),
+    ]
+    
+    PRIORITY_CHOICES = [
+        ('low', 'Low'),
+        ('medium', 'Medium'),
+        ('high', 'High'),
+        ('urgent', 'Urgent'),
+    ]
+    
+    user = models.ForeignKey(get_user_model(), on_delete=models.SET_NULL, null=True, blank=True, related_name='support_requests')
+    name = models.CharField(max_length=200)
+    email = models.EmailField()
+    phone_number = models.CharField(max_length=20, blank=True, null=True)
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    priority = models.CharField(max_length=20, choices=PRIORITY_CHOICES, default='medium')
+    admin_notes = models.TextField(blank=True, null=True)
+    resolved_at = models.DateTimeField(null=True, blank=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = 'Support Request'
+        verbose_name_plural = 'Support Requests'
+    
+    def __str__(self):
+        return f"{self.subject} - {self.name} ({self.status})"
+
+
 class PaymentTransaction(DateFields):
     """Model to track payment transactions"""
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='payment_transactions')

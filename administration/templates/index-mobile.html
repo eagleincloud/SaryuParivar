@@ -1,0 +1,1908 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saryu Parivar - Brahmin Community Platform</title>
+    <link rel="icon" type="image/x-icon" href="/media/saryu-parivaar-logo.png?v=4">
+    <style>
+        :root {
+            --primary: #f97718;
+            --primary-dark: #e0660d;
+            --primary-light: #ff8c42;
+            --accent: #F59E0B;
+            --success: #10B981;
+            --danger: #EF4444;
+            --bg-light: #ffecce;
+            --bg-white: #FFFFFF;
+            --text-dark: #1F2937;
+            --text-gray: #6B7280;
+            --border-light: #E5E7EB;
+            --shadow-sm: 0 1px 2px rgba(249, 119, 24, 0.1);
+            --shadow-md: 0 4px 6px rgba(249, 119, 24, 0.15);
+            --shadow-lg: 0 10px 15px rgba(249, 119, 24, 0.2);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        body {
+            padding-bottom: {% if user.is_authenticated %}70px{% else %}0{% endif %};
+        }
+
+        /* ========== HEADER & NAVIGATION ========== */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border-light);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .header-btn {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .header-btn-login {
+            background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(249, 119, 24, 0.3);
+        }
+
+        .header-btn-register {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(249, 119, 24, 0.2);
+        }
+
+        .header-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            border-radius: 50%;
+            text-decoration: none;
+            color: var(--text-dark);
+        }
+
+        .icon-btn:hover {
+            background: var(--bg-light);
+        }
+
+        .nav-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-white);
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-bottom.hidden {
+            display: none;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 0;
+            cursor: pointer;
+            color: var(--text-gray);
+            font-size: 12px;
+            transition: var(--transition);
+            flex: 1;
+            text-decoration: none;
+            border: none;
+            background: none;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item:hover {
+            color: var(--primary);
+        }
+
+        .nav-item-icon {
+            font-size: 24px;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .container {
+            width: 100%;
+            max-width: 480px;
+            margin: 60px auto 0;
+            padding: 0 12px;
+            padding-bottom: {% if user.is_authenticated %}80px{% else %}20px{% endif %};
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ========== HOME SECTION ========== */
+        .hero {
+            background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%);
+            color: white;
+            padding: 32px 16px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+        }
+
+        .hero h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 16px;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .stat-box {
+            background: rgba(255,255,255,0.2);
+            padding: 12px;
+            border-radius: 8px;
+        }
+
+        .stat-number {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-top: 4px;
+        }
+
+        .cta-button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 12px;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .cta-button:active {
+            transform: translateY(0);
+        }
+
+        /* ========== CARD COMPONENTS ========== */
+        .card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .card-subtitle {
+            font-size: 12px;
+            color: var(--text-gray);
+            margin-bottom: 12px;
+        }
+
+        .card-text {
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-gray);
+        }
+
+        /* ========== PROFILE CARD ========== */
+        .profile-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .profile-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            object-fit: cover;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-info {
+            padding: 16px;
+        }
+
+        .profile-name {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .profile-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 12px;
+            color: var(--text-gray);
+        }
+
+        .detail-item {
+            display: flex;
+            gap: 4px;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .action-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .action-btn-secondary {
+            background: var(--bg-light);
+            color: var(--primary);
+        }
+
+        /* ========== EVENT CARD ========== */
+        .event-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .event-header {
+            background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%);
+            color: white;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        }
+
+        .event-date {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: rgba(255,255,255,0.2);
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .event-day {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .event-month {
+            font-size: 12px;
+        }
+
+        .event-title {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .event-body {
+            padding: 16px;
+        }
+
+        .event-location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-gray);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .event-description {
+            font-size: 14px;
+            color: var(--text-gray);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .event-badge {
+            display: inline-block;
+            background: var(--bg-light);
+            color: var(--primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* ========== MEMBERSHIP PLANS ========== */
+        .membership-section {
+            margin-bottom: 20px;
+        }
+
+        .membership-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 12px;
+            border: 2px solid var(--border-light);
+            transition: var(--transition);
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .membership-card.featured {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(249, 119, 24, 0.05) 0%, rgba(255, 140, 66, 0.05) 100%);
+            box-shadow: var(--shadow-md);
+            position: relative;
+            top: -8px;
+        }
+
+        .membership-badge {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        .membership-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        .membership-price {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 4px;
+        }
+
+        .membership-duration {
+            font-size: 13px;
+            color: var(--text-gray);
+            margin-bottom: 16px;
+        }
+
+        .membership-features {
+            text-align: left;
+            margin: 16px 0;
+            font-size: 13px;
+        }
+
+        .feature {
+            padding: 8px 0;
+            color: var(--text-gray);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature::before {
+            content: "✓";
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .membership-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 12px;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        .membership-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ========== TESTIMONIALS ========== */
+        .testimonial {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+            border-left: 4px solid var(--primary);
+        }
+
+        .testimonial-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .testimonial-name {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .testimonial-text {
+            font-size: 13px;
+            color: var(--text-gray);
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .testimonial-stars {
+            color: var(--accent);
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        /* ========== GALLERY ========== */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .gallery-item {
+            width: 100%;
+            height: 150px;
+            background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            cursor: pointer;
+            transition: var(--transition);
+            overflow: hidden;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        /* ========== TABS ========== */
+        .tab-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .tab-btn {
+            padding: 8px 16px;
+            border: 2px solid var(--border-light);
+            background: var(--bg-white);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .tab-btn:hover {
+            border-color: var(--primary);
+        }
+
+        /* ========== SEARCH BAR ========== */
+        .search-bar {
+            position: sticky;
+            top: 60px;
+            background: var(--bg-white);
+            padding: 12px 16px;
+            display: flex;
+            gap: 8px;
+            border-bottom: 1px solid var(--border-light);
+            z-index: 100;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(249, 119, 24, 0.1);
+        }
+
+        .filter-btn {
+            padding: 10px 14px;
+            background: var(--bg-light);
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* ========== FORMS ========== */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        /* iOS-style form inputs - using global styles from style.css */
+        .form-input,
+        .form-select {
+            /* All styles inherited from global iOS form styles in style.css */
+            width: 100%;
+        }
+
+        /* ========== BADGES ========== */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-primary {
+            background: rgba(249, 119, 24, 0.1);
+            color: var(--primary);
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        /* ========== MODAL ========== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        .modal-content {
+            background: var(--bg-white);
+            width: 100%;
+            max-width: 480px;
+            border-radius: 16px 16px 0 0;
+            padding: 20px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            float: right;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-gray);
+        }
+
+        /* ========== PAYMENT BADGE ========== */
+        .payment-badge-mobile {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: var(--danger);
+            color: white;
+            padding: 8px 16px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 999;
+            box-shadow: var(--shadow-md);
+        }
+
+        .payment-badge-mobile a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* ========== LOGIN/REGISTER PROMPT ========== */
+        .auth-prompt {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 32px 20px;
+            margin: 20px 0;
+            text-align: center;
+            box-shadow: var(--shadow-md);
+        }
+
+        .auth-prompt h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .auth-prompt p {
+            font-size: 14px;
+            color: var(--text-gray);
+            margin-bottom: 24px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .auth-btn {
+            flex: 1;
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .auth-btn-login {
+            background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(249, 119, 24, 0.3);
+        }
+
+        .auth-btn-register {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(249, 119, 24, 0.2);
+        }
+
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+    </style>
+</head>
+<body>
+    <!-- Payment Verification Badge -->
+    {% if not payment_done and user.is_authenticated %}
+    <div class="payment-badge-mobile">
+        ⚠️ Payment Verification Pending - <a href="{% url 'payment' %}">Complete Payment</a>
+    </div>
+    {% endif %}
+
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <img src="/media/saryu-parivaar-logo.png?v=4" alt="Saryu Parivar" onerror="this.style.display='none';">
+            <span>Saryu Parivar</span>
+        </div>
+        <div class="header-actions">
+            {% if user.is_authenticated %}
+            <a href="{% url 'user_profile' %}" class="icon-btn" title="Profile">👤</a>
+            <a href="{% url 'logout_user' %}" class="header-btn header-btn-login" style="padding: 8px 12px; font-size: 12px;">🚪 Logout</a>
+            {% else %}
+            <button class="header-btn header-btn-login" onclick="openLoginModal()">Login</button>
+            <button class="header-btn header-btn-register" onclick="openRegisterModal()">Register</button>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container" style="margin-top: {% if not payment_done and user.is_authenticated %}100px{% else %}60px{% endif %};">
+        <!-- ===== HOME SECTION ===== -->
+        <div class="section active" id="homeSection">
+            <!-- Image Slider -->
+            <div class="image-slider" style="margin: 0 -12px 20px -12px; position: relative; height: 250px; overflow: hidden; border-radius: 0;">
+                <div class="slider-container" style="position: relative; width: 100%; height: 100%;">
+                    {% for samaj_gallery_image in samaj_gallery_images|slice:":5" %}
+                    <div class="slider-slide {% if forloop.counter == 1 %}active{% endif %}" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.8s ease-in-out;">
+                        <div style="position: relative; width: 100%; height: 100%;">
+                            {% if samaj_gallery_image.image %}
+                            <img src="{{samaj_gallery_image.image.url}}" alt="{{samaj_gallery_image.title|default:'Gallery Image'}}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.style.display='none';">
+                            {% endif %}
+                            <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%); padding: 20px 16px 16px;">
+                                {% if samaj_gallery_image.title %}
+                                <h3 style="color: white; font-size: 18px; font-weight: 700; margin: 0; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">{{samaj_gallery_image.title}}</h3>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="slider-slide active" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 1;">
+                        <div style="position: relative; width: 100%; height: 100%; background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%); display: flex; align-items: center; justify-content: center; color: white;">
+                            <div style="text-align: center; padding: 20px;">
+                                <h3 style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">Welcome to Saryu Parivar</h3>
+                                <p style="font-size: 14px; opacity: 0.9;">Connecting our community together</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% if samaj_gallery_images|length > 1 %}
+                <div class="slider-dots" style="position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; z-index: 10;">
+                    {% for samaj_gallery_image in samaj_gallery_images|slice:":5" %}
+                    <button class="slider-dot {% if forloop.counter == 1 %}active{% endif %}" onclick="showSlide({{forloop.counter0}})" style="width: 8px; height: 8px; border-radius: 50%; border: none; background: rgba(255,255,255,0.5); cursor: pointer; transition: all 0.3s ease; padding: 0;"></button>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Hero -->
+            <div class="hero">
+                <h1>Welcome to Saryu Parivar</h1>
+                <p>Connect with your Brahmin community</p>
+                <div class="hero-stats">
+                    <div class="stat-box">
+                        <div class="stat-number">5000+</div>
+                        <div class="stat-label">Members</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">1200+</div>
+                        <div class="stat-label">Matches</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Events/Yr</div>
+                    </div>
+                </div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'all_profiles' %}" class="cta-button">👥 Browse Profiles</a>
+                {% else %}
+                <button class="cta-button" onclick="openRegisterModal()">Join Now</button>
+                {% endif %}
+            </div>
+
+            {% if user.is_authenticated %}
+            <!-- Upcoming Events -->
+            <div style="margin-bottom: 20px;">
+                <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">📅 Upcoming Events</h2>
+                {% for event in samaj_events|slice:":3" %}
+                <div class="event-card">
+                    <div class="event-header">
+                        <div>
+                            <div class="event-title">{{event.title}}</div>
+                        </div>
+                        <div class="event-date">
+                            <div class="event-day">{{event.event_date|date:"d"}}</div>
+                            <div class="event-month">{{event.event_date|date:"M"|upper}}</div>
+                        </div>
+                    </div>
+                    <div class="event-body">
+                        <div class="event-location">📍 {{event.location|default:"TBA"}}</div>
+                        {% if event.description %}
+                        <div class="event-description">{{event.description|truncatewords:20}}</div>
+                        {% endif %}
+                        <span class="event-badge">Upcoming</span>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="card">
+                    <div class="card-text">No upcoming events at the moment. Check back soon!</div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Photo Gallery -->
+            <div style="margin-bottom: 20px;">
+                <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">📸 Photo Gallery</h2>
+                <div class="gallery-grid">
+                    {% for gallery_item in gallery_images|slice:":6" %}
+                    <div class="gallery-item">
+                        {% if gallery_item.image %}
+                        <img src="{{gallery_item.image.url}}" alt="{{gallery_item.title|default:gallery_item.remarks|default:'Gallery Image'}}">
+                        {% else %}
+                        📷
+                        {% endif %}
+                    </div>
+                    {% empty %}
+                    <div class="gallery-item">📷</div>
+                    <div class="gallery-item">📷</div>
+                    <div class="gallery-item">📷</div>
+                    <div class="gallery-item">📷</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Promotions & Advertisements -->
+            {% if promotions %}
+            <div style="margin-bottom: 20px;">
+                <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 12px; color: var(--primary);">📢 Promotions & Advertisements</h2>
+                <div class="promotions-slider" style="position: relative; overflow: hidden; border-radius: 12px;">
+                    <div class="promotions-container" style="display: flex; transition: transform 0.5s ease; width: {% widthratio promotions|length 1 100 %}%;">
+                        {% for promotion in promotions %}
+                        <div class="promotion-slide" style="width: {% widthratio 100 promotions|length 1 %}%; flex-shrink: 0; padding-right: 12px;">
+                            <div class="card" style="overflow: hidden; position: relative; min-height: 200px;">
+                                {% if promotion.banner %}
+                                <div style="position: relative; width: 100%; height: 150px; overflow: hidden; border-radius: 8px 8px 0 0;">
+                                    <img src="{{promotion.banner.url}}" alt="{{promotion.title|default:promotion.advertiser_name}}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null; this.style.display='none';">
+                                    <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%); padding: 12px;">
+                                        <h4 style="color: white; font-size: 16px; font-weight: 700; margin: 0; text-shadow: 0 2px 8px rgba(0,0,0,0.5);">{{promotion.title|default:promotion.advertiser_name}}</h4>
+                                    </div>
+                                </div>
+                                {% endif %}
+                                <div style="padding: 16px;">
+                                    {% if not promotion.banner %}
+                                    <div class="card-title" style="margin-bottom: 8px;">{{promotion.title|default:promotion.advertiser_name}}</div>
+                                    {% endif %}
+                                    {% if promotion.description %}
+                                    <div class="card-text" style="font-size: 13px; line-height: 1.5; color: var(--text-gray);">{{promotion.description|truncatewords:25}}</div>
+                                    {% endif %}
+                                    {% if promotion.expires_at %}
+                                    <div style="font-size: 11px; color: var(--text-gray); margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border-light);">
+                                        <i class="bx bx-calendar" style="font-size: 12px;"></i> Valid until: {{promotion.expires_at|date:"M d, Y"}}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% if promotions|length > 1 %}
+                    <div class="promotions-dots" style="display: flex; justify-content: center; gap: 6px; margin-top: 12px;">
+                        {% for promotion in promotions %}
+                        <button class="promotion-dot {% if forloop.counter == 1 %}active{% endif %}" onclick="showPromotion({{forloop.counter0}})" style="width: 6px; height: 6px; border-radius: 50%; border: none; background: var(--border-light); cursor: pointer; transition: all 0.3s ease; padding: 0;"></button>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Committee Members / Team Hierarchy -->
+            {% if committee_members %}
+            <div style="margin-bottom: 20px;">
+                <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--primary);">👥 Designated Committee Members</h2>
+                {% for member in committee_members %}
+                <div class="card" style="margin-bottom: 16px; padding: 16px;">
+                    <div style="display: flex; align-items: flex-start; gap: 16px;">
+                        <div style="flex-shrink: 0;">
+                            {% if member.photo %}
+                            <img src="{{member.photo.url}}" alt="{{member.name}}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary); box-shadow: 0 4px 12px rgba(249, 119, 24, 0.2);" onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2780%27 height=%2780%27%3E%3Crect fill=%27%23f97718%27 width=%2780%27 height=%2780%27/%3E%3Ctext x=%2750%25%27 y=%2750%25%27 text-anchor=%27middle%27 dy=%27.3em%27 fill=%27white%27 font-size=%2732%27 font-weight=%27bold%27%3E{{member.name|first|upper}}%3C/text%3E%3C/svg%3E';">
+                            {% else %}
+                            <div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 32px; font-weight: 700; box-shadow: 0 4px 12px rgba(249, 119, 24, 0.2);">
+                                {{member.name|first|upper}}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div style="flex: 1; min-width: 0;">
+                            <div style="font-weight: 700; font-size: 16px; margin-bottom: 6px; color: var(--text-dark);">{{member.name}}</div>
+                            <div style="font-size: 14px; color: var(--primary); font-weight: 600; margin-bottom: 8px;">{{member.designation}}</div>
+                            {% if member.bio or member.remarks %}
+                            <div style="font-size: 13px; color: var(--text-gray); line-height: 1.5; margin-bottom: 8px;">
+                                {{member.bio|default:member.remarks|truncatewords:20}}
+                            </div>
+                            {% endif %}
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                {% if member.phone_number %}
+                                <div style="font-size: 12px; color: var(--text-gray); display: flex; align-items: center; gap: 6px;">
+                                    <i class="bx bx-phone" style="font-size: 14px; color: var(--primary);"></i>
+                                    <a href="tel:{{member.phone_number}}" style="color: var(--text-gray); text-decoration: none;">{{member.phone_number}}</a>
+                                </div>
+                                {% endif %}
+                                {% if member.email %}
+                                <div style="font-size: 12px; color: var(--text-gray); display: flex; align-items: center; gap: 6px;">
+                                    <i class="bx bx-envelope" style="font-size: 14px; color: var(--primary);"></i>
+                                    <a href="mailto:{{member.email}}" style="color: var(--text-gray); text-decoration: none; word-break: break-word;">{{member.email}}</a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endif %}
+
+            <!-- Quick Links (for non-authenticated) -->
+            {% if not user.is_authenticated %}
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+                <button class="card" onclick="openRegisterModal()" style="border: none; cursor: pointer; padding: 20px; text-align: center;">
+                    <div style="font-size: 32px; margin-bottom: 8px;">📅</div>
+                    <div style="font-weight: 700; font-size: 14px;">Upcoming Events</div>
+                </button>
+                <button class="card" onclick="openRegisterModal()" style="border: none; cursor: pointer; padding: 20px; text-align: center;">
+                    <div style="font-size: 32px; margin-bottom: 8px;">📸</div>
+                    <div style="font-weight: 700; font-size: 14px;">Photo Gallery</div>
+                </button>
+            </div>
+            {% endif %}
+
+            <!-- Testimonials -->
+            <div style="margin-bottom: 20px;">
+                <h2 style="font-size: 18px; font-weight: 700; margin-bottom: 12px;">What Members Say</h2>
+                {% for testimonial in testimonials|slice:":3" %}
+                <div class="testimonial">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <div class="testimonial-avatar">{{testimonial.made_by|first|upper}}</div>
+                    <div class="testimonial-name">{{testimonial.made_by}}</div>
+                    <div class="testimonial-text">"{{testimonial.testimony}}"</div>
+                </div>
+                {% empty %}
+                <div class="testimonial">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <div class="testimonial-avatar">R</div>
+                    <div class="testimonial-name">Rajesh Kumar</div>
+                    <div class="testimonial-text">"A very nice platform to find ideal match for my children. The functionality is quite easy to learn!"</div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Membership CTA -->
+            {% if not user.is_authenticated %}
+            <div style="background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%); color: white; padding: 24px 16px; border-radius: 12px; text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 24px; margin-bottom: 8px;">💳</div>
+                <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">Become a Member</h3>
+                <p style="font-size: 14px; opacity: 0.9; margin-bottom: 16px;">Unlock exclusive features & find your perfect match</p>
+                <button class="cta-button" onclick="openRegisterModal()" style="background: var(--accent); color: white;">Join Now</button>
+            </div>
+                {% endif %}
+        </div>
+
+        <!-- ===== PROFILES SECTION ===== -->
+        {% if user.is_authenticated %}
+        <div class="section" id="profilesSection">
+            <div class="search-bar">
+                <input type="text" class="search-input" id="profileSearch" placeholder="Search by name or location...">
+                <button class="filter-btn" onclick="openFilterModal()">⚙️</button>
+            </div>
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="loadProfiles('all')">All Profiles</button>
+                <button class="tab-btn" onclick="loadProfiles('recent')">Recently Joined</button>
+                <button class="tab-btn" onclick="loadProfiles('verified')">Verified</button>
+            </div>
+            <div id="profilesList" style="margin-top: 16px;">
+                <!-- Profiles will be loaded here via AJAX -->
+            </div>
+            <div id="profilesLoading" style="text-align: center; padding: 40px; display: none;">
+                <div style="font-size: 24px; margin-bottom: 12px;">⏳</div>
+                <div>Loading profiles...</div>
+        </div>
+            <div id="profilesEmpty" style="text-align: center; padding: 40px; display: none;">
+                <div style="font-size: 48px; margin-bottom: 12px;">👥</div>
+                <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;">No Profiles Found</h3>
+                <p style="color: var(--text-gray); font-size: 14px;">Try adjusting your filters or check back later.</p>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- ===== EVENTS SECTION ===== -->
+        {% if user.is_authenticated %}
+        <div class="section" id="eventsSection">
+            <h2 style="font-size: 18px; font-weight: 700; margin: 16px 0; margin-top: 20px;">Upcoming Events</h2>
+            {% for event in samaj_events %}
+            <div class="event-card">
+                <div class="event-header">
+                    <div>
+                        <div class="event-title">{{event.title}}</div>
+                    </div>
+                    <div class="event-date">
+                        <div class="event-day">{{event.event_date|date:"d"}}</div>
+                        <div class="event-month">{{event.event_date|date:"M"|upper}}</div>
+                    </div>
+                </div>
+                <div class="event-body">
+                    <div class="event-location">📍 {{event.location|default:"TBA"}}</div>
+                    {% if event.description %}
+                    <div class="event-description">{{event.description|truncatewords:20}}</div>
+                    {% endif %}
+                    <span class="event-badge">Upcoming</span>
+                </div>
+            </div>
+            {% empty %}
+            <div class="event-card">
+                <div class="event-header">
+                    <div>
+                        <div class="event-title">Community Gathering</div>
+                    </div>
+                    <div class="event-date">
+                        <div class="event-day">15</div>
+                        <div class="event-month">DEC</div>
+                    </div>
+                </div>
+                <div class="event-body">
+                    <div class="event-location">📍 New Delhi Convention Center</div>
+                    <div class="event-description">Join us for our annual community gathering with networking, cultural programs, and delicious food.</div>
+                    <span class="event-badge">In-person</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- ===== GALLERY SECTION ===== -->
+        {% if user.is_authenticated %}
+        <div class="section" id="gallerySection">
+            <h2 style="font-size: 18px; font-weight: 700; margin: 16px 0; margin-top: 20px;">Photo Gallery</h2>
+            <div class="tab-buttons">
+                <button class="tab-btn active">Events</button>
+                <button class="tab-btn">Gatherings</button>
+                <button class="tab-btn">Ceremonies</button>
+            </div>
+            <div class="gallery-grid">
+                {% for gallery_item in gallery_images|slice:":6" %}
+                <div class="gallery-item">
+                    {% if gallery_item.image %}
+                    <img src="{{gallery_item.image.url}}" alt="{{gallery_item.title|default:gallery_item.remarks|default:'Gallery Image'}}">
+                    {% else %}
+                    📷
+                    {% endif %}
+                </div>
+                {% empty %}
+                <div class="gallery-item">📷</div>
+                <div class="gallery-item">📷</div>
+                <div class="gallery-item">📷</div>
+                <div class="gallery-item">📷</div>
+                <div class="gallery-item">📷</div>
+                <div class="gallery-item">📷</div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- ===== MEMBERSHIP SECTION ===== -->
+        <div class="section" id="membershipSection">
+            <h2 style="font-size: 18px; font-weight: 700; margin: 16px 0; margin-top: 20px;">Membership Plans</h2>
+            <div class="membership-card">
+                <div class="membership-title">Free</div>
+                <div class="membership-price">₹0</div>
+                <div class="membership-duration">Forever</div>
+                <div class="membership-features">
+                    <div class="feature">View Limited Profiles</div>
+                    <div class="feature">Create Your Profile</div>
+                    <div class="feature">Basic Search</div>
+                </div>
+                <button class="membership-btn" style="background: var(--bg-light); color: var(--primary);" onclick="{% if not user.is_authenticated %}openRegisterModal(){% endif %}">Get Started</button>
+            </div>
+            <div class="membership-card featured">
+                <div class="membership-badge">Most Popular</div>
+                <div class="membership-title">Basic</div>
+                <div class="membership-price">₹250</div>
+                <div class="membership-duration">per year</div>
+                <div class="membership-features">
+                    <div class="feature">View All Profiles</div>
+                    <div class="feature">Advanced Search & Filters</div>
+                    <div class="feature">Send Interest</div>
+                    <div class="feature">Direct Messaging</div>
+                    <div class="feature">Email Notifications</div>
+                </div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'payment' %}" class="membership-btn">Subscribe Now</a>
+                {% else %}
+                <button class="membership-btn" onclick="openRegisterModal()">Subscribe Now</button>
+                {% endif %}
+            </div>
+            <div class="membership-card">
+                <div class="membership-title">Premium</div>
+                <div class="membership-price">₹1,200</div>
+                <div class="membership-duration">per year</div>
+                <div class="membership-features">
+                    <div class="feature">All Basic Features</div>
+                    <div class="feature">Video Calls Enabled</div>
+                    <div class="feature">Priority Support</div>
+                    <div class="feature">Profile Highlight</div>
+                    <div class="feature">See Who Viewed Profile</div>
+                    <div class="feature">Exclusive Events Access</div>
+                </div>
+                {% if user.is_authenticated %}
+                <a href="{% url 'payment' %}" class="membership-btn">Subscribe Now</a>
+                {% else %}
+                <button class="membership-btn" onclick="openRegisterModal()">Subscribe Now</button>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- ===== ABOUT SECTION ===== -->
+        <div class="section" id="aboutSection">
+            <h2 style="font-size: 18px; font-weight: 700; margin: 16px 0; margin-top: 20px;">About Saryu Parivar</h2>
+            <div class="card">
+                <div class="card-title">Our Mission</div>
+                <div class="card-text">
+                    Saryu Parivar is dedicated to connecting Brahmin families and individuals across India and the world. We preserve and promote our cultural heritage while embracing modern technology to facilitate meaningful relationships.
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">Our Community</div>
+                <div class="card-text">
+                    With over 5,000 active members, we've successfully facilitated hundreds of marriages. Our community events keep families connected and strengthen cultural bonds.
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">Core Values</div>
+                <div class="card-text">
+                    <strong>Tradition:</strong> Respecting our cultural heritage<br><br>
+                    <strong>Trust:</strong> Ensuring genuine, verified connections<br><br>
+                    <strong>Community:</strong> Fostering unity among Brahmin families
+                </div>
+            </div>
+            {% if committee_members %}
+            <div class="card">
+                <div class="card-title">Committee Members</div>
+                <div class="card-text">
+                    {% for member in committee_members|slice:":5" %}
+                    <div style="margin-bottom: 12px;">
+                        <strong>{{member.name}}</strong> - {{member.designation}}<br>
+                        {% if member.phone_number %}<small>📞 {{member.phone_number}}</small>{% endif %}
+                        {% if member.email %}<small>📧 {{member.email}}</small>{% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Bottom Navigation (Only for authenticated users) -->
+    {% if user.is_authenticated %}
+    <div class="nav-bottom">
+        <a href="/" class="nav-item active">
+            <div class="nav-item-icon">🏠</div>
+            <div>Home</div>
+        </a>
+        <a href="{% url 'all_profiles' %}" class="nav-item">
+            <div class="nav-item-icon">👥</div>
+            <div>Profiles</div>
+        </a>
+        <a href="{% url 'my_profiles' %}" class="nav-item">
+            <div class="nav-item-icon">📋</div>
+            <div>My Profiles</div>
+        </a>
+        <a href="{% url 'shortlisted_profiles' %}" class="nav-item">
+            <div class="nav-item-icon">❤️</div>
+            <div>Shortlisted</div>
+        </a>
+        <a href="{% url 'payment' %}" class="nav-item">
+            <div class="nav-item-icon">💳</div>
+            <div>Payment</div>
+        </a>
+    </div>
+    {% endif %}
+
+    <!-- Login/Register Modals -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('loginModal')">×</button>
+            <h2 style="margin-bottom: 16px;">Login</h2>
+            <div id="login-messages" style="display: none; margin-bottom: 16px; padding: 12px; border-radius: 8px; font-size: 14px;"></div>
+            <form id="loginForm" method="POST" action="{% url 'login_user' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="form-label">Username/Phone/Email</label>
+                    <input type="text" name="username_or_phone" id="login_username" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" id="login_password" class="form-input" required>
+                </div>
+                <button type="submit" class="membership-btn" id="login-submit-btn">
+                    <span id="login-btn-text">Login</span>
+                    <span id="login-spinner" style="display: none;">⏳</span>
+                </button>
+            </form>
+            <p style="text-align: center; margin-top: 12px; font-size: 13px;">
+                <a href="{% url 'password_reset' %}" style="color: var(--primary);">Forgot Password?</a>
+            </p>
+        </div>
+    </div>
+
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal('registerModal')">×</button>
+            <h2 style="margin-bottom: 16px;">Join Saryu Parivar</h2>
+            <div id="registration-messages" style="display: none; margin-bottom: 16px; padding: 12px; border-radius: 8px; font-size: 14px;"></div>
+            <form method="POST" action="{% url 'homepage' %}" enctype="multipart/form-data" id="registrationForm">
+                {% csrf_token %}
+                <input type="hidden" name="form_type" value="Registration">
+                
+                <div class="form-group">
+                    <label class="form-label">नाम (First Name) *</label>
+                    <input type="text" name="first_name" id="first-name" class="form-input" placeholder="Enter your first name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">उपनाम (Last Name) *</label>
+                    <input type="text" name="last_name" id="last-name" class="form-input" placeholder="Enter your last name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">पिता का नाम (Father's Name) *</label>
+                    <input type="text" name="father_name" id="father-name" class="form-input" placeholder="Enter father's name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">मूल निवासी गाँव (Native Village) *</label>
+                    <input type="text" name="native_village" id="native-village" class="form-input" placeholder="Enter native village" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">जिला (District) *</label>
+                    <input type="text" name="district" id="district" class="form-input" placeholder="Enter district" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">तहसील (Tehsil) *</label>
+                    <input type="text" name="tehsil" id="tehsil" class="form-input" placeholder="Enter tehsil" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">वर्तमान पता (Current Address) *</label>
+                    <textarea name="current_address" id="current-address" class="form-input form-textarea" rows="3" placeholder="Enter current address" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">फोन (Phone Number) *</label>
+                    <input type="tel" name="phone_number" id="phone-number" class="form-input" placeholder="Enter 10-digit phone number" minlength="10" maxlength="10" pattern="[0-9]{10}" required>
+                    <small style="font-size: 12px; color: var(--text-gray);">10 digits only</small>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">व्यवसाय का पता (Business Address)</label>
+                    <textarea name="business_address" id="business-address" class="form-input form-textarea" rows="2" placeholder="Enter business address (optional)"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">व्यवसाय फोन (Business Phone Number)</label>
+                    <input type="tel" name="business_phone_number" id="business-phone-number" class="form-input" placeholder="Enter business phone (optional)" minlength="10" maxlength="10" pattern="[0-9]{10}">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Email *</label>
+                    <input type="email" name="email" id="email" class="form-input" placeholder="Enter your email address" required>
+                    <small style="font-size: 12px; color: var(--text-gray);">Required for password reset</small>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Password *</label>
+                    <input type="password" name="password" id="password" class="form-input" placeholder="Enter password (min 8 characters)" minlength="8" required>
+                    <small style="font-size: 12px; color: var(--text-gray);">Minimum 8 characters</small>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Confirm Password *</label>
+                    <input type="password" name="password_confirm" id="password_confirm" class="form-input" placeholder="Confirm password" minlength="8" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Upload Picture Here (Max 5MB, will be compressed) *</label>
+                    <input type="file" name="profile_pic" id="profile-pic" class="form-input" accept="image/*" required>
+                    <small style="font-size: 12px; color: var(--text-gray);">Image will be automatically compressed and resized to optimize file size.</small>
+                    <div id="image-size-error" style="display: none; margin-top: 8px; padding: 8px; background: #fee; color: #c33; border-radius: 6px; font-size: 12px;"></div>
+                </div>
+                
+                <button type="submit" class="membership-btn" id="register-submit-btn">
+                    <span id="register-btn-text">Register</span>
+                    <span id="register-spinner" style="display: none;">⏳</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function switchSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            // Remove active from nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            // Show selected section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
+            // Mark the clicked nav item as active (if it's a button)
+            event?.target?.closest('.nav-item')?.classList.add('active');
+            // Add active to nav item
+            if (event?.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
+            // Scroll to top
+            document.querySelector('.container').scrollTop = 0;
+        }
+
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function openRegisterModal() {
+            document.getElementById('registerModal').classList.add('active');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        // Show message in modal
+        function showMessage(elementId, message, type) {
+            const messagesDiv = document.getElementById(elementId);
+            if (messagesDiv) {
+                messagesDiv.style.display = 'block';
+                messagesDiv.textContent = message;
+                messagesDiv.style.background = type === 'error' ? '#fee' : '#efe';
+                messagesDiv.style.color = type === 'error' ? '#c33' : '#3c3';
+                messagesDiv.style.border = `1px solid ${type === 'error' ? '#c33' : '#3c3'}`;
+            }
+        }
+
+        // Login form submission via AJAX
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const submitBtn = document.getElementById('login-submit-btn');
+                    const btnText = document.getElementById('login-btn-text');
+                    const spinner = document.getElementById('login-spinner');
+                    const messagesDiv = document.getElementById('login-messages');
+                    
+                    // Clear previous messages
+                    if (messagesDiv) {
+                        messagesDiv.style.display = 'none';
+                        messagesDiv.textContent = '';
+                    }
+                    
+                    // Disable button and show loading
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        if (btnText) btnText.style.display = 'none';
+                        if (spinner) spinner.style.display = 'inline';
+                    }
+                    
+                    // Get form data
+                    const formData = new FormData(loginForm);
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                    
+                    try {
+                        const response = await fetch(loginForm.action, {
+                            method: 'POST',
+                            body: formData,
+                            headers: {
+                                'X-CSRFToken': csrfToken
+                            }
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                            showMessage('login-messages', data.message || 'Login successful! Redirecting...', 'success');
+                            setTimeout(() => {
+                                window.location.href = data.redirect || '/dashboard/';
+                            }, 1000);
+                        } else {
+                            showMessage('login-messages', data.message || 'Login failed. Please try again.', 'error');
+                            if (submitBtn) {
+                                submitBtn.disabled = false;
+                                if (btnText) btnText.style.display = 'inline';
+                                if (spinner) spinner.style.display = 'none';
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Login error:', error);
+                        showMessage('login-messages', 'Network error. Please check your connection and try again.', 'error');
+                        if (submitBtn) {
+                            submitBtn.disabled = false;
+                            if (btnText) btnText.style.display = 'inline';
+                            if (spinner) spinner.style.display = 'none';
+                        }
+                    }
+                });
+            }
+
+            // Registration form submission with validation
+            const registerForm = document.getElementById('registrationForm');
+            if (registerForm) {
+                // Image size validation
+                const imageInput = document.getElementById('profile-pic');
+                const imageSizeError = document.getElementById('image-size-error');
+                const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
+                
+                if (imageInput) {
+                    imageInput.addEventListener('change', function(e) {
+                        const file = e.target.files[0];
+                        if (file) {
+                            if (imageSizeError) {
+                                imageSizeError.style.display = 'none';
+                            }
+                            
+                            if (file.size > MAX_IMAGE_SIZE) {
+                                if (imageSizeError) {
+                                    const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+                                    imageSizeError.innerHTML = `⚠️ Image file is too large (${sizeInMB} MB). Maximum allowed size is 5 MB. Please select a smaller image.`;
+                                    imageSizeError.style.display = 'block';
+                                }
+                                e.target.value = '';
+                                const submitBtn = document.getElementById('register-submit-btn');
+                                if (submitBtn) {
+                                    submitBtn.disabled = true;
+                                }
+                            } else {
+                                if (imageSizeError) {
+                                    imageSizeError.style.display = 'none';
+                                }
+                                const submitBtn = document.getElementById('register-submit-btn');
+                                if (submitBtn) {
+                                    submitBtn.disabled = false;
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                registerForm.addEventListener('submit', function(e) {
+                    const submitBtn = document.getElementById('register-submit-btn');
+                    const btnText = document.getElementById('register-btn-text');
+                    const spinner = document.getElementById('register-spinner');
+                    const messagesDiv = document.getElementById('registration-messages');
+                    
+                    // Validate image size one more time
+                    if (imageInput && imageInput.files.length > 0) {
+                        const file = imageInput.files[0];
+                        if (file.size > MAX_IMAGE_SIZE) {
+                            e.preventDefault();
+                            if (imageSizeError) {
+                                const sizeInMB = (file.size / (1024 * 1024)).toFixed(2);
+                                imageSizeError.innerHTML = `⚠️ Image file is too large (${sizeInMB} MB). Maximum allowed size is 5 MB.`;
+                                imageSizeError.style.display = 'block';
+                            }
+                            return false;
+                        }
+                    }
+                    
+                    // Validate passwords match
+                    const password = document.getElementById('password').value;
+                    const passwordConfirm = document.getElementById('password_confirm').value;
+                    if (password !== passwordConfirm) {
+                        e.preventDefault();
+                        showMessage('registration-messages', 'Passwords do not match. Please try again.', 'error');
+                        return false;
+                    }
+                    
+                    // Show loading state
+                    if (submitBtn) {
+                        submitBtn.disabled = true;
+                        if (btnText) btnText.style.display = 'none';
+                        if (spinner) spinner.style.display = 'inline';
+                    }
+                    
+                    // Clear previous messages
+                    if (messagesDiv) {
+                        messagesDiv.style.display = 'none';
+                    }
+                    
+                    // Let form submit normally - server will handle redirect
+                });
+            }
+
+            // Load profiles data when profiles section is accessed
+            window.loadProfiles = async function(filterType = 'all') {
+                const profilesList = document.getElementById('profilesList');
+                const profilesLoading = document.getElementById('profilesLoading');
+                const profilesEmpty = document.getElementById('profilesEmpty');
+                
+                if (!profilesList) return;
+                
+                // Show loading
+                profilesList.innerHTML = '';
+                if (profilesLoading) profilesLoading.style.display = 'block';
+                if (profilesEmpty) profilesEmpty.style.display = 'none';
+                
+                try {
+                    const formData = new FormData();
+                    formData.append('page_number', '1');
+                    if (filterType === 'recent') {
+                        // Add recent filter logic if needed
+                    }
+                    
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                    
+                    const response = await fetch('/dashboard/', {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRFToken': csrfToken
+                        }
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (profilesLoading) profilesLoading.style.display = 'none';
+                    
+                    if (data.profiles && data.profiles.length > 0) {
+                        if (profilesEmpty) profilesEmpty.style.display = 'none';
+                        
+                        // Render profiles
+                        data.profiles.forEach(profile => {
+                            const profileCard = document.createElement('div');
+                            profileCard.className = 'profile-card';
+                            profileCard.innerHTML = `
+                                <div class="profile-image">
+                                    ${profile.marriage_profile_pic ? `<img src="${profile.marriage_profile_pic}" alt="${profile.candidate_name}">` : '👤'}
+                                </div>
+                                <div class="profile-info">
+                                    <div class="profile-name">${profile.candidate_name || 'N/A'}, ${profile.age || 'N/A'}</div>
+                                    <div class="profile-details">
+                                        <div class="detail-item">📍 ${profile.city || 'N/A'}</div>
+                                        <div class="detail-item">💼 ${profile.occupation || 'N/A'}</div>
+                                        <div class="detail-item">📚 ${profile.education || 'N/A'}</div>
+                                        <div class="detail-item">✓ Verified</div>
+                                    </div>
+                                    <div class="profile-actions">
+                                        <button class="action-btn action-btn-secondary" onclick="showContactModal('${profile.id}', '${profile.candidate_name}', '${profile.phone_number || ''}', '${profile.whatsapp_phone_number || ''}', '${profile.email_id || ''}')">👁️ View</button>
+                                        <button class="action-btn action-btn-primary" onclick="toggleShortlist(${profile.id})">❤️ ${profile.is_shortlisted ? 'Shortlisted' : 'Interest'}</button>
+                                    </div>
+                                </div>
+                            `;
+                            profilesList.appendChild(profileCard);
+                        });
+                    } else {
+                        if (profilesEmpty) profilesEmpty.style.display = 'block';
+                    }
+                } catch (error) {
+                    console.error('Error loading profiles:', error);
+                    if (profilesLoading) profilesLoading.style.display = 'none';
+                    if (profilesEmpty) {
+                        profilesEmpty.style.display = 'block';
+                        profilesEmpty.querySelector('p').textContent = 'Error loading profiles. Please try again.';
+                    }
+                }
+            };
+
+            // Load profiles when profiles section is shown
+            const profilesSection = document.getElementById('profilesSection');
+            if (profilesSection) {
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.target.classList.contains('active')) {
+                            loadProfiles('all');
+                        }
+                    });
+                });
+                observer.observe(profilesSection, { attributes: true, attributeFilter: ['class'] });
+            }
+
+            // Toggle shortlist function
+            window.toggleShortlist = async function(profileId) {
+                try {
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                    const response = await fetch(`/dashboard/toggle_shortlist/${profileId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRFToken': csrfToken,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+                    const data = await response.json();
+                    if (data.success) {
+                        // Reload profiles
+                        loadProfiles('all');
+                    }
+                } catch (error) {
+                    console.error('Error toggling shortlist:', error);
+                }
+            };
+
+            // Show contact modal
+            window.showContactModal = function(profileId, name, phone, whatsapp, email) {
+                alert(`Contact Details for ${name}\n\nPhone: ${phone || 'N/A'}\nWhatsApp: ${whatsapp || 'N/A'}\nEmail: ${email || 'N/A'}`);
+            };
+
+            // Open filter modal
+            window.openFilterModal = function() {
+                alert('Filter options coming soon!');
+            };
+        });
+
+        // Close modal on outside click
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+
+        // Image Slider Functions
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slider-slide');
+        const dots = document.querySelectorAll('.slider-dot');
+        
+        function showSlide(index) {
+            if (slides.length === 0) return;
+            
+            // Hide all slides
+            slides.forEach((slide, i) => {
+                slide.style.opacity = '0';
+                if (i === index) {
+                    slide.classList.add('active');
+                } else {
+                    slide.classList.remove('active');
+                }
+            });
+            
+            // Show selected slide
+            if (slides[index]) {
+                slides[index].style.opacity = '1';
+                currentSlide = index;
+            }
+            
+            // Update dots
+            dots.forEach((dot, i) => {
+                if (i === index) {
+                    dot.classList.add('active');
+                    dot.style.background = 'white';
+                    dot.style.width = '12px';
+                } else {
+                    dot.classList.remove('active');
+                    dot.style.background = 'rgba(255,255,255,0.5)';
+                    dot.style.width = '8px';
+                }
+            });
+        }
+        
+        // Auto-advance image slider
+        if (slides.length > 1) {
+            setInterval(() => {
+                currentSlide = (currentSlide + 1) % slides.length;
+                showSlide(currentSlide);
+            }, 5000); // Change slide every 5 seconds
+        }
+        
+        // Promotions Slider Functions
+        let currentPromotion = 0;
+        const promotionSlides = document.querySelectorAll('.promotion-slide');
+        const promotionDots = document.querySelectorAll('.promotion-dot');
+        const promotionsContainer = document.querySelector('.promotions-container');
+        
+        function showPromotion(index) {
+            if (promotionSlides.length === 0 || !promotionsContainer) return;
+            
+            // Calculate slide width as percentage
+            const slideWidthPercent = 100 / promotionSlides.length;
+            const translateX = -(index * slideWidthPercent);
+            promotionsContainer.style.transform = `translateX(${translateX}%)`;
+            currentPromotion = index;
+            
+            // Update dots
+            promotionDots.forEach((dot, i) => {
+                if (i === index) {
+                    dot.classList.add('active');
+                    dot.style.background = 'var(--primary)';
+                    dot.style.width = '20px';
+                    dot.style.borderRadius = '3px';
+                } else {
+                    dot.classList.remove('active');
+                    dot.style.background = 'var(--border-light)';
+                    dot.style.width = '6px';
+                    dot.style.borderRadius = '50%';
+                }
+            });
+        }
+        
+        // Auto-advance promotions slider
+        if (promotionSlides.length > 1) {
+            setInterval(() => {
+                currentPromotion = (currentPromotion + 1) % promotionSlides.length;
+                showPromotion(currentPromotion);
+            }, 4000); // Change promotion every 4 seconds
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Saryu Parivar Mobile Platform Loaded');
+            // Initialize first slide
+            if (slides.length > 0) {
+                showSlide(0);
+            }
+            if (promotionSlides.length > 0) {
+                showPromotion(0);
+            }
+        });
+    </script>
+    
+    <!-- Support Widget -->
+    {% include 'includes/support_widget.html' %}
+</body>
+</html>

@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Profiles - Saryu Parivar</title>
+    <link rel="icon" type="image/x-icon" href="/media/saryu-parivaar-logo.png?v=4">
+    <style>
+        :root {
+            --primary: #f97718;
+            --primary-dark: #e0660d;
+            --primary-light: #ff8c42;
+            --bg-light: #ffecce;
+            --bg-white: #FFFFFF;
+            --text-dark: #1F2937;
+            --text-gray: #6B7280;
+            --border-light: #E5E7EB;
+            --shadow-sm: 0 1px 2px rgba(249, 119, 24, 0.1);
+            --shadow-md: 0 4px 6px rgba(249, 119, 24, 0.15);
+            --shadow-lg: 0 10px 15px rgba(249, 119, 24, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        body {
+            padding-bottom: 70px;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border-light);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            background: var(--bg-light);
+        }
+
+        .logout-btn {
+            padding: 8px 12px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+        }
+
+        /* Payment Badge */
+        .payment-badge-mobile {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: #EF4444;
+            color: white;
+            padding: 8px 16px;
+            text-align: center;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 999;
+            box-shadow: var(--shadow-md);
+        }
+
+        .payment-badge-mobile a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* Main Container */
+        .container {
+            width: 100%;
+            max-width: 480px;
+            margin: {% if not payment_done %}100px{% else %}60px{% endif %} auto 0;
+            padding: 0 12px;
+            padding-bottom: 80px;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .filter-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-dark);
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(249, 119, 24, 0.1);
+        }
+
+        .filter-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 220px;
+            background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 60px;
+            object-fit: cover;
+            color: white;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-blurred {
+            filter: blur(5px);
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .profile-info {
+            padding: 16px;
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .profile-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-light);
+            font-size: 14px;
+        }
+
+        .profile-detail:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: var(--text-gray);
+        }
+
+        .detail-value {
+            color: var(--text-dark);
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .action-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .action-btn-secondary {
+            background: var(--bg-light);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        /* Bottom Navigation */
+        .nav-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-white);
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 0;
+            cursor: pointer;
+            color: var(--text-gray);
+            font-size: 12px;
+            flex: 1;
+            text-decoration: none;
+            border: none;
+            background: none;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item-icon {
+            font-size: 24px;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .page-btn {
+            padding: 8px 12px;
+            border: 1px solid var(--border-light);
+            background: var(--bg-white);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .page-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-gray);
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Payment Verification Badge -->
+    {% if not payment_done %}
+    <div class="payment-badge-mobile">
+        ⚠️ Payment Verification Pending - <a href="{% url 'payment' %}">Complete Payment</a>
+    </div>
+    {% endif %}
+
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <img src="/media/saryu-parivaar-logo.png?v=4" alt="Saryu Parivar">
+            <span>Saryu Parivar</span>
+        </div>
+        <div class="header-actions">
+            <a href="{% url 'user_profile' %}" class="icon-btn" title="Profile">👤</a>
+            <a href="{% url 'logout_user' %}" class="logout-btn">🚪 Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-title">Filter Profiles</div>
+            <form id="filter-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label class="form-label">Gender</label>
+                    <select name="gender" id="gender" class="form-select">
+                        <option value="">Any</option>
+                        {% for gender in genders %}
+                        <option value="{{ gender }}">{{ gender }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Age Range</label>
+                    <div style="display: flex; gap: 8px;">
+                        <select name="age_lower_limit" id="age-lower-limit" class="form-select">
+                            <option value="">Min</option>
+                            {% for age in ages %}
+                            <option value="{{ age }}">{{ age }}</option>
+                            {% endfor %}
+                        </select>
+                        <select name="age_upper_limit" id="age-upper-limit" class="form-select">
+                            <option value="">Max</option>
+                            {% for age in ages %}
+                            <option value="{{ age }}">{{ age }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">City</label>
+                    <select name="city" id="city" class="form-select">
+                        <option value="">Any</option>
+                        {% for city in cities %}
+                        <option value="{{ city }}">{{ city }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Education</label>
+                    <select name="education" id="education" class="form-select">
+                        <option value="">Any</option>
+                        {% for education in educations %}
+                        <option value="{{ education }}">{{ education }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="button" class="filter-btn" onclick="filterProfiles()">Apply Filters</button>
+            </form>
+        </div>
+
+        <!-- Profiles List -->
+        <div id="profiles-list">
+            {% if profiles %}
+                {% for profile in profiles %}
+                <div class="profile-card">
+                    <div class="profile-image {% if not payment_done %}profile-blurred{% endif %}">
+                        {% if profile.marriage_profile_pic %}
+                        <img src="{{ profile.marriage_profile_pic.url }}" alt="{{ profile.candidate_name }}">
+                        {% else %}
+                        👤
+                        {% endif %}
+                    </div>
+                    <div class="profile-info">
+                        <div class="profile-name">{{ profile.candidate_name }}</div>
+                        <div class="profile-detail">
+                            <span class="detail-label">Father:</span>
+                            <span class="detail-value">{{ profile.father_name|default:"N/A" }}</span>
+                        </div>
+                        <div class="profile-detail">
+                            <span class="detail-label">Education:</span>
+                            <span class="detail-value">{{ profile.education|default:"N/A" }}</span>
+                        </div>
+                        <div class="profile-detail">
+                            <span class="detail-label">Occupation:</span>
+                            <span class="detail-value">{{ profile.occupation|default:"N/A" }}</span>
+                        </div>
+                        <div class="profile-detail">
+                            <span class="detail-label">City:</span>
+                            <span class="detail-value">{{ profile.city|default:"N/A" }}</span>
+                        </div>
+                        {% if payment_done %}
+                        <div class="profile-actions">
+                            <button class="action-btn action-btn-primary" onclick="showContactModal('{{ profile.id }}', '{{ profile.candidate_name }}', '{{ profile.phone_number }}', '{{ profile.whatsapp_phone_number|default:"" }}', '{{ profile.email_id|default:"" }}')">Contact</button>
+                            <button class="action-btn action-btn-secondary" onclick="toggleShortlist({{ profile.id }})" data-profile-id="{{ profile.id }}">
+                                <span class="shortlist-text">{% if profile.is_shortlisted %}❤️ Shortlisted{% else %}🤍 Shortlist{% endif %}</span>
+                            </button>
+                        </div>
+                        {% else %}
+                        <div class="profile-actions">
+                            <a href="{% url 'payment' %}" class="action-btn action-btn-primary" style="text-decoration: none; display: block; text-align: center;">Complete Payment to View</a>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">👤</div>
+                    <h3>No Profiles Found</h3>
+                    <p>{% if not payment_done %}Please complete payment to view profiles.{% else %}No profiles available at the moment.{% endif %}</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Pagination -->
+        {% if profiles.has_other_pages %}
+        <div class="pagination">
+            {% if profiles.has_previous %}
+            <button class="page-btn" onclick="loadPage({{ profiles.previous_page_number }})">Previous</button>
+            {% endif %}
+            {% for page_num in total_pages %}
+            <button class="page-btn {% if page_num == profiles.number %}active{% endif %}" onclick="loadPage({{ page_num }})">{{ page_num }}</button>
+            {% endfor %}
+            {% if profiles.has_next %}
+            <button class="page-btn" onclick="loadPage({{ profiles.next_page_number }})">Next</button>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="nav-bottom">
+        <a href="/" class="nav-item">
+            <div class="nav-item-icon">🏠</div>
+            <div>Home</div>
+        </a>
+        <a href="{% url 'all_profiles' %}" class="nav-item active">
+            <div class="nav-item-icon">👥</div>
+            <div>Profiles</div>
+        </a>
+        <a href="{% url 'my_profiles' %}" class="nav-item">
+            <div class="nav-item-icon">📋</div>
+            <div>My Profiles</div>
+        </a>
+        <a href="{% url 'shortlisted_profiles' %}" class="nav-item">
+            <div class="nav-item-icon">❤️</div>
+            <div>Shortlisted</div>
+        </a>
+        <a href="{% url 'payment' %}" class="nav-item">
+            <div class="nav-item-icon">💳</div>
+            <div>Payment</div>
+        </a>
+    </div>
+
+    <script>
+        async function filterProfiles() {
+            const form = document.getElementById('filter-form');
+            const formData = new FormData(form);
+            formData.append('page_number', 1);
+
+            const profilesList = document.getElementById('profiles-list');
+            profilesList.innerHTML = '<div style="text-align: center; padding: 40px;">Loading...</div>';
+
+            try {
+                const response = await fetch('{% url "all_profiles" %}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+                    }
+                });
+                const data = await response.json();
+                displayProfiles(data);
+            } catch (error) {
+                console.error('Error:', error);
+                profilesList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">⚠️</div><h3>Error loading profiles</h3></div>';
+            }
+        }
+
+        function displayProfiles(data) {
+            const profilesList = document.getElementById('profiles-list');
+            const paymentRequired = data.payment_required || false;
+
+            if (data.profiles.length === 0) {
+                profilesList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">👤</div><h3>No Profiles Found</h3><p>No profiles match your filter criteria.</p></div>';
+                return;
+            }
+
+            let html = '';
+            data.profiles.forEach(profile => {
+                const blurClass = paymentRequired ? 'profile-blurred' : '';
+                const isShortlisted = profile.is_shortlisted || false;
+                html += `
+                    <div class="profile-card">
+                        <div class="profile-image ${blurClass}">
+                            ${profile.marriage_profile_pic ? `<img src="${profile.marriage_profile_pic}" alt="${profile.candidate_name}">` : '👤'}
+                        </div>
+                        <div class="profile-info">
+                            <div class="profile-name">${profile.candidate_name}</div>
+                            <div class="profile-detail">
+                                <span class="detail-label">Father:</span>
+                                <span class="detail-value">${profile.father_name || 'N/A'}</span>
+                            </div>
+                            <div class="profile-detail">
+                                <span class="detail-label">Education:</span>
+                                <span class="detail-value">${profile.education || 'N/A'}</span>
+                            </div>
+                            <div class="profile-detail">
+                                <span class="detail-label">Occupation:</span>
+                                <span class="detail-value">${profile.occupation || 'N/A'}</span>
+                            </div>
+                            ${!paymentRequired ? `
+                            <div class="profile-actions">
+                                <button class="action-btn action-btn-primary" onclick="showContactModal('${profile.id}', '${profile.candidate_name}', '${profile.phone_number}', '${profile.whatsapp_phone_number || ''}', '${profile.email_id || ''}')">Contact</button>
+                                <button class="action-btn ${isShortlisted ? 'action-btn-primary' : 'action-btn-secondary'}" onclick="toggleShortlist(${profile.id})" data-profile-id="${profile.id}">
+                                    ${isShortlisted ? '❤️ Shortlisted' : '🤍 Shortlist'}
+                                </button>
+                            </div>
+                            ` : `
+                            <div class="profile-actions">
+                                <a href="{% url 'payment' %}" class="action-btn action-btn-primary" style="text-decoration: none; display: block; text-align: center;">Complete Payment to View</a>
+                            </div>
+                            `}
+                        </div>
+                    </div>
+                `;
+            });
+            profilesList.innerHTML = html;
+        }
+
+        function loadPage(pageNumber) {
+            window.location.href = `{% url "all_profiles" %}?page=${pageNumber}`;
+        }
+
+        async function toggleShortlist(profileId) {
+            try {
+                const response = await fetch(`/dashboard/toggle_shortlist/${profileId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    }
+                });
+                const data = await response.json();
+                if (data.success) {
+                    // Reload profiles
+                    filterProfiles();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        function showContactModal(profileId, name, phone, whatsapp, email) {
+            alert(`Contact ${name}\nPhone: ${phone}\nWhatsApp: ${whatsapp || 'N/A'}\nEmail: ${email || 'N/A'}`);
+        }
+    </script>
+    
+    <!-- Support Widget -->
+    {% include 'includes/support_widget.html' %}
+</body>
+</html>
+

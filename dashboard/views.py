@@ -9,6 +9,12 @@ from . import models
 from .forms import ProfileForm, CandidateProfileForm, UserProfileForm
 from administration import models as admin_models
 
+def is_mobile_device(request):
+    """Detect if the request is from a mobile device"""
+    user_agent = request.META.get('HTTP_USER_AGENT', '').lower()
+    mobile_keywords = ['mobile', 'android', 'iphone', 'ipad', 'ipod', 'blackberry', 'windows phone', 'opera mini']
+    return any(keyword in user_agent for keyword in mobile_keywords)
+
 # def dashboard(request):
     # return render(request, 'dashboard.html', {'username': request.user.show_username(), 'user_avatar': request.user.profile_pic.url if hasattr(request.user, 'profile_pic') else None})
 
@@ -83,7 +89,11 @@ def user_profile(request):
                 logger = logging.getLogger(__name__)
                 logger.warning(f"Error accessing user avatar: {e}")
         
-        return render(request, 'user-profile.html', {
+        # Check if mobile device
+        is_mobile = is_mobile_device(request)
+        template_name = 'user-profile-mobile.html' if is_mobile else 'user-profile.html'
+        
+        return render(request, template_name, {
             'form': form,
             'user': user,
             'username': user.show_username(),
@@ -110,7 +120,9 @@ def user_profile(request):
                 form = UserProfileForm()
                 username = ''
                 payment_done = False
-            return render(request, 'user-profile.html', {
+            is_mobile = is_mobile_device(request)
+            template_name = 'user-profile-mobile.html' if is_mobile else 'user-profile.html'
+            return render(request, template_name, {
                 'form': form,
                 'user': user,
                 'username': username,
@@ -153,7 +165,11 @@ def my_profiles(request):
                 logger = logging.getLogger(__name__)
                 logger.warning(f"Error accessing user avatar: {e}")
         
-        return render(request, 'my-profiles.html', {
+        # Check if mobile device
+        is_mobile = is_mobile_device(request)
+        template_name = 'my-profiles-mobile.html' if is_mobile else 'my-profiles.html'
+        
+        return render(request, template_name, {
             'profiles': profiles,
             'username': request.user.show_username(),
             'user_avatar': user_avatar,
@@ -199,7 +215,11 @@ def shortlisted_profiles(request):
                 logger = logging.getLogger(__name__)
                 logger.warning(f"Error accessing user avatar: {e}")
         
-        return render(request, 'shortlisted-profiles.html', {
+        # Check if mobile device
+        is_mobile = is_mobile_device(request)
+        template_name = 'shortlisted-profiles-mobile.html' if is_mobile else 'shortlisted-profiles.html'
+        
+        return render(request, template_name, {
             'profiles': profiles,
             'username': request.user.show_username(),
             'user_avatar': user_avatar,
@@ -219,7 +239,9 @@ def shortlisted_profiles(request):
             user = request.user if request.user.is_authenticated else None
             username = user.show_username() if user and hasattr(user, 'show_username') else ''
             payment_done = getattr(user, 'payment_done', False) if user else False
-            return render(request, 'shortlisted-profiles.html', {
+            is_mobile = is_mobile_device(request)
+            template_name = 'shortlisted-profiles-mobile.html' if is_mobile else 'shortlisted-profiles.html'
+            return render(request, template_name, {
                 'profiles': [],
                 'username': username,
                 'user_avatar': '',
@@ -315,7 +337,11 @@ def profile_create_edit(request, profile_id=None):
         except:
             user_avatar = ''
     
-    return render(request, 'profile-new.html', {
+    # Check if mobile device
+    is_mobile = is_mobile_device(request)
+    template_name = 'profile-new-mobile.html' if is_mobile else 'profile-new.html'
+    
+    return render(request, template_name, {
         'form': form, 
         'profile_exists': profile_exists,
         'profile': profile,
@@ -610,4 +636,8 @@ def all_profiles(request):
         }
         # Payment status is added via context processor
         
-        return render(request, 'all-profiles-new.html', context_data)
+        # Check if mobile device
+        is_mobile = is_mobile_device(request)
+        template_name = 'all-profiles-mobile.html' if is_mobile else 'all-profiles-new.html'
+        
+        return render(request, template_name, context_data)

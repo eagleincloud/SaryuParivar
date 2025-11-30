@@ -253,13 +253,21 @@ def custom_index(request, extra_context=None):
     pending_count = get_pending_payments_count()
     extra_context['pending_payments_count'] = pending_count
     
-    # Add notification badge
+    # Count pending support requests
+    pending_support_count = models.SupportRequest.objects.filter(status='pending').count()
+    urgent_support_count = models.SupportRequest.objects.filter(status='pending', priority='urgent').count()
+    extra_context['pending_support_count'] = pending_support_count
+    extra_context['urgent_support_count'] = urgent_support_count
+    
+    notifications_html = []
+    
+    # Add payment notification badge
     if pending_count > 0:
-        extra_context['pending_payments_notification'] = format_html(
+        notifications_html.append(format_html(
             '<div class="alert alert-warning" style="margin: 20px; border-left: 5px solid #ff9800; background: linear-gradient(135deg, #fff8e1 0%, #ffe082 100%); border-radius: 12px; padding: 20px; box-shadow: 0 8px 24px rgba(255, 152, 0, 0.25);">'
             '<div class="d-flex align-items-center">'
             '<div style="width: 48px; height: 48px; background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 16px; box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);">'
-            '<i class="bx bx-bell" style="font-size: 28px; color: white;"></i>'
+            '<i class="bx bx-credit-card" style="font-size: 28px; color: white;"></i>'
             '</div>'
             '<div class="flex-grow-1">'
             '<h4 style="color: #e65100; font-weight: 700; margin-bottom: 8px;">⚠️ Payment Verification Required</h4>'
@@ -271,7 +279,31 @@ def custom_index(request, extra_context=None):
             '</div>'
             '</div>',
             pending_count
-        )
+        ))
+    
+    # Add support request notification badge
+    if pending_support_count > 0:
+        urgent_text = f" ({urgent_support_count} urgent)" if urgent_support_count > 0 else ""
+        notifications_html.append(format_html(
+            '<div class="alert alert-info" style="margin: 20px; border-left: 5px solid #2196f3; background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border-radius: 12px; padding: 20px; box-shadow: 0 8px 24px rgba(33, 150, 243, 0.25);">'
+            '<div class="d-flex align-items-center">'
+            '<div style="width: 48px; height: 48px; background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 16px; box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);">'
+            '<i class="bx bx-support" style="font-size: 28px; color: white;"></i>'
+            '</div>'
+            '<div class="flex-grow-1">'
+            '<h4 style="color: #1565c0; font-weight: 700; margin-bottom: 8px;">🔔 New Support Requests</h4>'
+            '<p style="color: #0d47a1; margin-bottom: 12px;">You have <strong style="font-size: 20px; color: #2196f3;">{}</strong> pending support request(s){}</p>'
+            '<a href="/admin/administration/supportrequest/?status__exact=pending" class="btn btn-sm" style="background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%); color: white; border: none; padding: 8px 20px; border-radius: 8px; font-weight: 600; text-decoration: none; box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);">'
+            '<i class="bx bx-support"></i> View Support Requests'
+            '</a>'
+            '</div>'
+            '</div>'
+            '</div>',
+            pending_support_count, urgent_text
+        ))
+    
+    if notifications_html:
+        extra_context['admin_notifications'] = format_html(''.join(str(n) for n in notifications_html))
     
     return original_index(request, extra_context)
 
@@ -290,7 +322,88 @@ admin.site.register(models.SamajGallery, SamajGalleryAdmin)
 admin.site.register(models.SamajEvent, SamajEventAdmin)
 admin.site.register(models.PaymentTransaction, PaymentTransactionAdmin)
 admin.site.register(models.OTPRequestCounter, OTPRequestCounterAdmin)
+class SupportRequestAdmin(admin.ModelAdmin):
+    list_display = ('subject', 'name', 'email', 'status_badge', 'priority_badge', 'notification_badge', 'created_at', 'resolved_at')
+    list_filter = ('status', 'priority', 'created_at')
+    search_fields = ('subject', 'name', 'email', 'phone_number', 'message')
+    readonly_fields = ('created_at', 'updated_at', 'resolved_at')
+    fields = ('user', 'name', 'email', 'phone_number', 'subject', 'message', 'status', 'priority', 'admin_notes', 'resolved_at', 'created_at', 'updated_at')
+    list_per_page = 25
+    
+    def notification_badge(self, obj):
+        """Show notification badge for pending requests"""
+        if obj.status == 'pending':
+            return format_html(
+                '<span style="background: #ff5722; color: white; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; animation: pulse 2s infinite;">'
+                '⚠️ NEW - Needs Attention'
+                '</span>'
+            )
+        elif obj.status == 'in_progress':
+            return format_html(
+                '<span style="background: #2196f3; color: white; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 600;">'
+                '⏳ In Progress'
+                '</span>'
+            )
+        return "-"
+    notification_badge.short_description = 'Alert'
+    
+    def status_badge(self, obj):
+        colors = {
+            'pending': '#ff9800',
+            'in_progress': '#2196f3',
+            'resolved': '#4caf50',
+            'closed': '#9e9e9e'
+        }
+        color = colors.get(obj.status, '#9e9e9e')
+        return format_html(
+            '<span style="background: {}; color: white; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600;">{}</span>',
+            color, obj.get_status_display()
+        )
+    status_badge.short_description = 'Status'
+    
+    def priority_badge(self, obj):
+        colors = {
+            'low': '#4caf50',
+            'medium': '#ff9800',
+            'high': '#ff5722',
+            'urgent': '#f44336'
+        }
+        color = colors.get(obj.priority, '#9e9e9e')
+        return format_html(
+            '<span style="background: {}; color: white; padding: 4px 12px; border-radius: 6px; font-size: 12px; font-weight: 600;">{}</span>',
+            color, obj.get_priority_display()
+        )
+    priority_badge.short_description = 'Priority'
+    
+    def get_queryset(self, request):
+        """Show pending support requests first"""
+        qs = super().get_queryset(request)
+        return qs.order_by('status', '-created_at')  # Pending first, then by date
+    
+    def changelist_view(self, request, extra_context=None):
+        """Add notification count to admin list view"""
+        extra_context = extra_context or {}
+        
+        # Count pending support requests
+        pending_count = models.SupportRequest.objects.filter(status='pending').count()
+        urgent_count = models.SupportRequest.objects.filter(status='pending', priority='urgent').count()
+        
+        extra_context['pending_support_count'] = pending_count
+        extra_context['urgent_support_count'] = urgent_count
+        
+        return super().changelist_view(request, extra_context)
+    
+    def save_model(self, request, obj, form, change):
+        from django.utils import timezone
+        # Auto-set resolved_at when status changes to resolved
+        if change:
+            old_obj = models.SupportRequest.objects.get(pk=obj.pk) if obj.pk else None
+            if obj.status == 'resolved' and (not old_obj or old_obj.status != 'resolved'):
+                obj.resolved_at = timezone.now()
+        super().save_model(request, obj, form, change)
+
 admin.site.register(models.CommitteeMember, CommitteeMemberAdmin)
+admin.site.register(models.SupportRequest, SupportRequestAdmin)
 # admin.site.register(models.UserOTP)
 admin.site.register(models.Promotion)
 admin.site.register(models.Testimonial)

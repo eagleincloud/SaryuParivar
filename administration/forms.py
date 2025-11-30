@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import PasswordResetForm
-from .models import CustomUser
+from .models import CustomUser, SupportRequest
 from PIL import Image
 import io
 
@@ -169,3 +169,51 @@ class CustomPasswordResetForm(PasswordResetForm):
                 users_list.append(user)
         
         return users_list
+
+
+class SupportForm(forms.ModelForm):
+    """Form for user support requests"""
+    
+    class Meta:
+        model = SupportRequest
+        fields = ['name', 'email', 'phone_number', 'subject', 'message']
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter your name',
+                'required': True
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter your email',
+                'required': True
+            }),
+            'phone_number': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Enter your phone number (optional)'
+            }),
+            'subject': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'What can we help you with?',
+                'required': True
+            }),
+            'message': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Describe your issue or question in detail...',
+                'rows': 5,
+                'required': True
+            }),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        
+        # Pre-fill user information if logged in
+        if self.user and self.user.is_authenticated:
+            if not self.initial.get('name'):
+                self.initial['name'] = self.user.get_full_name() or self.user.show_username()
+            if not self.initial.get('email'):
+                self.initial['email'] = self.user.email or ''
+            if not self.initial.get('phone_number'):
+                self.initial['phone_number'] = str(self.user.phone_number) if self.user.phone_number else ''

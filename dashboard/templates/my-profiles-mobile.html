@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profiles - Saryu Parivar</title>
+    <link rel="icon" type="image/x-icon" href="/media/saryu-parivaar-logo.png?v=4">
+    <style>
+        :root {
+            --primary: #f97718;
+            --bg-light: #ffecce;
+            --bg-white: #FFFFFF;
+            --text-dark: #1F2937;
+            --text-gray: #6B7280;
+            --border-light: #E5E7EB;
+            --shadow-sm: 0 1px 2px rgba(249, 119, 24, 0.1);
+            --shadow-md: 0 4px 6px rgba(249, 119, 24, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        body {
+            padding-bottom: 70px;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border-light);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .header-btn {
+            padding: 8px 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            background: var(--bg-light);
+        }
+
+        .logout-btn {
+            padding: 8px 12px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            margin: 60px auto 0;
+            padding: 0 12px;
+            padding-bottom: 80px;
+        }
+
+        .page-header {
+            margin-bottom: 16px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-gray);
+            margin-bottom: 16px;
+        }
+
+        .profile-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 2px solid var(--border-light);
+        }
+
+        .profile-card.shared {
+            border-color: #4caf50;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 8px;
+            border: 3px solid var(--primary);
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .profile-relationship {
+            font-size: 13px;
+            color: var(--text-gray);
+            margin-bottom: 8px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-secondary {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        .profile-details {
+            font-size: 14px;
+            color: var(--text-gray);
+            margin-bottom: 16px;
+        }
+
+        .profile-detail-item {
+            margin-bottom: 6px;
+        }
+
+        .profile-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            display: block;
+        }
+
+        .action-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .action-btn-secondary {
+            background: var(--bg-light);
+            color: var(--primary);
+            border: 1px solid var(--primary);
+        }
+
+        .action-btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .action-btn-success {
+            background: #4caf50;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-gray);
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .nav-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-white);
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 0;
+            color: var(--text-gray);
+            font-size: 12px;
+            flex: 1;
+            text-decoration: none;
+            border: none;
+            background: none;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item-icon {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <img src="/media/saryu-parivaar-logo.png?v=4" alt="Saryu Parivar">
+            <span>My Profiles</span>
+        </div>
+        <div class="header-actions">
+            <a href="{% url 'create_profile' %}" class="header-btn">+ New</a>
+            <a href="{% url 'user_profile' %}" class="icon-btn" title="Profile">👤</a>
+            <a href="{% url 'logout_user' %}" class="logout-btn">🚪</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="page-header">
+            <div class="page-title">My Profiles</div>
+            <div class="page-subtitle">Manage profiles for yourself, your son, daughter, or any family member</div>
+        </div>
+
+        {% if profiles %}
+            {% for profile in profiles %}
+            <div class="profile-card {% if profile.is_shared %}shared{% endif %}">
+                <div class="profile-header">
+                    {% if profile.safe_image_url %}
+                    <img src="{{profile.safe_image_url}}" alt="{{profile.candidate_name}}" class="profile-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="profile-image" style="display: none; background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%); align-items: center; justify-content: center; color: white; font-size: 40px;">👤</div>
+                    {% else %}
+                    <div class="profile-image" style="background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 40px;">👤</div>
+                    {% endif %}
+                    <div class="profile-name">{{profile.candidate_name}}</div>
+                    {% if profile.relationship_to_user %}
+                    <div class="profile-relationship">{{profile.relationship_to_user}}</div>
+                    {% endif %}
+                    <div>
+                        {% if profile.is_shared %}
+                        <span class="badge badge-success">✓ Shared</span>
+                        {% else %}
+                        <span class="badge badge-secondary">Not Shared</span>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <div class="profile-details">
+                    <div class="profile-detail-item"><strong>Gender:</strong> {{profile.gender|default:"Not specified"}}</div>
+                    <div class="profile-detail-item"><strong>Age:</strong> {{profile.age|default:"N/A"}} {% if profile.age %}years{% endif %}</div>
+                    <div class="profile-detail-item"><strong>Education:</strong> {{profile.education|truncatewords:5|default:"Not specified"}}</div>
+                    {% if profile.city %}
+                    <div class="profile-detail-item"><strong>City:</strong> {{profile.city}}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="profile-actions">
+                    <a href="{% url 'edit_profile' profile.id %}" class="action-btn action-btn-primary">✏️ Edit</a>
+                    <a href="{% url 'toggle_profile_share' profile.id %}" class="action-btn {% if profile.is_shared %}action-btn-secondary{% else %}action-btn-success{% endif %}">
+                        {% if profile.is_shared %}👁️ Unshare{% else %}👁️ Share{% endif %}
+                    </a>
+                    <button onclick="shareProfile({{profile.id}}, '{{profile.candidate_name|escapejs}}')" class="action-btn action-btn-secondary">📤 Share</button>
+                    <a href="{% url 'delete_profile' profile.id %}" class="action-btn action-btn-danger" onclick="return confirm('Are you sure you want to delete this profile?');">🗑️ Delete</a>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">📋</div>
+                <h3>No Profiles Yet</h3>
+                <p style="margin: 16px 0;">Create your first matrimonial profile to get started.</p>
+                <a href="{% url 'create_profile' %}" class="header-btn" style="display: inline-block; margin-top: 16px;">Create Profile</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="nav-bottom">
+        <a href="/" class="nav-item">
+            <div class="nav-item-icon">🏠</div>
+            <div>Home</div>
+        </a>
+        <a href="{% url 'all_profiles' %}" class="nav-item">
+            <div class="nav-item-icon">👥</div>
+            <div>Profiles</div>
+        </a>
+        <a href="{% url 'my_profiles' %}" class="nav-item active">
+            <div class="nav-item-icon">📋</div>
+            <div>My Profiles</div>
+        </a>
+        <a href="{% url 'shortlisted_profiles' %}" class="nav-item">
+            <div class="nav-item-icon">❤️</div>
+            <div>Shortlisted</div>
+        </a>
+        <a href="{% url 'payment' %}" class="nav-item">
+            <div class="nav-item-icon">💳</div>
+            <div>Payment</div>
+        </a>
+    </div>
+
+    <script>
+        function shareProfile(profileId, name) {
+            const url = window.location.origin + '/dashboard/edit_profile/' + profileId + '/';
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Matrimonial Profile: ' + name,
+                    text: 'Check out this matrimonial profile',
+                    url: url
+                }).catch(err => {
+                    console.log('Error sharing:', err);
+                    copyToClipboard(url);
+                });
+            } else {
+                copyToClipboard(url);
+            }
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Profile link copied to clipboard!');
+            }).catch(err => {
+                prompt('Copy this link:', text);
+            });
+        }
+    </script>
+    
+    <!-- Support Widget -->
+    {% include 'includes/support_widget.html' %}
+</body>
+</html>
+

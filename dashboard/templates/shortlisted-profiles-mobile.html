@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shortlisted Profiles - Saryu Parivar</title>
+    <link rel="icon" type="image/x-icon" href="/media/saryu-parivaar-logo.png?v=4">
+    <style>
+        :root {
+            --primary: #f97718;
+            --bg-light: #ffecce;
+            --bg-white: #FFFFFF;
+            --text-dark: #1F2937;
+            --text-gray: #6B7280;
+            --border-light: #E5E7EB;
+            --shadow-sm: 0 1px 2px rgba(249, 119, 24, 0.1);
+            --shadow-md: 0 4px 6px rgba(249, 119, 24, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        body {
+            padding-bottom: 70px;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-white);
+            border-bottom: 1px solid var(--border-light);
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .icon-btn {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+
+        .icon-btn:hover {
+            background: var(--bg-light);
+        }
+
+        .logout-btn {
+            padding: 8px 12px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background: #c82333;
+        }
+
+        .logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            margin: 60px auto 0;
+            padding: 0 12px;
+            padding-bottom: 80px;
+        }
+
+        .page-header {
+            margin-bottom: 16px;
+        }
+
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            font-size: 14px;
+            color: var(--text-gray);
+        }
+
+        .profile-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+            border: 2px solid var(--primary);
+        }
+
+        .profile-header {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .profile-image {
+            width: 100px;
+            height: 120px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            flex-shrink: 0;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .profile-details {
+            font-size: 14px;
+            color: var(--text-gray);
+        }
+
+        .profile-detail-item {
+            margin-bottom: 6px;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .action-btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .action-btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-gray);
+        }
+
+        .empty-state-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .nav-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-white);
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 0;
+            color: var(--text-gray);
+            font-size: 12px;
+            flex: 1;
+            text-decoration: none;
+            border: none;
+            background: none;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item-icon {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">
+            <img src="/media/saryu-parivaar-logo.png?v=4" alt="Saryu Parivar">
+            <span>Shortlisted</span>
+        </div>
+        <div class="header-actions">
+            <a href="{% url 'user_profile' %}" class="icon-btn" title="Profile">👤</a>
+            <a href="{% url 'logout_user' %}" class="logout-btn">🚪</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="page-header">
+            <div class="page-title">My Shortlisted Profiles</div>
+            <div class="page-subtitle">Profiles you've shortlisted for potential matches</div>
+        </div>
+
+        {% if profiles %}
+            {% for profile in profiles %}
+            <div class="profile-card">
+                <div class="profile-header">
+                    {% if profile.safe_image_url %}
+                    <img src="{{profile.safe_image_url}}" alt="{{profile.candidate_name}}" class="profile-image" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="profile-image" style="display: none; background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%); align-items: center; justify-content: center; color: white; font-size: 40px;">👤</div>
+                    {% else %}
+                    <div class="profile-image" style="background: linear-gradient(135deg, #f97718 0%, #ff8c42 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 40px;">👤</div>
+                    {% endif %}
+                    <div class="profile-info">
+                        <div class="profile-name">{{profile.candidate_name}}</div>
+                        <div class="profile-details">
+                            <div class="profile-detail-item"><strong>Gender:</strong> {{profile.gender|default:"Not specified"}}</div>
+                            <div class="profile-detail-item"><strong>Age:</strong> {{profile.age|default:"N/A"}} {% if profile.age %}years{% endif %}</div>
+                            <div class="profile-detail-item"><strong>Father:</strong> {{profile.father_name|default:"Not specified"}}</div>
+                            <div class="profile-detail-item"><strong>Education:</strong> {{profile.education|truncatewords:5|default:"Not specified"}}</div>
+                            <div class="profile-detail-item"><strong>Occupation:</strong> {{profile.occupation|default:"Not specified"}}</div>
+                            {% if profile.city %}
+                            <div class="profile-detail-item"><strong>City:</strong> {{profile.city}}</div>
+                            {% endif %}
+                            {% if profile.height %}
+                            <div class="profile-detail-item"><strong>Height:</strong> {{profile.height}}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% if payment_done %}
+                <div class="profile-actions">
+                    <button type="button" class="action-btn action-btn-primary" onclick="showContactModal('{{profile.id}}', '{{profile.candidate_name}}', '{{profile.phone_number}}', '{{profile.whatsapp_phone_number|default:""}}', '{{profile.email_id|default:""}}')">📞 Contact</button>
+                    <button type="button" class="action-btn action-btn-danger" onclick="removeFromShortlist({{profile.id}})">❌ Remove</button>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">❤️</div>
+                <h3>No Shortlisted Profiles</h3>
+                <p style="margin: 16px 0;">You haven't shortlisted any profiles yet. Browse profiles and shortlist the ones you're interested in.</p>
+                <a href="{% url 'all_profiles' %}" class="action-btn action-btn-primary" style="display: inline-block; margin-top: 16px; text-decoration: none; text-align: center;">🔍 Browse Profiles</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="nav-bottom">
+        <a href="/" class="nav-item">
+            <div class="nav-item-icon">🏠</div>
+            <div>Home</div>
+        </a>
+        <a href="{% url 'all_profiles' %}" class="nav-item">
+            <div class="nav-item-icon">👥</div>
+            <div>Profiles</div>
+        </a>
+        <a href="{% url 'my_profiles' %}" class="nav-item">
+            <div class="nav-item-icon">📋</div>
+            <div>My Profiles</div>
+        </a>
+        <a href="{% url 'shortlisted_profiles' %}" class="nav-item active">
+            <div class="nav-item-icon">❤️</div>
+            <div>Shortlisted</div>
+        </a>
+        <a href="{% url 'payment' %}" class="nav-item">
+            <div class="nav-item-icon">💳</div>
+            <div>Payment</div>
+        </a>
+    </div>
+
+    <script>
+        async function removeFromShortlist(profileId) {
+            if (!confirm('Remove this profile from your shortlist?')) return;
+            
+            try {
+                const response = await fetch(`/dashboard/toggle_shortlist/${profileId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]')?.value || ''
+                    }
+                });
+                const data = await response.json();
+                if (data.success) {
+                    location.reload();
+                } else {
+                    alert('Error removing from shortlist');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Error removing from shortlist');
+            }
+        }
+
+        function showContactModal(profileId, name, phone, whatsapp, email) {
+            let contactInfo = `Contact ${name}\n\n`;
+            if (phone) contactInfo += `Phone: ${phone}\n`;
+            if (whatsapp) contactInfo += `WhatsApp: ${whatsapp}\n`;
+            if (email) contactInfo += `Email: ${email}\n`;
+            alert(contactInfo);
+        }
+    </script>
+    
+    <!-- Support Widget -->
+    {% include 'includes/support_widget.html' %}
+</body>
+</html>
+
